@@ -1,2 +1,2 @@
-# frontend
-The frontend of the app
+# monolith
+The whole back end of the Adalo app
