@@ -4,15 +4,19 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/turnkeyca/monolith/bitly"
 )
 
 type Handler struct {
-	logger *log.Logger
+	logger      *log.Logger
+	bitlyClient *bitly.Client
 }
 
-func NewHandler(logger *log.Logger) *Handler {
+func NewHandler(logger *log.Logger, bitlyClient *bitly.Client) *Handler {
 	return &Handler{
-		logger: logger,
+		logger:      logger,
+		bitlyClient: bitlyClient,
 	}
 }
 
@@ -29,5 +33,5 @@ func (h *Handler) shortUrlHandler(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) getShortUrl(url string) string {
 	h.logger.Println(fmt.Sprintf("converting url %s", url))
-	return url
+	return h.bitlyClient.GetShortUrl(url)
 }
