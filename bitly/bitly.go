@@ -24,6 +24,9 @@ func NewClient(logger *log.Logger) *Client {
 }
 
 func (c *Client) GetShortUrl(longUrl string) string {
+	if os.Getenv("TEST") == "true" {
+		return longUrl
+	}
 	requestBody, err := json.Marshal(map[string]string{
 		"group_guid": os.Getenv("BITLY_GROUP_GUID"),
 		"domain":     BITLY_DOMAIN,

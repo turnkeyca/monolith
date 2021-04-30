@@ -1,15 +1,26 @@
 package shorturl
 
-// func TestGetShortUrl(t *testing.T) {
-// 	in := httptest.NewRequest("GET", "/api/short-url?url=blah", nil)
-// 	out := httptest.NewRecorder()
-// 	logger := log.New(os.Stdout, "", log.LstdFlags)
-// 	shorturlHandler := NewHandler(logger, bitly.NewClient(logger))
-// 	shorturlHandler.shortUrlHandler(out, in)
-// 	if out.Code != http.StatusOK {
-// 		t.Logf("expected: %d\tgot: %d", http.StatusOK, out.Code)
-// 	}
-// 	if out.Body.String() != "{\"url\":\"https://bit.ly/TURNKEY\"}" {
-// 		t.Logf("expected: %d\tgot: %d", http.StatusOK, out.Code)
-// 	}
-// }
+import (
+	"log"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"testing"
+
+	"github.com/turnkeyca/monolith/bitly"
+)
+
+func TestGetShortUrl(t *testing.T) {
+	os.Setenv("TEST", "true")
+	in := httptest.NewRequest("GET", "/api/short-url?url=blah", nil)
+	out := httptest.NewRecorder()
+	logger := log.New(os.Stdout, "", log.LstdFlags)
+	shorturlHandler := NewHandler(logger, bitly.NewClient(logger))
+	shorturlHandler.shortUrlHandler(out, in)
+	if out.Code != http.StatusOK {
+		t.Logf("expected: %d\tgot: %d", http.StatusOK, out.Code)
+	}
+	if out.Body.String() != "{\"url\":\"blah\"}" {
+		t.Logf("expected: %d\tgot: %d", http.StatusOK, out.Code)
+	}
+}
