@@ -18,7 +18,8 @@ func main() {
 	shorturlHandler.SetupRoutes(mux)
 
 	logger.Println("Starting server")
-	err := server.New(mux).ListenAndServeTLS("", "")
+	srv := server.New(logger)
+	err := srv.NewHttpServer(mux).ListenAndServeTLS("", "")
 	if err != nil {
 		logger.Fatalf("Failed to start %v", err)
 	}

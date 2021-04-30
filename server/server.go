@@ -3,6 +3,7 @@ package server
 import (
 	"crypto/tls"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -13,14 +14,24 @@ import (
 
 const CERT_FOLDER = ".certs"
 
-func New(mux *http.ServeMux) *http.Server {
+type Server struct {
+	logger *log.Logger
+}
+
+func New(logger *log.Logger) *Server {
+	return &Server{
+		logger: logger,
+	}
+}
+
+func (s *Server) NewHttpServer(mux *http.ServeMux) *http.Server {
 	certManager := autocert.Manager{
 		Prompt:     autocert.AcceptTOS,
 		HostPolicy: autocert.HostWhitelist(os.Getenv("DOMAIN")),
 		Cache:      autocert.DirCache(CERT_FOLDER),
 	}
 	tlsConfig := certManager.TLSConfig()
-	tlsConfig.GetCertificate = getSelfSignedOrLetsEncryptCert(&certManager)
+	tlsConfig.GetCertificate = s.getSelfSignedOrLetsEncryptCert(&certManager)
 	return &http.Server{
 		Addr:         fmt.Sprintf(":%s", os.Getenv("PORT")),
 		ReadTimeout:  3 * time.Second,
@@ -31,7 +42,7 @@ func New(mux *http.ServeMux) *http.Server {
 	}
 }
 
-func getSelfSignedOrLetsEncryptCert(certManager *autocert.Manager) func(hello *tls.ClientHelloInfo) (*tls.Certificate, error) {
+func (s *Server) getSelfSignedOrLetsEncryptCert(certManager *autocert.Manager) func(hello *tls.ClientHelloInfo) (*tls.Certificate, error) {
 	return func(hello *tls.ClientHelloInfo) (*tls.Certificate, error) {
 		dirCache, ok := certManager.Cache.(autocert.DirCache)
 		if !ok {
@@ -42,10 +53,10 @@ func getSelfSignedOrLetsEncryptCert(certManager *autocert.Manager) func(hello *t
 		crtFile := filepath.Join(string(dirCache), hello.ServerName+".crt")
 		certificate, err := tls.LoadX509KeyPair(crtFile, keyFile)
 		if err != nil {
-			fmt.Printf("Falling back to Letsencrypt due to %v: \n", err)
+			s.logger.Printf("Falling back to Letsencrypt due to %v: \n", err)
 			return certManager.GetCertificate(hello)
 		}
-		fmt.Println("Loaded self-signed certificate")
+		s.logger.Println("Loaded self-signed certificate")
 		return &certificate, err
 	}
 }

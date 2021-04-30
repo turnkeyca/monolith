@@ -9,7 +9,7 @@ package shorturl
 // 	if out.Code != http.StatusOK {
 // 		t.Logf("expected: %d\tgot: %d", http.StatusOK, out.Code)
 // 	}
-// 	if out.Body.String() != "blah" {
+// 	if out.Body.String() != "{\"url\":\"https://bit.ly/TURNKEY\"}" {
 // 		t.Logf("expected: %d\tgot: %d", http.StatusOK, out.Code)
 // 	}
 // }
