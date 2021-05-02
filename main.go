@@ -1,9 +1,12 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/turnkeyca/monolith/bitly"
@@ -24,8 +27,18 @@ func main() {
 
 	logger.Println("Starting server")
 	srv := server.New(logger)
-	err = srv.NewHttpServer(mux).ListenAndServeTLS("", "")
-	if err != nil {
-		logger.Fatalf("Failed to start %v", err)
-	}
+	httpServer := srv.NewHttpServer(mux)
+	go func() {
+		err = httpServer.ListenAndServeTLS("", "")
+		if err != nil {
+			logger.Fatalf("Failed to start %v", err)
+		}
+	}()
+	sc := make(chan os.Signal, 1)
+	signal.Notify(sc, os.Interrupt)
+	s := <-sc
+	logger.Printf("termination signal received - trying to shutdown gracefully: %v\n", s)
+	c, cancelFunc := context.WithTimeout(context.Background(), 30*time.Second)
+	cancelFunc()
+	httpServer.Shutdown(c)
 }

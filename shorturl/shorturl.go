@@ -1,17 +1,11 @@
 package shorturl
 
 import (
-	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/turnkeyca/monolith/bitly"
 )
-
-type ShortUrlDto struct {
-	Url string `json:"url"`
-}
 
 type Handler struct {
 	logger      *log.Logger
@@ -30,21 +24,19 @@ func (h *Handler) SetupRoutes(mux *http.ServeMux) {
 }
 
 func (h *Handler) shortUrlHandler(w http.ResponseWriter, r *http.Request) {
-	h.logger.Println("new short url request")
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	shortUrl := ShortUrlDto{
-		Url: h.getShortUrl(r.URL.Query().Get("url")),
-	}
-	resp, err := json.Marshal(shortUrl)
-	if err != nil {
-		h.logger.Printf("json marchalling error: %v", err)
+	if r.Method == http.MethodGet {
+		h.getShortUrl(w, r)
 		return
 	}
-	w.Write(resp)
+	w.WriteHeader(http.StatusMethodNotAllowed)
 }
 
-func (h *Handler) getShortUrl(url string) string {
-	h.logger.Println(fmt.Sprintf("converting url %s", url))
-	return h.bitlyClient.GetShortUrl(url)
+func (h *Handler) getShortUrl(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	shortUrl := New(h.bitlyClient.GetShortUrl((r.URL.Query().Get("url"))))
+	err := shortUrl.Write(w)
+	if err != nil {
+		h.logger.Printf("encoding error: %v", err)
+	}
 }
