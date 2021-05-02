@@ -34,11 +34,11 @@ func main() {
 			logger.Fatalf("Failed to start %v", err)
 		}
 	}()
-	sc := make(chan os.Signal)
+	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, os.Interrupt)
-	signal.Notify(sc, os.Kill)
 	s := <-sc
 	logger.Printf("termination signal received - trying to shutdown gracefully: %v\n", s)
-	c, _ := context.WithTimeout(context.Background(), 30*time.Second)
+	c, cancelFunc := context.WithTimeout(context.Background(), 30*time.Second)
+	cancelFunc()
 	httpServer.Shutdown(c)
 }
