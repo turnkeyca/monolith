@@ -53,7 +53,7 @@ func (s *Server) getSelfSignedOrLetsEncryptCert(certManager *autocert.Manager) f
 		crtFile := filepath.Join(string(dirCache), hello.ServerName+".crt")
 		certificate, err := tls.LoadX509KeyPair(crtFile, keyFile)
 		if err != nil {
-			s.logger.Printf("Falling back to Letsencrypt due to %v: \n", err)
+			s.logger.Printf("Falling back to Letsencrypt due to %#v: \n", err)
 			return certManager.GetCertificate(hello)
 		}
 		s.logger.Println("Loaded self-signed certificate")

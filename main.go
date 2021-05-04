@@ -18,7 +18,7 @@ func main() {
 	logger := log.New(os.Stdout, "", log.LstdFlags|log.Lshortfile)
 	err := godotenv.Load(".env")
 	if err != nil {
-		logger.Printf("failed to load environment from .env: %v", err)
+		logger.Printf("failed to load environment from .env: %#v\n", err)
 	}
 	mux := http.NewServeMux()
 
@@ -31,13 +31,13 @@ func main() {
 	go func() {
 		err = httpServer.ListenAndServeTLS("", "")
 		if err != nil {
-			logger.Fatalf("Failed to start %v", err)
+			logger.Fatalf("Failed to start %#v", err)
 		}
 	}()
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, os.Interrupt)
 	s := <-sc
-	logger.Printf("termination signal received - trying to shutdown gracefully: %v\n", s)
+	logger.Printf("termination signal received - trying to shutdown gracefully: %#v\n", s)
 	c, cancelFunc := context.WithTimeout(context.Background(), 30*time.Second)
 	cancelFunc()
 	httpServer.Shutdown(c)

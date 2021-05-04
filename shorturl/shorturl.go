@@ -28,7 +28,7 @@ func (h *Handler) shortUrlHandler(w http.ResponseWriter, r *http.Request) {
 		h.getShortUrl(w, r)
 		return
 	}
-	w.WriteHeader(http.StatusMethodNotAllowed)
+	http.Error(w, "Unsupported method", http.StatusMethodNotAllowed)
 }
 
 func (h *Handler) getShortUrl(w http.ResponseWriter, r *http.Request) {
@@ -37,6 +37,6 @@ func (h *Handler) getShortUrl(w http.ResponseWriter, r *http.Request) {
 	shortUrl := New(h.bitlyClient.GetShortUrl((r.URL.Query().Get("url"))))
 	err := shortUrl.Write(w)
 	if err != nil {
-		h.logger.Printf("encoding error: %v", err)
+		h.logger.Printf("encoding error: %#v", err)
 	}
 }
