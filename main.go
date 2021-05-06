@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/turnkeyca/monolith/auth"
@@ -21,27 +22,34 @@ import (
 
 const REGEX_UUID = "[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}"
 
+func configureDocRoutes(router *mux.Router) {
+	getRouter := router.Methods(http.MethodGet).Subrouter()
+	opts := middleware.RedocOpts{SpecURL: "./swagger.yml"}
+	getRouter.Handle("/doc", middleware.Redoc(opts, nil))
+	getRouter.Handle("/swagger.yml", http.FileServer(http.Dir("./")))
+}
+
 func configureShortUrlRoutes(router *mux.Router, logger *log.Logger, bitly *bitly.Client, authenticator *auth.Authenticator) {
 	shorturlHandler := shorturl.NewHandler(logger, bitly)
-	shortUrlGetRouter := router.Methods(http.MethodGet).Subrouter()
-	shortUrlGetRouter.HandleFunc("/api/short-url", shorturlHandler.HandleGetShortUrl)
-	shortUrlGetRouter.Use(authenticator.AuthenticateHttp)
+	getRouter := router.Methods(http.MethodGet).Subrouter()
+	getRouter.HandleFunc("/api/short-url", shorturlHandler.HandleGetShortUrl)
+	getRouter.Use(authenticator.AuthenticateHttp)
 }
 
 func configureUserRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator) {
 	userHandler := user.NewHandler(logger, database)
 
-	userGetRouter := router.Methods(http.MethodGet).Subrouter()
-	userGetRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", REGEX_UUID), userHandler.HandleGetUser)
-	userGetRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath)
+	getRouter := router.Methods(http.MethodGet).Subrouter()
+	getRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", REGEX_UUID), userHandler.HandleGetUser)
+	getRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath)
 
-	userPostRouter := router.Methods(http.MethodPost).Subrouter()
-	userPostRouter.HandleFunc("/api/user", userHandler.HandlePostUser)
-	userPostRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody)
+	postRouter := router.Methods(http.MethodPost).Subrouter()
+	postRouter.HandleFunc("/api/user", userHandler.HandlePostUser)
+	postRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody)
 
-	userPutRouter := router.Methods(http.MethodPost).Subrouter()
-	userPutRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", REGEX_UUID), userHandler.HandlePutUser)
-	userPutRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody, userHandler.GetIdFromPath)
+	putRouter := router.Methods(http.MethodPost).Subrouter()
+	putRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", REGEX_UUID), userHandler.HandlePutUser)
+	putRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody, userHandler.GetIdFromPath)
 }
 
 func configureRoutes(logger *log.Logger) *mux.Router {
@@ -50,6 +58,7 @@ func configureRoutes(logger *log.Logger) *mux.Router {
 	database := db.New(logger)
 	bitly := bitly.NewClient(logger)
 
+	configureDocRoutes(router)
 	configureShortUrlRoutes(router, logger, bitly, authenticator)
 	configureUserRoutes(router, logger, database, authenticator)
 
