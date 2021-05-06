@@ -41,14 +41,14 @@ func (db *Database) Query(query string, parameters ...string) (map[string]interf
 	return nil, nil
 }
 
-func (db *Database) Put(query string, parameters ...string) (map[string]interface{}, error) {
+func (db *Database) Put(query string, parameters ...string) error {
 	if os.Getenv("TEST") == "true" {
 		db.logger.Printf("returning test result for query: %s\n", getSanitizedQueryString(query, parameters))
 		TestIndex += 1
-		return TestReturn[TestIndex], TestError[TestIndex]
+		return TestError[TestIndex]
 	}
 	// conn := getConnection()
-	return nil, nil
+	return nil
 }
 
 func (db *Database) Delete(query string, parameters ...string) error {
