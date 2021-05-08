@@ -3,60 +3,46 @@ package db
 import (
 	"log"
 	"os"
+
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
-var TestReturn []map[string]interface{}
+var TestReturn []interface{}
 var TestError []error
 var TestIndex int = -1
 
 type Database struct {
 	logger *log.Logger
+	*sqlx.DB
 }
 
-func New(logger *log.Logger) *Database {
+func New(logger *log.Logger) (*Database, error, error) {
+	db, errOpen := sqlx.Open(os.Getenv("DB_DRIVER"), os.Getenv("DB_CONN"))
+	errPing := db.Ping()
 	return &Database{
 		logger: logger,
-	}
+		DB:     db,
+	}, errOpen, errPing
 }
 
-func (db *Database) LocalInit() {
-
-}
-
-// func getConnection() interface{} {
-// 	return nil
-// }
-
-func getSanitizedQueryString(query string, parameters []string) string {
-	return ""
-}
-
-func (db *Database) Query(query string, parameters ...string) (map[string]interface{}, error) {
+func (db *Database) Query(query string, parameters ...string) (interface{}, error) {
 	if os.Getenv("TEST") == "true" {
-		db.logger.Printf("returning test result for query: %s\n", getSanitizedQueryString(query, parameters))
+		db.logger.Printf("returning test result for query: %s with parameters %s\n", query, parameters)
 		TestIndex += 1
 		return TestReturn[TestIndex], TestError[TestIndex]
 	}
-	// conn := getConnection()
-	return nil, nil
+	var temp interface{}
+	err := db.Get(&temp, query, parameters)
+	return temp, err
 }
 
-func (db *Database) Put(query string, parameters ...string) error {
+func (db *Database) Run(query string, parameters ...string) error {
 	if os.Getenv("TEST") == "true" {
-		db.logger.Printf("returning test result for query: %s\n", getSanitizedQueryString(query, parameters))
+		db.logger.Printf("returning test result for query: %s with parameters %s\n", query, parameters)
 		TestIndex += 1
 		return TestError[TestIndex]
 	}
-	// conn := getConnection()
-	return nil
-}
-
-func (db *Database) Delete(query string, parameters ...string) error {
-	if os.Getenv("TEST") == "true" {
-		db.logger.Printf("returning test result for query: %s\n", getSanitizedQueryString(query, parameters))
-		TestIndex += 1
-		return TestError[TestIndex]
-	}
-	// conn := getConnection()
-	return nil
+	_, err := db.Exec(query, parameters)
+	return err
 }

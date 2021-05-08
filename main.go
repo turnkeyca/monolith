@@ -52,17 +52,23 @@ func configureUserRoutes(router *mux.Router, logger *log.Logger, database *db.Da
 	putRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody, userHandler.GetIdFromPath)
 }
 
-func configureRoutes(logger *log.Logger) *mux.Router {
+func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 	router := mux.NewRouter()
 	authenticator := auth.New(logger)
-	database := db.New(logger)
 	bitly := bitly.NewClient(logger)
+	database, errOpen, errPing := db.New(logger)
+	if errOpen != nil {
+		return nil, errOpen
+	}
+	if errPing != nil {
+		return nil, errPing
+	}
 
 	configureDocRoutes(router)
 	configureShortUrlRoutes(router, logger, bitly, authenticator)
 	configureUserRoutes(router, logger, database, authenticator)
 
-	return router
+	return router, nil
 }
 
 func serve(logger *log.Logger, s *http.Server) {
@@ -87,8 +93,10 @@ func main() {
 	if err != nil {
 		logger.Printf("failed to load environment from .env: %#v\n", err)
 	}
-	sm := configureRoutes(logger)
-
+	sm, err := configureRoutes(logger)
+	if err != nil {
+		logger.Fatalf("failed to configure routes: %#v\n", err)
+	}
 	logger.Println("starting server")
 	srv := server.New(logger)
 	httpServer := srv.NewHttpServer(sm)

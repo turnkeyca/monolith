@@ -16,6 +16,6 @@ func (h *Handler) HandlePostUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) CreateUser(dto *Dto) error {
-	err := h.db.Put("insert into users (id) values (%s);", dto.Id.String())
+	err := h.db.Run("insert into users (id) values (%s);", dto.Id.String())
 	return err
 }
