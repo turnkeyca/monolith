@@ -10,12 +10,13 @@ import (
 
 type Dto struct {
 	Id       uuid.UUID `json:"id" validator:"required,uuid" db:"id"`
-	FullName uuid.UUID `json:"fullName" validator:"required" db:"full_name"`
+	FullName string    `json:"fullName" validator:"required" db:"full_name"`
 }
 
 func New() *Dto {
 	return &Dto{
-		Id: uuid.New(),
+		Id:       uuid.New(),
+		FullName: "",
 	}
 }
 

@@ -21,6 +21,6 @@ func TestGetShortUrl(t *testing.T) {
 		t.Fatalf("expected: %d\tgot: %d", http.StatusOK, out.Code)
 	}
 	if out.Body.String() != "{\"url\":\"blah\"}" {
-		t.Fatalf("expected: %d\tgot: %d", http.StatusOK, out.Code)
+		t.Fatalf("expected: %s\tgot: %s", "{\"url\":\"blah\"}", out.Body.String())
 	}
 }
