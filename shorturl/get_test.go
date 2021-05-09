@@ -18,9 +18,9 @@ func TestGetShortUrl(t *testing.T) {
 	shorturlHandler := NewHandler(logger, bitly.NewClient(logger))
 	shorturlHandler.HandleGetShortUrl(out, in)
 	if out.Code != http.StatusOK {
-		t.Logf("expected: %d\tgot: %d", http.StatusOK, out.Code)
+		t.Fatalf("expected: %d\tgot: %d", http.StatusOK, out.Code)
 	}
 	if out.Body.String() != "{\"url\":\"blah\"}" {
-		t.Logf("expected: %d\tgot: %d", http.StatusOK, out.Code)
+		t.Fatalf("expected: %d\tgot: %d", http.StatusOK, out.Code)
 	}
 }
