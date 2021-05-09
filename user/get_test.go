@@ -23,10 +23,10 @@ func TestGet(t *testing.T) {
 	in = in.WithContext(ctx)
 	logger := log.New(os.Stdout, "", log.LstdFlags)
 	db, _, _ := db.New(logger)
-	dto := &Dto{Id: id}
+	dto := []interface{}{Dto{Id: id, FullName: "billy"}}
 	db.SetNextTestReturn(dto)
 	handler := NewHandler(logger, db)
 	handler.HandleGetUser(out, in)
-	assert.Equal(t, out.Code, http.StatusOK, "status code")
-	assert.Equal(t, out.Body.String(), fmt.Sprintf("{\"id\":\"%s\",\"fullName\":\"\"}\n", id), "body")
+	assert.Equal(t, http.StatusOK, out.Code, "status code")
+	assert.Equal(t, fmt.Sprintf("{\"id\":\"%s\",\"fullName\":\"billy\"}\n", id), out.Body.String(), "body")
 }

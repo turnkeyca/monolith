@@ -12,6 +12,7 @@ func (h *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {
 	user, err := h.GetUser(id)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error getting user by id: %s, %#v\n", id, err), http.StatusNotFound)
+		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -22,6 +23,15 @@ func (h *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetUser(id uuid.UUID) (*Dto, error) {
-	result, err := h.db.Query("select * from users where id = $1;", id.String())
-	return result.(*Dto), err
+	result, err := NewUserDatabase(h.db).SelectUser(id)
+	if err != nil {
+		return nil, err
+	}
+	if result == nil {
+		return nil, fmt.Errorf("no results for id: %s", id.String())
+	}
+	if len(result) != 1 {
+		return nil, fmt.Errorf("duplicate results for id: %s", id.String())
+	}
+	return &result[0], err
 }

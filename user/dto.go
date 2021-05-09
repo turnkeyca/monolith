@@ -9,7 +9,7 @@ import (
 )
 
 type Dto struct {
-	Id       uuid.UUID `json:"id" validator:"required,uuid" db:"id"`
+	Id       uuid.UUID `json:"id" db:"id"`
 	FullName string    `json:"fullName" validator:"required" db:"full_name"`
 }
 

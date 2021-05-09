@@ -33,7 +33,7 @@ db-new :
 	migrate create -ext sql -dir db/migrations -seq $(SEQ_NAME)
 
 db-migrate :
-	migrate -database $(POSTGRESQL_URL) -path db/migrations up $(ARGS)
+	migrate -database $(DB_CONN) -path db/migrations up
 
 db-unmigrate :
-	migrate -database $(POSTGRESQL_URL) -path db/migrations down $(ARGS)
+	migrate -database $(DB_CONN) -path db/migrations down

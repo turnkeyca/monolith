@@ -20,7 +20,7 @@ import (
 	"github.com/turnkeyca/monolith/user"
 )
 
-const REGEX_UUID = "[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}"
+const REGEX_UUID = "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
 
 func configureDocRoutes(router *mux.Router) {
 	getRouter := router.Methods(http.MethodGet).Subrouter()
@@ -47,9 +47,14 @@ func configureUserRoutes(router *mux.Router, logger *log.Logger, database *db.Da
 	postRouter.HandleFunc("/api/user", userHandler.HandlePostUser)
 	postRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody)
 
-	putRouter := router.Methods(http.MethodPost).Subrouter()
+	putRouter := router.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", REGEX_UUID), userHandler.HandlePutUser)
 	putRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody, userHandler.GetIdFromPath)
+
+	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
+	deleteRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", REGEX_UUID), userHandler.HandleDeleteUser)
+	deleteRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath)
+
 }
 
 func configureRoutes(logger *log.Logger) (*mux.Router, error) {

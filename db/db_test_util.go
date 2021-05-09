@@ -6,21 +6,21 @@ import (
 	"regexp"
 )
 
-var TestReturn []interface{}
+var TestReturn [][]interface{}
 var TestError []error
 var TestQuery []string
 
-func (db *Database) SetNextTestReturn(next interface{}) {
+func (db *Database) SetNextTestReturn(next []interface{}) {
 	if os.Getenv("TEST") != "true" {
 		panic("not implemented for non tests!")
 	}
 	if len(TestReturn) == 0 {
-		TestReturn = []interface{}{}
+		TestReturn = [][]interface{}{}
 	}
 	TestReturn = append(TestReturn, next)
 }
 
-func (db *Database) getNextTestReturn() interface{} {
+func (db *Database) getNextTestReturn() []interface{} {
 	if os.Getenv("TEST") != "true" {
 		panic("not implemented for non tests!")
 	}
@@ -66,7 +66,7 @@ func (db *Database) GetNextTestQuery() string {
 	return next
 }
 
-func pushQuery(query string, parameters ...string) {
+func pushQuery(query string, parameters ...interface{}) {
 	if os.Getenv("TEST") != "true" {
 		panic("not implemented for non tests!")
 	}
@@ -76,7 +76,7 @@ func pushQuery(query string, parameters ...string) {
 	next := query
 	for i, param := range parameters {
 		re := regexp.MustCompile(fmt.Sprintf(`\$%d`, i+1))
-		next = re.ReplaceAllString(next, param)
+		next = re.ReplaceAllString(next, param.(string))
 	}
 	TestQuery = append(TestQuery, next)
 }

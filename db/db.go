@@ -27,23 +27,23 @@ func New(logger *log.Logger) (*Database, error, error) {
 	}, errOpen, errPing
 }
 
-func (db *Database) Query(query string, parameters ...string) (interface{}, error) {
+func (db *Database) Query(query string, parameters ...interface{}) ([]interface{}, error) {
 	if os.Getenv("TEST") == "true" {
 		db.logger.Printf("returning test result for query: %s with parameters %s\n", query, parameters)
 		pushQuery(query, parameters...)
 		return db.getNextTestReturn(), db.getNextTestError()
 	}
-	var temp interface{}
-	err := db.Get(&temp, query, parameters)
+	temp := []interface{}{}
+	err := db.Select(&temp, query, parameters...)
 	return temp, err
 }
 
-func (db *Database) Run(query string, parameters ...string) error {
+func (db *Database) Run(query string, parameters ...interface{}) error {
 	if os.Getenv("TEST") == "true" {
 		db.logger.Printf("returning test result for query: %s with parameters %s\n", query, parameters)
 		pushQuery(query, parameters...)
 		return db.getNextTestError()
 	}
-	_, err := db.Exec(query, parameters)
+	_, err := db.Exec(query, parameters...)
 	return err
 }
