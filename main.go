@@ -25,7 +25,7 @@ const REGEX_UUID = "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-
 func configureDocRoutes(router *mux.Router) {
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	opts := middleware.RedocOpts{SpecURL: "./swagger.yml"}
-	getRouter.Handle("/doc", middleware.Redoc(opts, nil))
+	getRouter.Handle("/docs", middleware.Redoc(opts, nil))
 	getRouter.Handle("/swagger.yml", http.FileServer(http.Dir("./")))
 }
 
@@ -77,7 +77,7 @@ func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 }
 
 func serve(logger *log.Logger, s *http.Server) {
-	err := s.ListenAndServeTLS("", "")
+	err := s.ListenAndServe()
 	if err != nil {
 		logger.Fatalf("failed to start %#v\n", err)
 	}

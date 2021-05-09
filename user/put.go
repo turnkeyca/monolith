@@ -7,6 +7,15 @@ import (
 	"github.com/google/uuid"
 )
 
+// swagger:route PUT /api/user user updateUser
+// Update a user's details
+//
+// responses:
+//	201: noContentResponse
+//  404: errorResponse
+//  422: errorValidation
+
+// Update handles PUT requests to update users
 func (h *Handler) HandlePutUser(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value(KeyId{}).(uuid.UUID)
 	dto := r.Context().Value(KeyBody{}).(*Dto)

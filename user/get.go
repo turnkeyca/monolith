@@ -7,6 +7,13 @@ import (
 	"github.com/google/uuid"
 )
 
+// swagger:route GET /api/user/{id} user getUser
+// Return a user from the database
+// responses:
+//	200: userResponse
+//	404: errorResponse
+
+// HandleGetUser handles GET requests
 func (h *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value(KeyId{}).(uuid.UUID)
 	user, err := h.GetUser(id)
