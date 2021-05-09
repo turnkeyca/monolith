@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/gorilla/mux"
 	"golang.org/x/crypto/acme/autocert"
 )
 
@@ -24,7 +25,7 @@ func New(logger *log.Logger) *Server {
 	}
 }
 
-func (s *Server) NewHttpServer(mux *http.ServeMux) *http.Server {
+func (s *Server) NewHttpServer(sm *mux.Router) *http.Server {
 	certManager := autocert.Manager{
 		Prompt:     autocert.AcceptTOS,
 		HostPolicy: autocert.HostWhitelist(os.Getenv("DOMAIN")),
@@ -38,7 +39,7 @@ func (s *Server) NewHttpServer(mux *http.ServeMux) *http.Server {
 		WriteTimeout: 5 * time.Second,
 		IdleTimeout:  120 * time.Second,
 		TLSConfig:    tlsConfig,
-		Handler:      mux,
+		Handler:      sm,
 	}
 }
 
@@ -53,10 +54,10 @@ func (s *Server) getSelfSignedOrLetsEncryptCert(certManager *autocert.Manager) f
 		crtFile := filepath.Join(string(dirCache), hello.ServerName+".crt")
 		certificate, err := tls.LoadX509KeyPair(crtFile, keyFile)
 		if err != nil {
-			s.logger.Printf("Falling back to Letsencrypt due to %v: \n", err)
+			s.logger.Printf("falling back to letsencrypt due to %#v: \n", err)
 			return certManager.GetCertificate(hello)
 		}
-		s.logger.Println("Loaded self-signed certificate")
+		s.logger.Println("loaded self-signed certificate")
 		return &certificate, err
 	}
 }

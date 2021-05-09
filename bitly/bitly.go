@@ -33,19 +33,19 @@ func (c *Client) GetShortUrl(longUrl string) string {
 		"long_url":   longUrl,
 	})
 	if err != nil {
-		c.logger.Printf("json marshalling error occurred: %v", err)
+		c.logger.Printf("json marshalling error occurred: %#v", err)
 	}
 	client := &http.Client{
 		Timeout: time.Second * 10,
 	}
 	req, err := http.NewRequest("POST", BITLY_URL, bytes.NewBuffer(requestBody))
 	if err != nil {
-		c.logger.Printf("creating request error occurred: %v", err)
+		c.logger.Printf("creating request error occurred: %#v", err)
 	}
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", os.Getenv("BITLY_API_KEY")))
 	resp, err := client.Do(req)
 	if err != nil {
-		c.logger.Printf("bit.ly error occurred: %v", err)
+		c.logger.Printf("bit.ly error occurred: %#v", err)
 	}
 	defer resp.Body.Close()
 	var responseBody map[string]string
