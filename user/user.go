@@ -20,3 +20,11 @@ func NewHandler(logger *log.Logger, db *db.Database) *Handler {
 		db:     db,
 	}
 }
+
+type GenericError struct {
+	Message string `json:"message"`
+}
+
+type ValidationError struct {
+	Messages []string `json:"messages"`
+}

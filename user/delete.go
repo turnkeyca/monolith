@@ -7,6 +7,15 @@ import (
 	"github.com/google/uuid"
 )
 
+// swagger:route DELETE /api/user/{id} user deleteUser
+// delete a user
+//
+// responses:
+//	201: noContentResponse
+//  404: errorResponse
+//  500: errorResponse
+
+// Delete handles DELETE requests and removes items from the database
 func (h *Handler) HandleDeleteUser(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value(KeyId{}).(uuid.UUID)
 	err := h.DeleteUser(id)

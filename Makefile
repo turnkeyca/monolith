@@ -1,10 +1,11 @@
-.PHONY: swagger swagger-install db-check-local db-create-local db-run-local db-new db-migrate db-unmigrate
+.PHONY: swagger db-check-local db-create-local db-run-local db-new db-migrate db-unmigrate
 
-swagger : swagger-install
+swagger-check :
+	which swagger || (echo "need to install swagger!" && exit 1)
+
+
+swagger : swagger-check
 	swagger generate spec -o ./swagger.yml --scan-models
-
-swagger-install :
-	which swagger || go get -u github.com/go-swagger/go-swagger/cmd/swagger
 
 run : monolith
 	./monolith

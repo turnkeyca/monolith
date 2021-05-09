@@ -1,0 +1,133 @@
+basePath: /
+consumes:
+- application/json
+definitions:
+  Dto:
+    properties:
+      fullName:
+        type: string
+        x-go-name: FullName
+      id:
+        $ref: '#/definitions/UUID'
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/user
+  GenericError:
+    properties:
+      message:
+        type: string
+        x-go-name: Message
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/user
+  UUID:
+    description: |-
+      A UUID is a 128 bit (16 byte) Universal Unique IDentifier as defined in RFC
+      4122.
+    items:
+      format: uint8
+      type: integer
+    type: array
+    x-go-package: github.com/google/uuid
+  ValidationError:
+    properties:
+      messages:
+        items:
+          type: string
+        type: array
+        x-go-name: Messages
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/user
+info:
+  description: Documentation for Turnkey API
+  title: of Turnkey API
+  version: 1.0.0
+paths:
+  /api/user:
+    post:
+      description: Create a new user
+      operationId: createUser
+      responses:
+        "200":
+          $ref: '#/responses/userResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - user
+    put:
+      description: Update a user's details
+      operationId: updateUser
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the user for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
+      tags:
+      - user
+  /api/user/{id}:
+    delete:
+      description: delete a user
+      operationId: deleteUser
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the user for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - user
+    get:
+      description: Return a user from the database
+      operationId: getUser
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the user for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "200":
+          $ref: '#/responses/userResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - user
+produces:
+- application/json
+responses:
+  errorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  errorValidation:
+    description: Validation errors defined as an array of strings
+    schema:
+      $ref: '#/definitions/ValidationError'
+  noContentResponse:
+    description: No content is returned by this API endpoint
+  userResponse:
+    description: A user
+    schema:
+      $ref: '#/definitions/Dto'
+schemes:
+- http
+- https
+swagger: "2.0"

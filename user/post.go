@@ -7,6 +7,15 @@ import (
 	"github.com/google/uuid"
 )
 
+// swagger:route POST /api/user user createUser
+// Create a new user
+//
+// responses:
+//	200: userResponse
+//  422: errorValidation
+//  500: errorResponse
+
+// Create handles POST requests to add new products
 func (h *Handler) HandlePostUser(w http.ResponseWriter, r *http.Request) {
 	dto := r.Context().Value(KeyBody{}).(*Dto)
 	err := h.CreateUser(dto)
