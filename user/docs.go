@@ -2,7 +2,7 @@
 //
 // Documentation for Turnkey API
 //
-//	Schemes: http, https
+//	Schemes: http
 //	BasePath: /
 //	Version: 1.0.0
 //
@@ -22,18 +22,18 @@ import "github.com/google/uuid"
 // these types are not used by any of the handers
 
 // Generic error message returned as a string
-// swagger:response errorResponse
+// swagger:response userErrorResponse
 //lint:ignore U1000 for docs
-type errorResponseWrapper struct {
+type userErrorResponseWrapper struct {
 	// Description of the error
 	// in: body
 	Body GenericError
 }
 
 // Validation errors defined as an array of strings
-// swagger:response errorValidation
+// swagger:response userErrorValidation
 //lint:ignore U1000 for docs
-type errorValidationWrapper struct {
+type userErrorValidationWrapper struct {
 	// Collection of the validation errors
 	// in: body
 	Body ValidationError
@@ -43,7 +43,7 @@ type errorValidationWrapper struct {
 // swagger:response userResponse
 //lint:ignore U1000 for docs
 type userResponseWrapper struct {
-	// All current products
+	// A user
 	// in: body
 	Body Dto
 }

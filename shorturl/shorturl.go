@@ -17,3 +17,7 @@ func NewHandler(logger *log.Logger, bitlyClient *bitly.Client) *Handler {
 		bitlyClient: bitlyClient,
 	}
 }
+
+type GenericError struct {
+	Message string `json:"message"`
+}

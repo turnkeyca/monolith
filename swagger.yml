@@ -41,21 +41,27 @@ info:
   title: of Turnkey API
   version: 1.0.0
 paths:
+  /api/short-url?longUrl={url}:
+    get:
+      description: get a bitly short url
+      operationId: getShortUrl
+      tags:
+      - shorturl
   /api/user:
     post:
-      description: Create a new user
+      description: create a new user
       operationId: createUser
       responses:
         "200":
           $ref: '#/responses/userResponse'
         "422":
-          $ref: '#/responses/errorValidation'
+          $ref: '#/responses/userErrorValidation'
         "500":
-          $ref: '#/responses/errorResponse'
+          $ref: '#/responses/userErrorResponse'
       tags:
       - user
     put:
-      description: Update a user's details
+      description: update a user
       operationId: updateUser
       parameters:
       - $ref: '#/definitions/UUID'
@@ -68,9 +74,9 @@ paths:
         "201":
           $ref: '#/responses/noContentResponse'
         "404":
-          $ref: '#/responses/errorResponse'
+          $ref: '#/responses/userErrorResponse'
         "422":
-          $ref: '#/responses/errorValidation'
+          $ref: '#/responses/userErrorValidation'
       tags:
       - user
   /api/user/{id}:
@@ -88,13 +94,13 @@ paths:
         "201":
           $ref: '#/responses/noContentResponse'
         "404":
-          $ref: '#/responses/errorResponse'
+          $ref: '#/responses/userErrorResponse'
         "500":
-          $ref: '#/responses/errorResponse'
+          $ref: '#/responses/userErrorResponse'
       tags:
       - user
     get:
-      description: Return a user from the database
+      description: return a user
       operationId: getUser
       parameters:
       - $ref: '#/definitions/UUID'
@@ -107,27 +113,34 @@ paths:
         "200":
           $ref: '#/responses/userResponse'
         "404":
-          $ref: '#/responses/errorResponse'
+          $ref: '#/responses/userErrorResponse'
       tags:
       - user
 produces:
 - application/json
 responses:
-  errorResponse:
+  noContentResponse:
+    description: No content is returned by this API endpoint
+  shortUrlErrorResponse:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
-  errorValidation:
+  shortUrlResponse:
+    description: A short url
+    schema:
+      $ref: '#/definitions/Dto'
+  userErrorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  userErrorValidation:
     description: Validation errors defined as an array of strings
     schema:
       $ref: '#/definitions/ValidationError'
-  noContentResponse:
-    description: No content is returned by this API endpoint
   userResponse:
     description: A user
     schema:
       $ref: '#/definitions/Dto'
 schemes:
 - http
-- https
 swagger: "2.0"

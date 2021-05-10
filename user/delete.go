@@ -12,8 +12,8 @@ import (
 //
 // responses:
 //	201: noContentResponse
-//  404: errorResponse
-//  500: errorResponse
+//  404: userErrorResponse
+//  500: userErrorResponse
 
 // Delete handles DELETE requests and removes items from the database
 func (h *Handler) HandleDeleteUser(w http.ResponseWriter, r *http.Request) {
