@@ -10,8 +10,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-const CERT_FOLDER = ".certs"
-
 type Server struct {
 	logger *log.Logger
 }
