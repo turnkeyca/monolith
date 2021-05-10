@@ -8,12 +8,12 @@ import (
 )
 
 // swagger:route POST /api/user user createUser
-// Create a new user
+// create a new user
 //
 // responses:
 //	200: userResponse
-//  422: errorValidation
-//  500: errorResponse
+//  422: userErrorValidation
+//  500: userErrorResponse
 
 // Create handles POST requests to add new products
 func (h *Handler) HandlePostUser(w http.ResponseWriter, r *http.Request) {

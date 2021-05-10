@@ -8,10 +8,10 @@ import (
 )
 
 // swagger:route GET /api/user/{id} user getUser
-// Return a user from the database
+// return a user
 // responses:
 //	200: userResponse
-//	404: errorResponse
+//	404: userErrorResponse
 
 // HandleGetUser handles GET requests
 func (h *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {

@@ -8,12 +8,12 @@ import (
 )
 
 // swagger:route PUT /api/user user updateUser
-// Update a user's details
+// update a user
 //
 // responses:
 //	201: noContentResponse
-//  404: errorResponse
-//  422: errorValidation
+//  404: userErrorResponse
+//  422: userErrorValidation
 
 // Update handles PUT requests to update users
 func (h *Handler) HandlePutUser(w http.ResponseWriter, r *http.Request) {
