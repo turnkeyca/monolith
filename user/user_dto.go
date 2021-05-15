@@ -30,7 +30,7 @@ type Dto struct {
 	HasPets                   bool      `json:"pets" validator:"required" db:"has_pets"`
 	AdditionalDetails         string    `json:"additionalDetails" db:"additional_details"`
 	MoveInDate                string    `json:"moveInDate" db:"move_in_date"`
-	MoveOutDate               string    `json:"moveOutDate" db:"moveOutDate"`
+	MoveOutDate               string    `json:"moveOutDate" db:"move_out_date"`
 	PropertyManagementCompany string    `json:"propertyManagementCompany" db:"property_management_company"`
 	AdditionalDetailsLease    string    `json:"additionalDetailsLease" db:"additional_details_lease"`
 	MonthlyBudgetMin          float64   `json:"monthlyBudgetMin" validator:"required" db:"monthly_budget_min"`

@@ -30,6 +30,6 @@ func (h *Handler) HandlePutEmployment(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) UpdateEmployment(dto *Dto) error {
-	err := h.db.Run("update employment set id=$1, full_name=$2 where id=$1;", dto.Id.String())
+	err := h.db.Run("update employment set id=$1, user_id=$2, employer=$3, occupation=$4, duration=$5, additional_details=$6, annual_salary=$7 where id=$1;", dto.Id.String(), dto.UserId.String(), dto.Employer, dto.Occupation, dto.Duration, dto.AdditionalDetails, dto.AnnualSalary)
 	return err
 }

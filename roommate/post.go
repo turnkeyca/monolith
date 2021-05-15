@@ -29,6 +29,6 @@ func (h *Handler) HandlePostRoommate(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) CreateRoommate(dto *Dto) error {
 	dto.Id = uuid.New()
-	err := h.db.Run("insert into roommate (id, full_name) values ($1, $2);", dto.Id.String(), dto.FullName)
+	err := h.db.Run("insert into roommate (id, user_id, roommate_user_id, full_name, email, additional_details) values ($1, $2, $3, $4, $5, $6);", dto.Id.String(), dto.UserId.String(), dto.RoommateUserId.String(), dto.FullName, dto.Email, dto.AdditionalDetails)
 	return err
 }

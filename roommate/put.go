@@ -30,6 +30,6 @@ func (h *Handler) HandlePutRoommate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) UpdateRoommate(dto *Dto) error {
-	err := h.db.Run("update roommate set id=$1, full_name=$2 where id=$1;", dto.Id.String(), dto.FullName)
+	err := h.db.Run("update roommate set id=$1, user_id=$2, roommate_user_id=$3, full_name=$4, email=$5, additional_details=$6 where id=$1;", dto.Id.String(), dto.UserId.String(), dto.FullName, dto.Email, dto.AdditionalDetails)
 	return err
 }

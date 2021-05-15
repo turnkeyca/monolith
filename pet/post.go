@@ -29,6 +29,6 @@ func (h *Handler) HandlePostPet(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) CreatePet(dto *Dto) error {
 	dto.Id = uuid.New()
-	err := h.db.Run("insert into pet (id, full_name) values ($1, $2);", dto.Id.String())
+	err := h.db.Run("insert into pet (id, user_id, breed, weight) values ($1, $2, $3, $4);", dto.Id.String(), dto.UserId.String(), dto.Breed, dto.Weight)
 	return err
 }
