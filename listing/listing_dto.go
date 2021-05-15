@@ -9,20 +9,20 @@ import (
 )
 
 type Dto struct {
-	Id        uuid.UUID  `json:"id" db:"id"`
-	ListingId *uuid.UUID `json:"listingId" validator:"required" db:"listing_id"`
-	Name      string     `json:"name" validator:"required" db:"name"`
-	Address   string     `json:"address" validator:"required" db:"address"`
-	Link      string     `json:"link" validator:"required" db:"link"`
+	Id      uuid.UUID  `json:"id" db:"id"`
+	UserId  *uuid.UUID `json:"userId" validator:"required" db:"user_id"`
+	Name    string     `json:"name" validator:"required" db:"name"`
+	Address string     `json:"address" validator:"required" db:"address"`
+	Link    string     `json:"link" validator:"required" db:"link"`
 }
 
 func New() *Dto {
 	return &Dto{
-		Id:        uuid.New(),
-		ListingId: nil,
-		Name:      "",
-		Address:   "",
-		Link:      "",
+		Id:      uuid.New(),
+		UserId:  nil,
+		Name:    "",
+		Address: "",
+		Link:    "",
 	}
 }
 

@@ -30,6 +30,6 @@ func (h *Handler) HandlePutReference(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) UpdateReference(dto *Dto) error {
-	err := h.db.Run("update references set id=$1, full_name=$2 where id=$1;", dto.Id.String(), dto.FullName)
+	err := h.db.Run("update reference set id=$1, full_name=$2 where id=$1;", dto.Id.String(), dto.FullName)
 	return err
 }

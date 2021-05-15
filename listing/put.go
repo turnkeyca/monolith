@@ -30,6 +30,6 @@ func (h *Handler) HandlePutListing(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) UpdateListing(dto *Dto) error {
-	err := h.db.Run("update listings set id=$1, full_name=$2 where id=$1;", dto.Id.String())
+	err := h.db.Run("update listing set id=$1, full_name=$2 where id=$1;", dto.Id.String())
 	return err
 }

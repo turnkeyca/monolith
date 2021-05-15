@@ -30,6 +30,6 @@ func (h *Handler) HandlePutPet(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) UpdatePet(dto *Dto) error {
-	err := h.db.Run("update pets set id=$1, full_name=$2 where id=$1;", dto.Id.String())
+	err := h.db.Run("update pet set id=$1, full_name=$2 where id=$1;", dto.Id.String())
 	return err
 }

@@ -29,6 +29,6 @@ func (h *Handler) HandlePostReference(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) CreateReference(dto *Dto) error {
 	dto.Id = uuid.New()
-	err := h.db.Run("insert into references (id, full_name) values ($1, $2);", dto.Id.String(), dto.FullName)
+	err := h.db.Run("insert into reference (id, full_name) values ($1, $2);", dto.Id.String(), dto.FullName)
 	return err
 }

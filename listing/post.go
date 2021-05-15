@@ -29,6 +29,6 @@ func (h *Handler) HandlePostListing(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) CreateListing(dto *Dto) error {
 	dto.Id = uuid.New()
-	err := h.db.Run("insert into listings (id, full_name) values ($1, $2);", dto.Id.String())
+	err := h.db.Run("insert into listing (id, full_name) values ($1, $2);", dto.Id.String())
 	return err
 }
