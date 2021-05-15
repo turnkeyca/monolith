@@ -7,28 +7,28 @@ import (
 	"github.com/google/uuid"
 )
 
-// swagger:route POST /api/user user createUser
-// create a new user
+// swagger:route POST /api/roommate roommate createRoommate
+// create a new roommate
 //
 // responses:
-//	200: userResponse
-//  422: userErrorValidation
-//  500: userErrorResponse
+//	200: roommateResponse
+//  422: roommateErrorValidation
+//  500: roommateErrorResponse
 
 // Create handles POST requests to add new products
-func (h *Handler) HandlePostUser(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) HandlePostRoommate(w http.ResponseWriter, r *http.Request) {
 	dto := r.Context().Value(KeyBody{}).(*Dto)
-	err := h.CreateUser(dto)
+	err := h.CreateRoommate(dto)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error creating user: %#v\n", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error creating roommate: %#v\n", err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func (h *Handler) CreateUser(dto *Dto) error {
+func (h *Handler) CreateRoommate(dto *Dto) error {
 	dto.Id = uuid.New()
-	err := h.db.Run("insert into users (id, full_name) values ($1, $2);", dto.Id.String(), dto.FullName)
+	err := h.db.Run("insert into roommates (id, full_name) values ($1, $2);", dto.Id.String(), dto.FullName)
 	return err
 }

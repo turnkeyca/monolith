@@ -10,7 +10,7 @@ import (
 
 type Dto struct {
 	Id     uuid.UUID  `json:"id" db:"id"`
-	UserId *uuid.UUID `json:"userId" validator:"required" db:"user_id"`
+	PetId  *uuid.UUID `json:"petId" validator:"required" db:"pet_id"`
 	Breed  string     `json:"breed" db:"breed"`
 	Weight float64    `json:"weight" db:"weight"`
 }
@@ -18,7 +18,7 @@ type Dto struct {
 func New() *Dto {
 	return &Dto{
 		Id:     uuid.New(),
-		UserId: nil,
+		PetId:  nil,
 		Breed:  "",
 		Weight: 0.00,
 	}
