@@ -23,7 +23,7 @@ func TestGet(t *testing.T) {
 	in = in.WithContext(ctx)
 	logger := log.New(os.Stdout, "", log.LstdFlags)
 	db, _, _ := db.New(logger)
-	dto := []interface{}{Dto{Id: id, FullName: "billy"}}
+	dto := []interface{}{Dto{Id: id}}
 	db.SetNextTestReturn(dto)
 	handler := NewHandler(logger, db)
 	handler.HandleGetEmployment(out, in)
