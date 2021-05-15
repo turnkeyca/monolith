@@ -4,11 +4,85 @@ consumes:
 definitions:
   Dto:
     properties:
+      additionalDetails:
+        type: string
+        x-go-name: AdditionalDetails
+      additionalDetailsLease:
+        type: string
+        x-go-name: AdditionalDetailsLease
+      bio:
+        type: string
+        x-go-name: Bio
+      city:
+        type: string
+        x-go-name: City
+      creditCheck:
+        type: boolean
+        x-go-name: CanCreditCheck
+      email:
+        type: string
+        x-go-name: Email
+      evicted:
+        type: boolean
+        x-go-name: HasPreviousEviction
       fullName:
         type: string
         x-go-name: FullName
       id:
         $ref: '#/definitions/UUID'
+      lawsuit:
+        type: boolean
+        x-go-name: HasPreviousLawsuit
+      monthlyBudgetMax:
+        format: double
+        type: number
+        x-go-name: MonthlyBudgetMax
+      monthlyBudgetMin:
+        format: double
+        type: number
+        x-go-name: MonthlyBudgetMin
+      moveInDate:
+        type: string
+        x-go-name: MoveInDate
+      moveOutDate:
+        type: string
+        x-go-name: MoveOutDate
+      movingReason:
+        type: string
+        x-go-name: MovingReason
+      nickname:
+        type: string
+        x-go-name: Nickname
+      password:
+        type: string
+        x-go-name: Password
+      pets:
+        type: boolean
+        x-go-name: HasPets
+      phoneNumber:
+        type: string
+        x-go-name: PhoneNumber
+      propertyManagementCompany:
+        type: string
+        x-go-name: PropertyManagementCompany
+      province:
+        type: string
+        x-go-name: Province
+      roommates:
+        type: boolean
+        x-go-name: HasRoommates
+      securityDeposit:
+        type: boolean
+        x-go-name: HasSecurityDeposit
+      sendNotifications:
+        type: boolean
+        x-go-name: SendNotifications
+      smoker:
+        type: boolean
+        x-go-name: IsSmoker
+      userType:
+        type: string
+        x-go-name: UserType
     type: object
     x-go-package: github.com/turnkeyca/monolith/user
   GenericError:
@@ -41,6 +115,351 @@ info:
   title: of Turnkey API
   version: 1.0.0
 paths:
+  /api/employment:
+    post:
+      description: create a new employment
+      operationId: createEmployment
+      responses:
+        "200":
+          $ref: '#/responses/employmentResponse'
+        "422":
+          $ref: '#/responses/employmentErrorValidation'
+        "500":
+          $ref: '#/responses/employmentErrorResponse'
+      tags:
+      - employment
+    put:
+      description: update a employment
+      operationId: updateEmployment
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the employment for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/employmentErrorResponse'
+        "422":
+          $ref: '#/responses/employmentErrorValidation'
+      tags:
+      - employment
+  /api/employment/{id}:
+    delete:
+      description: delete a employment
+      operationId: deleteEmployment
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the employment for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/employmentErrorResponse'
+        "500":
+          $ref: '#/responses/employmentErrorResponse'
+      tags:
+      - employment
+    get:
+      description: return a employment
+      operationId: getEmployment
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the employment for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "200":
+          $ref: '#/responses/employmentResponse'
+        "404":
+          $ref: '#/responses/employmentErrorResponse'
+      tags:
+      - employment
+  /api/listing:
+    post:
+      description: create a new listing
+      operationId: createListing
+      responses:
+        "200":
+          $ref: '#/responses/listingResponse'
+        "422":
+          $ref: '#/responses/listingErrorValidation'
+        "500":
+          $ref: '#/responses/listingErrorResponse'
+      tags:
+      - listing
+    put:
+      description: update a listing
+      operationId: updateListing
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the listing for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/listingErrorResponse'
+        "422":
+          $ref: '#/responses/listingErrorValidation'
+      tags:
+      - listing
+  /api/listing/{id}:
+    delete:
+      description: delete a listing
+      operationId: deleteListing
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the listing for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/listingErrorResponse'
+        "500":
+          $ref: '#/responses/listingErrorResponse'
+      tags:
+      - listing
+    get:
+      description: return a listing
+      operationId: getListing
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the listing for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "200":
+          $ref: '#/responses/listingResponse'
+        "404":
+          $ref: '#/responses/listingErrorResponse'
+      tags:
+      - listing
+  /api/pet:
+    post:
+      description: create a new pet
+      operationId: createPet
+      responses:
+        "200":
+          $ref: '#/responses/petResponse'
+        "422":
+          $ref: '#/responses/petErrorValidation'
+        "500":
+          $ref: '#/responses/petErrorResponse'
+      tags:
+      - pet
+    put:
+      description: update a pet
+      operationId: updatePet
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the pet for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/petErrorResponse'
+        "422":
+          $ref: '#/responses/petErrorValidation'
+      tags:
+      - pet
+  /api/pet/{id}:
+    delete:
+      description: delete a pet
+      operationId: deletePet
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the pet for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/petErrorResponse'
+        "500":
+          $ref: '#/responses/petErrorResponse'
+      tags:
+      - pet
+    get:
+      description: return a pet
+      operationId: getPet
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the pet for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "200":
+          $ref: '#/responses/petResponse'
+        "404":
+          $ref: '#/responses/petErrorResponse'
+      tags:
+      - pet
+  /api/reference:
+    post:
+      description: create a new reference
+      operationId: createReference
+      responses:
+        "200":
+          $ref: '#/responses/referenceResponse'
+        "422":
+          $ref: '#/responses/referenceErrorValidation'
+        "500":
+          $ref: '#/responses/referenceErrorResponse'
+      tags:
+      - reference
+    put:
+      description: update a reference
+      operationId: updateReference
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the reference for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/referenceErrorResponse'
+        "422":
+          $ref: '#/responses/referenceErrorValidation'
+      tags:
+      - reference
+  /api/reference/{id}:
+    delete:
+      description: delete a reference
+      operationId: deleteReference
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the reference for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/referenceErrorResponse'
+        "500":
+          $ref: '#/responses/referenceErrorResponse'
+      tags:
+      - reference
+    get:
+      description: return a reference
+      operationId: getReference
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the reference for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "200":
+          $ref: '#/responses/referenceResponse'
+        "404":
+          $ref: '#/responses/referenceErrorResponse'
+      tags:
+      - reference
+  /api/roommate:
+    post:
+      description: create a new roommate
+      operationId: createRoommate
+      responses:
+        "200":
+          $ref: '#/responses/roommateResponse'
+        "422":
+          $ref: '#/responses/roommateErrorValidation'
+        "500":
+          $ref: '#/responses/roommateErrorResponse'
+      tags:
+      - roommate
+    put:
+      description: update a roommate
+      operationId: updateRoommate
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the roommate for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/roommateErrorResponse'
+        "422":
+          $ref: '#/responses/roommateErrorValidation'
+      tags:
+      - roommate
+  /api/roommate/{id}:
+    delete:
+      description: delete a roommate
+      operationId: deleteRoommate
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the roommate for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/roommateErrorResponse'
+        "500":
+          $ref: '#/responses/roommateErrorResponse'
+      tags:
+      - roommate
+    get:
+      description: return a roommate
+      operationId: getRoommate
+      parameters:
+      - $ref: '#/definitions/UUID'
+        description: The id of the roommate for which the operation relates
+        in: path
+        name: id
+        required: true
+        x-go-name: Id
+      responses:
+        "200":
+          $ref: '#/responses/roommateResponse'
+        "404":
+          $ref: '#/responses/roommateErrorResponse'
+      tags:
+      - roommate
   /api/short-url?longUrl={url}:
     get:
       description: get a bitly short url
@@ -119,8 +538,68 @@ paths:
 produces:
 - application/json
 responses:
+  employmentErrorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  employmentErrorValidation:
+    description: Validation errors defined as an array of strings
+    schema:
+      $ref: '#/definitions/ValidationError'
+  employmentResponse:
+    description: A employment
+    schema:
+      $ref: '#/definitions/Dto'
+  listingErrorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  listingErrorValidation:
+    description: Validation errors defined as an array of strings
+    schema:
+      $ref: '#/definitions/ValidationError'
+  listingResponse:
+    description: A listing
+    schema:
+      $ref: '#/definitions/Dto'
   noContentResponse:
     description: No content is returned by this API endpoint
+  petErrorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  petErrorValidation:
+    description: Validation errors defined as an array of strings
+    schema:
+      $ref: '#/definitions/ValidationError'
+  petResponse:
+    description: A pet
+    schema:
+      $ref: '#/definitions/Dto'
+  referenceErrorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  referenceErrorValidation:
+    description: Validation errors defined as an array of strings
+    schema:
+      $ref: '#/definitions/ValidationError'
+  referenceResponse:
+    description: A reference
+    schema:
+      $ref: '#/definitions/Dto'
+  roommateErrorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  roommateErrorValidation:
+    description: Validation errors defined as an array of strings
+    schema:
+      $ref: '#/definitions/ValidationError'
+  roommateResponse:
+    description: A roommate
+    schema:
+      $ref: '#/definitions/Dto'
   shortUrlErrorResponse:
     description: Generic error message returned as a string
     schema:

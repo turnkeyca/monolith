@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -15,6 +14,11 @@ import (
 	"github.com/turnkeyca/monolith/auth"
 	"github.com/turnkeyca/monolith/bitly"
 	"github.com/turnkeyca/monolith/db"
+	"github.com/turnkeyca/monolith/employment"
+	"github.com/turnkeyca/monolith/listing"
+	"github.com/turnkeyca/monolith/pet"
+	"github.com/turnkeyca/monolith/reference"
+	"github.com/turnkeyca/monolith/roommate"
 	"github.com/turnkeyca/monolith/server"
 	"github.com/turnkeyca/monolith/shorturl"
 	"github.com/turnkeyca/monolith/user"
@@ -27,34 +31,6 @@ func configureDocRoutes(router *mux.Router) {
 	opts := middleware.RedocOpts{SpecURL: "./swagger.yml"}
 	getRouter.Handle("/docs", middleware.Redoc(opts, nil))
 	getRouter.Handle("/swagger.yml", http.FileServer(http.Dir("./")))
-}
-
-func configureShortUrlRoutes(router *mux.Router, logger *log.Logger, bitly *bitly.Client, authenticator *auth.Authenticator) {
-	shorturlHandler := shorturl.NewHandler(logger, bitly)
-	getRouter := router.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc("/api/short-url", shorturlHandler.HandleGetShortUrl)
-	getRouter.Use(authenticator.AuthenticateHttp)
-}
-
-func configureUserRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator) {
-	userHandler := user.NewHandler(logger, database)
-
-	getRouter := router.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", REGEX_UUID), userHandler.HandleGetUser)
-	getRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath)
-
-	postRouter := router.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/api/user", userHandler.HandlePostUser)
-	postRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody)
-
-	putRouter := router.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", REGEX_UUID), userHandler.HandlePutUser)
-	putRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody, userHandler.GetIdFromPath)
-
-	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", REGEX_UUID), userHandler.HandleDeleteUser)
-	deleteRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath)
-
 }
 
 func configureRoutes(logger *log.Logger) (*mux.Router, error) {
@@ -70,8 +46,13 @@ func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 	}
 
 	configureDocRoutes(router)
-	configureShortUrlRoutes(router, logger, bitly, authenticator)
-	configureUserRoutes(router, logger, database, authenticator)
+	shorturl.ConfigureShortUrlRoutes(router, logger, bitly, authenticator)
+	user.ConfigureUserRoutes(REGEX_UUID, router, logger, database, authenticator)
+	roommate.ConfigureRoommateRoutes(REGEX_UUID, router, logger, database, authenticator)
+	reference.ConfigureReferenceRoutes(REGEX_UUID, router, logger, database, authenticator)
+	pet.ConfigurePetRoutes(REGEX_UUID, router, logger, database, authenticator)
+	listing.ConfigureListingRoutes(REGEX_UUID, router, logger, database, authenticator)
+	employment.ConfigureEmploymentRoutes(REGEX_UUID, router, logger, database, authenticator)
 
 	return router, nil
 }
