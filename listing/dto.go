@@ -10,10 +10,10 @@ import (
 
 type Dto struct {
 	Id      uuid.UUID  `json:"id" db:"id"`
-	UserId  *uuid.UUID `json:"userId" db:"user_id"`
-	Name    string     `json:"name" db:"name"`
-	Address string     `json:"address" db:"address"`
-	Link    string     `json:"link" db:"link"`
+	UserId  *uuid.UUID `json:"userId" validator:"required" db:"user_id"`
+	Name    string     `json:"name" validator:"required" db:"name"`
+	Address string     `json:"address" validator:"required" db:"address"`
+	Link    string     `json:"link" validator:"required" db:"link"`
 }
 
 func New() *Dto {

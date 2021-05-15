@@ -10,7 +10,7 @@ import (
 
 type Dto struct {
 	Id     uuid.UUID  `json:"id" db:"id"`
-	UserId *uuid.UUID `json:"userId" db:"user_id"`
+	UserId *uuid.UUID `json:"userId" validator:"required" db:"user_id"`
 	Breed  string     `json:"breed" db:"breed"`
 	Weight float64    `json:"weight" db:"weight"`
 }
