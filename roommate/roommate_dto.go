@@ -1,4 +1,4 @@
-package user
+package roommate
 
 import (
 	"encoding/json"
@@ -10,22 +10,19 @@ import (
 
 type Dto struct {
 	Id                uuid.UUID  `json:"id" db:"id"`
-	UserId            *uuid.UUID `json:"userId" validator:"required" db:"user_id"`
-	Employer          string     `json:"employer" validator:"required" db:"employer"`
-	Occupation        string     `json:"occupation" validator:"required" db:"occupation"`
-	Duration          string     `json:"duration" validator:"required" db:"duration"`
+	UserId            *uuid.UUID `json:"userId" db:"user_id"`
+	FullName          string     `json:"fullName" validator:"required" db:"full_name"`
+	Email             string     `json:"email" db:"email"`
 	AdditionalDetails string     `json:"additionalDetails" db:"additional_details"`
-	AnnualSalary      float64    `json:"annualSalary" db:"annual_salary"`
 }
 
 func New() *Dto {
 	return &Dto{
 		Id:                uuid.New(),
 		UserId:            nil,
-		Occupation:        "",
-		Duration:          "",
+		FullName:          "",
+		Email:             "",
 		AdditionalDetails: "",
-		AnnualSalary:      0.00,
 	}
 }
 

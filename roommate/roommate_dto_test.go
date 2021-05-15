@@ -1,4 +1,4 @@
-package user
+package roommate
 
 import (
 	"testing"

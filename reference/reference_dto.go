@@ -1,4 +1,4 @@
-package user
+package reference
 
 import (
 	"encoding/json"
