@@ -21,20 +21,20 @@ type Dto struct {
 	UserType                  string    `json:"userType" validator:"required" db:"user_type"`
 	SendNotifications         bool      `json:"sendNotifications" validator:"required" db:"send_notifications"`
 	MovingReason              string    `json:"movingReason" db:"moving_reason"`
-	HasRoommates              bool      `json:"roommates" validator:"required" db:"has_roommates"`
-	HasSecurityDeposit        bool      `json:"securityDeposit" validator:"required" db:"has_security_deposit"`
-	IsSmoker                  bool      `json:"smoker" validator:"required" db:"is_smoker"`
-	HasPreviousLawsuit        bool      `json:"lawsuit" validator:"required" db:"has_prev_lawsuit"`
-	HasPreviousEviction       bool      `json:"evicted" validator:"required" db:"has_prev_eviction"`
-	CanCreditCheck            bool      `json:"creditCheck" validator:"required" db:"can_credit_check"`
-	HasPets                   bool      `json:"pets" validator:"required" db:"has_pets"`
+	HasRoommates              bool      `json:"roommates" db:"has_roommates"`
+	HasSecurityDeposit        bool      `json:"securityDeposit" db:"has_security_deposit"`
+	IsSmoker                  bool      `json:"smoker" db:"is_smoker"`
+	HasPreviousLawsuit        bool      `json:"lawsuit" db:"has_prev_lawsuit"`
+	HasPreviousEviction       bool      `json:"evicted" db:"has_prev_eviction"`
+	CanCreditCheck            bool      `json:"creditCheck" db:"can_credit_check"`
+	HasPets                   bool      `json:"pets" db:"has_pets"`
 	AdditionalDetails         string    `json:"additionalDetails" db:"additional_details"`
 	MoveInDate                string    `json:"moveInDate" db:"move_in_date"`
 	MoveOutDate               string    `json:"moveOutDate" db:"move_out_date"`
 	PropertyManagementCompany string    `json:"propertyManagementCompany" db:"property_management_company"`
 	AdditionalDetailsLease    string    `json:"additionalDetailsLease" db:"additional_details_lease"`
-	MonthlyBudgetMin          float64   `json:"monthlyBudgetMin" validator:"required" db:"monthly_budget_min"`
-	MonthlyBudgetMax          float64   `json:"monthlyBudgetMax" validator:"required" db:"monthly_budget_max"`
+	MonthlyBudgetMin          float64   `json:"monthlyBudgetMin" db:"monthly_budget_min"`
+	MonthlyBudgetMax          float64   `json:"monthlyBudgetMax" db:"monthly_budget_max"`
 }
 
 func New() *Dto {
