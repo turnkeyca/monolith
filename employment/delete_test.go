@@ -22,7 +22,7 @@ func TestDelete(t *testing.T) {
 	ctx := context.WithValue(in.Context(), KeyId{}, id)
 	in = in.WithContext(ctx)
 	logger := log.New(os.Stdout, "", log.LstdFlags)
-	db, _, _ := db.New(logger)
+	db, _ := db.New(logger)
 	handler := NewHandler(logger, db)
 	handler.HandleDeleteEmployment(out, in)
 	testQuery := db.GetNextTestQuery()

@@ -22,7 +22,7 @@ func TestPost(t *testing.T) {
 	ctx := context.WithValue(in.Context(), KeyBody{}, Dto{Id: id})
 	in = in.WithContext(ctx)
 	logger := log.New(os.Stdout, "", log.LstdFlags)
-	db, _, _ := db.New(logger)
+	db, _ := db.New(logger)
 	handler := NewHandler(logger, db)
 	handler.HandlePostEmployment(out, in)
 	testQuery := db.GetNextTestQuery()

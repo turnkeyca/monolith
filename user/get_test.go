@@ -22,7 +22,7 @@ func TestGet(t *testing.T) {
 	ctx := context.WithValue(in.Context(), KeyId{}, id)
 	in = in.WithContext(ctx)
 	logger := log.New(os.Stdout, "", log.LstdFlags)
-	db, _, _ := db.New(logger)
+	db, _ := db.New(logger)
 	dto := []interface{}{Dto{Id: id, FullName: "billy"}}
 	db.SetNextTestReturn(dto)
 	handler := NewHandler(logger, db)

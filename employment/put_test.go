@@ -23,7 +23,7 @@ func TestPut(t *testing.T) {
 	ctx = context.WithValue(ctx, KeyId{}, id)
 	in = in.WithContext(ctx)
 	logger := log.New(os.Stdout, "", log.LstdFlags)
-	db, _, _ := db.New(logger)
+	db, _ := db.New(logger)
 	handler := NewHandler(logger, db)
 	handler.HandlePutEmployment(out, in)
 	testQuery := db.GetNextTestQuery()

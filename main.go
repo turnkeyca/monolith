@@ -37,12 +37,9 @@ func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 	router := mux.NewRouter()
 	authenticator := auth.New(logger)
 	bitly := bitly.NewClient(logger)
-	database, errOpen, errPing := db.New(logger)
-	if errOpen != nil {
-		return nil, errOpen
-	}
-	if errPing != nil {
-		return nil, errPing
+	database, err := db.New(logger)
+	if err != nil {
+		logger.Fatalf("failed to create database %#v\n", err)
 	}
 
 	configureDocRoutes(router)

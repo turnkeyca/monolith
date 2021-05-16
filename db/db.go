@@ -13,18 +13,24 @@ type Database struct {
 	*sqlx.DB
 }
 
-func New(logger *log.Logger) (*Database, error, error) {
+func New(logger *log.Logger) (*Database, error) {
 	if os.Getenv("TEST") == "true" {
 		return &Database{
 			logger: logger,
-		}, nil, nil
+		}, nil
 	}
 	db, errOpen := sqlx.Open(os.Getenv("DB_DRIVER"), os.Getenv("DB_CONN"))
+	if errOpen != nil {
+		return nil, errOpen
+	}
 	errPing := db.Ping()
+	if errPing != nil {
+		return nil, errPing
+	}
 	return &Database{
 		logger: logger,
 		DB:     db,
-	}, errOpen, errPing
+	}, nil
 }
 
 func (db *Database) Query(query string, parameters ...interface{}) ([]interface{}, error) {
