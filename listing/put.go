@@ -18,9 +18,9 @@ import (
 // Update handles PUT requests to update listings
 func (h *Handler) HandlePutListing(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value(KeyId{}).(uuid.UUID)
-	dto := r.Context().Value(KeyBody{}).(*Dto)
+	dto := r.Context().Value(KeyBody{}).(Dto)
 	dto.Id = id
-	err := h.UpdateListing(dto)
+	err := h.UpdateListing(&dto)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error updating listing: %#v\n", err), http.StatusInternalServerError)
 		return

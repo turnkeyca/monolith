@@ -3,6 +3,7 @@ package pet
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/google/uuid"
 )
@@ -18,9 +19,9 @@ import (
 // Update handles PUT requests to update pets
 func (h *Handler) HandlePutPet(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value(KeyId{}).(uuid.UUID)
-	dto := r.Context().Value(KeyBody{}).(*Dto)
+	dto := r.Context().Value(KeyBody{}).(Dto)
 	dto.Id = id
-	err := h.UpdatePet(dto)
+	err := h.UpdatePet(&dto)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error updating pet: %#v\n", err), http.StatusInternalServerError)
 		return
@@ -30,6 +31,6 @@ func (h *Handler) HandlePutPet(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) UpdatePet(dto *Dto) error {
-	err := h.db.Run("update pet set id=$1, user_id=$2, breed=$3, weight=$4 where id=$1;", dto.Id.String(), dto.UserId.String(), dto.Breed, dto.Weight)
+	err := h.db.Run("update pet set id=$1, user_id=$2, breed=$3, weight=$4 where id=$1;", dto.Id.String(), dto.UserId.String(), dto.Breed, strconv.FormatFloat(dto.Weight, 'f', 2, 64))
 	return err
 }

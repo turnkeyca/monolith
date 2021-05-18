@@ -18,9 +18,9 @@ import (
 // Update handles PUT requests to update roommates
 func (h *Handler) HandlePutRoommate(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value(KeyId{}).(uuid.UUID)
-	dto := r.Context().Value(KeyBody{}).(*Dto)
+	dto := r.Context().Value(KeyBody{}).(Dto)
 	dto.Id = id
-	err := h.UpdateRoommate(dto)
+	err := h.UpdateRoommate(&dto)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error updating roommate: %#v\n", err), http.StatusInternalServerError)
 		return

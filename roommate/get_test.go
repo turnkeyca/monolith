@@ -28,5 +28,5 @@ func TestGet(t *testing.T) {
 	handler := NewHandler(logger, db)
 	handler.HandleGetRoommate(out, in)
 	assert.Equal(t, http.StatusOK, out.Code, "status code")
-	assert.Equal(t, fmt.Sprintf("{\"id\":\"%s\",\"fullName\":\"billy\"}\n", id), out.Body.String(), "body")
+	assert.Equal(t, fmt.Sprintf("{\"id\":\"%s\",\"fullName\":\"billy\",\"email\":\"\",\"password\":\"\",\"phoneNumber\":\"\",\"nickname\":\"\",\"bio\":\"\",\"city\":\"\",\"province\":\"\",\"userType\":\"\",\"sendNotifications\":false,\"movingReason\":\"\",\"roommates\":false,\"securityDeposit\":false,\"smoker\":false,\"lawsuit\":false,\"evicted\":false,\"creditCheck\":false,\"pets\":false,\"additionalDetails\":\"\",\"moveInDate\":\"\",\"moveOutDate\":\"\",\"propertyManagementCompany\":\"\",\"additionalDetailsLease\":\"\",\"monthlyBudgetMin\":0,\"monthlyBudgetMax\":0}\n", id), out.Body.String(), "body")
 }

@@ -17,8 +17,8 @@ import (
 
 // Create handles POST requests to add new products
 func (h *Handler) HandlePostReference(w http.ResponseWriter, r *http.Request) {
-	dto := r.Context().Value(KeyBody{}).(*Dto)
-	err := h.CreateReference(dto)
+	dto := r.Context().Value(KeyBody{}).(Dto)
+	err := h.CreateReference(&dto)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error creating reference: %#v\n", err), http.StatusInternalServerError)
 		return

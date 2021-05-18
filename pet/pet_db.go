@@ -1,6 +1,8 @@
 package pet
 
 import (
+	"os"
+
 	"github.com/google/uuid"
 	"github.com/turnkeyca/monolith/db"
 )
@@ -15,8 +17,16 @@ func NewPetDatabase(database *db.Database) *PetDatabase {
 	}
 }
 
-func (udb *PetDatabase) SelectPet(id uuid.UUID) ([]Dto, error) {
+func (pdb *PetDatabase) SelectPet(id uuid.UUID) ([]Dto, error) {
+	if os.Getenv("TEST") == "true" {
+		pdb.PushQuery("select * from employments where id = $1;", id.String())
+		dtos := []Dto{}
+		for _, dto := range pdb.GetNextTestReturn() {
+			dtos = append(dtos, dto.(Dto))
+		}
+		return dtos, pdb.GetNextTestError()
+	}
 	pets := []Dto{}
-	err := udb.Select(&pets, "select * from pets where id = $1;", id.String())
+	err := pdb.Select(&pets, "select * from pets where id = $1;", id.String())
 	return pets, err
 }

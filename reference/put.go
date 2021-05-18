@@ -18,9 +18,9 @@ import (
 // Update handles PUT requests to update references
 func (h *Handler) HandlePutReference(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value(KeyId{}).(uuid.UUID)
-	dto := r.Context().Value(KeyBody{}).(*Dto)
+	dto := r.Context().Value(KeyBody{}).(Dto)
 	dto.Id = id
-	err := h.UpdateReference(dto)
+	err := h.UpdateReference(&dto)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error updating reference: %#v\n", err), http.StatusInternalServerError)
 		return

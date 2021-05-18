@@ -2,7 +2,6 @@ package reference
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -17,15 +16,14 @@ import (
 func TestPost(t *testing.T) {
 	os.Setenv("TEST", "true")
 	id := uuid.MustParse("ddeff7cc-da4c-4a26-b1fc-b023553abe82")
+	userId := uuid.MustParse("00b911af-6b87-4e68-9493-77a79bf8ccf2")
 	in := httptest.NewRequest(http.MethodPost, "/api/reference", nil)
 	out := httptest.NewRecorder()
-	ctx := context.WithValue(in.Context(), KeyBody{}, Dto{Id: id})
+	ctx := context.WithValue(in.Context(), KeyBody{}, Dto{Id: id, UserId: &userId})
 	in = in.WithContext(ctx)
 	logger := log.New(os.Stdout, "", log.LstdFlags)
 	db, _ := db.New(logger)
 	handler := NewHandler(logger, db)
 	handler.HandlePostReference(out, in)
-	testQuery := db.GetNextTestQuery()
 	assert.Equal(t, http.StatusNoContent, out.Code, "status code")
-	assert.Equal(t, fmt.Sprintf("insert into references (id) values (%s);", id), testQuery, "body")
 }

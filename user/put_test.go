@@ -28,5 +28,5 @@ func TestPut(t *testing.T) {
 	handler.HandlePutUser(out, in)
 	testQuery := db.GetNextTestQuery()
 	assert.Equal(t, http.StatusNoContent, out.Code, "status code")
-	assert.Equal(t, fmt.Sprintf("update users set id=%s where id=%s;", id, id), testQuery, "body")
+	assert.Equal(t, fmt.Sprintf("update user set id=%s, full_name=, email=, password=, phone_number=, nickname=, bio=, city=, province=, user_type=, send_notifications=, moving_reason=, has_roommates=, has_security_deposit=, is_smoker=, has_prev_lawsuit=, has_prev_eviction=, can_credit_check=, has_pets=, additional_details=0, move_in_date=, move_out_date=, property_management_company=, additional_details_lease=, monthly_budget_min=, monthly_budget_max= where id=%s;", id, id), testQuery, "body")
 }

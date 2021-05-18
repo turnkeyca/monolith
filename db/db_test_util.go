@@ -20,7 +20,7 @@ func (db *Database) SetNextTestReturn(next []interface{}) {
 	TestReturn = append(TestReturn, next)
 }
 
-func (db *Database) getNextTestReturn() []interface{} {
+func (db *Database) GetNextTestReturn() []interface{} {
 	if os.Getenv("TEST") != "true" {
 		panic("not implemented for non tests!")
 	}
@@ -42,7 +42,7 @@ func (db *Database) SetNextTestError(next error) {
 	TestError = append(TestError, next)
 }
 
-func (db *Database) getNextTestError() error {
+func (db *Database) GetNextTestError() error {
 	if os.Getenv("TEST") != "true" {
 		panic("not implemented for non tests!")
 	}
@@ -66,7 +66,7 @@ func (db *Database) GetNextTestQuery() string {
 	return next
 }
 
-func pushQuery(query string, parameters ...interface{}) {
+func (db *Database) PushQuery(query string, parameters ...interface{}) {
 	if os.Getenv("TEST") != "true" {
 		panic("not implemented for non tests!")
 	}

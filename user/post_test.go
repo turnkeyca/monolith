@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -25,7 +24,5 @@ func TestPost(t *testing.T) {
 	db, _ := db.New(logger)
 	handler := NewHandler(logger, db)
 	handler.HandlePostUser(out, in)
-	testQuery := db.GetNextTestQuery()
 	assert.Equal(t, http.StatusNoContent, out.Code, "status code")
-	assert.Equal(t, fmt.Sprintf("insert into users (id) values (%s);", id), testQuery, "body")
 }
