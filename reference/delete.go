@@ -28,6 +28,6 @@ func (h *Handler) HandleDeleteReference(w http.ResponseWriter, r *http.Request) 
 }
 
 func (h *Handler) DeleteReference(id uuid.UUID) error {
-	err := h.db.Run("delete from references where id = $1;", id.String())
+	err := h.db.Run("delete from reference where id = $1;", id.String())
 	return err
 }

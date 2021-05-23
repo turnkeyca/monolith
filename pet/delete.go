@@ -28,6 +28,6 @@ func (h *Handler) HandleDeletePet(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) DeletePet(id uuid.UUID) error {
-	err := h.db.Run("delete from pets where id = $1;", id.String())
+	err := h.db.Run("delete from pet where id = $1;", id.String())
 	return err
 }

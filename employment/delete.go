@@ -28,6 +28,6 @@ func (h *Handler) HandleDeleteEmployment(w http.ResponseWriter, r *http.Request)
 }
 
 func (h *Handler) DeleteEmployment(id uuid.UUID) error {
-	err := h.db.Run("delete from employments where id = $1;", id.String())
+	err := h.db.Run("delete from employment where id = $1;", id.String())
 	return err
 }

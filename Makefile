@@ -1,4 +1,4 @@
-.PHONY: db-local-check db-local db-local-cmd db-local-file
+.PHONY: db-local-check db-local db-local-cmd db-local-file db-local-up db-local-down
 
 swagger-check :
 	which swagger || (echo "need to install swagger!" && exit 1)
@@ -30,4 +30,10 @@ db-local : db-local-check
 	sudo docker run --rm -ti --network host -e POSTGRES_PASSWORD=password postgres
 
 db-local-file : db-local-check
-	psql -h localhost -U postgres -w turnkey -f $(FILE)
+	psql -h localhost -U postgres -w turnkey -f ./db/migrations/$(FILE)
+
+db-local-up : 
+	./db-run-all.sh up
+
+db-local-down : 
+	./db-run-all.sh down

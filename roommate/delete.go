@@ -28,6 +28,6 @@ func (h *Handler) HandleDeleteRoommate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) DeleteRoommate(id uuid.UUID) error {
-	err := h.db.Run("delete from roommates where id = $1;", id.String())
+	err := h.db.Run("delete from roommate where id = $1;", id.String())
 	return err
 }

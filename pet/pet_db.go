@@ -19,7 +19,7 @@ func NewPetDatabase(database *db.Database) *PetDatabase {
 
 func (pdb *PetDatabase) SelectPet(id uuid.UUID) ([]Dto, error) {
 	if os.Getenv("TEST") == "true" {
-		pdb.PushQuery("select * from employments where id = $1;", id.String())
+		pdb.PushQuery("select * from pet where id = $1;", id.String())
 		dtos := []Dto{}
 		for _, dto := range pdb.GetNextTestReturn() {
 			dtos = append(dtos, dto.(Dto))
@@ -27,6 +27,6 @@ func (pdb *PetDatabase) SelectPet(id uuid.UUID) ([]Dto, error) {
 		return dtos, pdb.GetNextTestError()
 	}
 	pets := []Dto{}
-	err := pdb.Select(&pets, "select * from pets where id = $1;", id.String())
+	err := pdb.Select(&pets, "select * from pet where id = $1;", id.String())
 	return pets, err
 }

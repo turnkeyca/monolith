@@ -3,7 +3,6 @@ package pet
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/google/uuid"
 )
@@ -18,8 +17,8 @@ import (
 
 // Create handles POST requests to add new products
 func (h *Handler) HandlePostPet(w http.ResponseWriter, r *http.Request) {
-	dto := r.Context().Value(KeyBody{}).(Dto)
-	err := h.CreatePet(&dto)
+	dto := r.Context().Value(KeyBody{}).(*Dto)
+	err := h.CreatePet(dto)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error creating pet: %#v\n", err), http.StatusInternalServerError)
 		return
@@ -30,6 +29,6 @@ func (h *Handler) HandlePostPet(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) CreatePet(dto *Dto) error {
 	dto.Id = uuid.New()
-	err := h.db.Run("insert into pet (id, user_id, breed, weight) values ($1, $2, $3, $4);", dto.Id.String(), dto.UserId.String(), dto.Breed, strconv.FormatFloat(dto.Weight, 'f', 2, 64))
+	err := h.db.Run("insert into pet (id, user_id, breed, weight) values ($1, $2, $3, $4);", dto.Id, dto.UserId, dto.Breed, dto.Weight)
 	return err
 }

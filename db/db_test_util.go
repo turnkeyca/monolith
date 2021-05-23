@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"strconv"
 )
 
 var TestReturn [][]interface{}
@@ -76,7 +77,22 @@ func (db *Database) PushQuery(query string, parameters ...interface{}) {
 	next := query
 	for i, param := range parameters {
 		re := regexp.MustCompile(fmt.Sprintf(`\$%d`, i+1))
-		next = re.ReplaceAllString(next, param.(string))
+		next = re.ReplaceAllString(next, getString(param))
 	}
 	TestQuery = append(TestQuery, next)
+}
+
+func getString(obj interface{}) string {
+	switch v := obj.(type) {
+	case string:
+		return v
+	case int:
+		return strconv.Itoa(v)
+	case float64:
+		return strconv.FormatFloat(v, 'f', 2, 64)
+	case bool:
+		return strconv.FormatBool(v)
+	default:
+		return obj.(string)
+	}
 }

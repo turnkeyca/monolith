@@ -20,10 +20,10 @@ create table users (
 	has_pets boolean,
 	additional_details varchar(64),
 	move_in_date varchar(64),
-	moveOutDate varchar(64),
+	move_out_date varchar(64),
 	property_management_company varchar(64),
 	additional_details_lease varchar(64),
-	monthly_budget_min numeric(10, 9) not null,
-	monthly_budget_max numeric(10, 9) not null
+	monthly_budget_min numeric(10, 2) not null,
+	monthly_budget_max numeric(10, 2) not null
 );
 
