@@ -29,7 +29,8 @@ definitions:
         type: string
         x-go-name: FullName
       id:
-        $ref: '#/definitions/UUID'
+        type: string
+        x-go-name: Id
       lawsuit:
         type: boolean
         x-go-name: HasPreviousLawsuit
@@ -66,8 +67,7 @@ definitions:
         type: string
         x-go-name: PropertyManagementCompany
       province:
-        type: string
-        x-go-name: Province
+        $ref: '#/definitions/ProvinceType'
       roommates:
         type: boolean
         x-go-name: HasRoommates
@@ -81,8 +81,7 @@ definitions:
         type: boolean
         x-go-name: IsSmoker
       userType:
-        type: string
-        x-go-name: UserType
+        $ref: '#/definitions/UserType'
     type: object
     x-go-package: github.com/turnkeyca/monolith/user
   GenericError:
@@ -91,6 +90,9 @@ definitions:
         type: string
         x-go-name: Message
     type: object
+    x-go-package: github.com/turnkeyca/monolith/user
+  ProvinceType:
+    type: string
     x-go-package: github.com/turnkeyca/monolith/user
   UUID:
     description: |-
@@ -101,6 +103,9 @@ definitions:
       type: integer
     type: array
     x-go-package: github.com/google/uuid
+  UserType:
+    type: string
+    x-go-package: github.com/turnkeyca/monolith/user
   ValidationError:
     properties:
       messages:
