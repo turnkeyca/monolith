@@ -5,25 +5,14 @@ import (
 	"io"
 
 	"github.com/go-playground/validator"
-	"github.com/google/uuid"
 )
 
 type Dto struct {
-	Id                uuid.UUID  `json:"id" db:"id"`
-	UserId            *uuid.UUID `json:"userId" validate:"required" db:"user_id"`
-	FullName          string     `json:"fullName" validate:"required" db:"full_name"`
-	Email             string     `json:"email" db:"email"`
-	AdditionalDetails string     `json:"additionalDetails" db:"additional_details"`
-}
-
-func New() *Dto {
-	return &Dto{
-		Id:                uuid.New(),
-		UserId:            nil,
-		FullName:          "",
-		Email:             "",
-		AdditionalDetails: "",
-	}
+	Id                string `json:"id" validate:"omitempty,uuid" db:"id"`
+	UserId            string `json:"userId" validate:"required,uuid" db:"user_id"`
+	FullName          string `json:"fullName" validate:"required" db:"full_name"`
+	Email             string `json:"email" validate:"omitempty,email" db:"email"`
+	AdditionalDetails string `json:"additionalDetails" db:"additional_details"`
 }
 
 func Read(r io.Reader) (*Dto, error) {
@@ -32,11 +21,11 @@ func Read(r io.Reader) (*Dto, error) {
 	return &d, err
 }
 
+func (d *Dto) Write(w io.Writer) error {
+	return json.NewEncoder(w).Encode(d)
+}
+
 func (d *Dto) Validate() error {
 	v := validator.New()
 	return v.Struct(d)
-}
-
-func (d *Dto) Write(w io.Writer) error {
-	return json.NewEncoder(w).Encode(d)
 }

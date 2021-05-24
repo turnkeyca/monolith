@@ -28,7 +28,7 @@ func (h *Handler) HandlePostEmployment(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) CreateEmployment(dto *Dto) error {
-	dto.Id = uuid.New()
+	dto.Id = uuid.New().String()
 	err := h.db.Run("insert into employment (id, user_id, employer, occupation, duration, additional_details, annual_salary) values ($1, $2, $3, $4, $5, $6, $7);", dto.Id, dto.UserId, dto.Employer, dto.Occupation, dto.Duration, dto.AdditionalDetails, dto.AnnualSalary)
 	return err
 }

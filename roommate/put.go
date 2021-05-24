@@ -3,8 +3,6 @@ package roommate
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/google/uuid"
 )
 
 // swagger:route PUT /api/roommate roommate updateRoommate
@@ -17,7 +15,7 @@ import (
 
 // Update handles PUT requests to update roommates
 func (h *Handler) HandlePutRoommate(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value(KeyId{}).(uuid.UUID)
+	id := r.Context().Value(KeyId{}).(string)
 	dto := r.Context().Value(KeyBody{}).(*Dto)
 	dto.Id = id
 	err := h.UpdateRoommate(dto)

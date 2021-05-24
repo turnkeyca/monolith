@@ -3,8 +3,6 @@ package employment
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/google/uuid"
 )
 
 // swagger:route PUT /api/employment employment updateEmployment
@@ -17,7 +15,7 @@ import (
 
 // Update handles PUT requests to update employments
 func (h *Handler) HandlePutEmployment(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value(KeyId{}).(uuid.UUID)
+	id := r.Context().Value(KeyId{}).(string)
 	dto := r.Context().Value(KeyBody{}).(*Dto)
 	dto.Id = id
 	err := h.UpdateEmployment(dto)

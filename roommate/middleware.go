@@ -11,7 +11,7 @@ import (
 
 func (h *Handler) GetIdFromPath(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		id := uuid.MustParse(mux.Vars(r)["id"])
+		id := uuid.MustParse(mux.Vars(r)["id"]).String()
 		ctx := context.WithValue(r.Context(), KeyId{}, id)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
