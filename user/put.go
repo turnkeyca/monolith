@@ -3,8 +3,6 @@ package user
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/google/uuid"
 )
 
 // swagger:route PUT /api/user user updateUser
@@ -17,7 +15,7 @@ import (
 
 // Update handles PUT requests to update users
 func (h *Handler) HandlePutUser(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value(KeyId{}).(uuid.UUID)
+	id := r.Context().Value(KeyId{}).(string)
 	dto := r.Context().Value(KeyBody{}).(*Dto)
 	dto.Id = id
 	err := h.UpdateUser(dto)

@@ -11,10 +11,10 @@ import (
 type Dto struct {
 	Id                uuid.UUID  `json:"id" db:"id"`
 	UserId            *uuid.UUID `json:"userId" db:"user_id"`
-	FullName          string     `json:"fullName" validator:"required" db:"full_name"`
+	FullName          string     `json:"fullName" validate:"required" db:"full_name"`
 	Email             string     `json:"email" db:"email"`
 	PhoneNumber       string     `json:"phoneNumber" db:"phone_number"`
-	Relationship      string     `json:"relationship" validator:"required" db:"relationship"`
+	Relationship      string     `json:"relationship" validate:"required" db:"relationship"`
 	AdditionalDetails string     `json:"additionalDetails" db:"additional_details"`
 }
 

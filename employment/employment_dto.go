@@ -10,10 +10,10 @@ import (
 
 type Dto struct {
 	Id                uuid.UUID  `json:"id" db:"id"`
-	UserId            *uuid.UUID `json:"userId" validator:"required" db:"user_id"`
-	Employer          string     `json:"employer" validator:"required" db:"employer"`
-	Occupation        string     `json:"occupation" validator:"required" db:"occupation"`
-	Duration          string     `json:"duration" validator:"required" db:"duration"`
+	UserId            *uuid.UUID `json:"userId" validate:"required" db:"user_id"`
+	Employer          string     `json:"employer" validate:"required" db:"employer"`
+	Occupation        string     `json:"occupation" validate:"required" db:"occupation"`
+	Duration          string     `json:"duration" validate:"required" db:"duration"`
 	AdditionalDetails string     `json:"additionalDetails" db:"additional_details"`
 	AnnualSalary      float64    `json:"annualSalary" db:"annual_salary"`
 }

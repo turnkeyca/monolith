@@ -10,8 +10,8 @@ import (
 
 type Dto struct {
 	Id                uuid.UUID  `json:"id" db:"id"`
-	UserId            *uuid.UUID `json:"userId" validator:"required" db:"user_id"`
-	FullName          string     `json:"fullName" validator:"required" db:"full_name"`
+	UserId            *uuid.UUID `json:"userId" validate:"required" db:"user_id"`
+	FullName          string     `json:"fullName" validate:"required" db:"full_name"`
 	Email             string     `json:"email" db:"email"`
 	AdditionalDetails string     `json:"additionalDetails" db:"additional_details"`
 }

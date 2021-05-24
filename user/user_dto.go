@@ -3,69 +3,68 @@ package user
 import (
 	"encoding/json"
 	"io"
+	"log"
 
 	"github.com/go-playground/validator"
-	"github.com/google/uuid"
+	"github.com/turnkeyca/monolith/util"
 )
 
-type Dto struct {
-	Id                        uuid.UUID `json:"id" db:"id"`
-	FullName                  string    `json:"fullName" validator:"required" db:"full_name"`
-	Email                     string    `json:"email" validator:"required" db:"email"`
-	Password                  string    `json:"password" db:"password"`
-	PhoneNumber               string    `json:"phoneNumber" db:"phone_number"`
-	Nickname                  string    `json:"nickname" validator:"required" db:"nickname"`
-	Bio                       string    `json:"bio" validator:"required" db:"bio"`
-	City                      string    `json:"city" validator:"required" db:"city"`
-	Province                  string    `json:"province" validator:"required" db:"province"`
-	UserType                  string    `json:"userType" validator:"required" db:"user_type"`
-	SendNotifications         bool      `json:"sendNotifications" validator:"required" db:"send_notifications"`
-	MovingReason              string    `json:"movingReason" db:"moving_reason"`
-	HasRoommates              bool      `json:"roommates" db:"has_roommates"`
-	HasSecurityDeposit        bool      `json:"securityDeposit" db:"has_security_deposit"`
-	IsSmoker                  bool      `json:"smoker" db:"is_smoker"`
-	HasPreviousLawsuit        bool      `json:"lawsuit" db:"has_prev_lawsuit"`
-	HasPreviousEviction       bool      `json:"evicted" db:"has_prev_eviction"`
-	CanCreditCheck            bool      `json:"creditCheck" db:"can_credit_check"`
-	HasPets                   bool      `json:"pets" db:"has_pets"`
-	AdditionalDetails         string    `json:"additionalDetails" db:"additional_details"`
-	MoveInDate                string    `json:"moveInDate" db:"move_in_date"`
-	MoveOutDate               string    `json:"moveOutDate" db:"move_out_date"`
-	PropertyManagementCompany string    `json:"propertyManagementCompany" db:"property_management_company"`
-	AdditionalDetailsLease    string    `json:"additionalDetailsLease" db:"additional_details_lease"`
-	MonthlyBudgetMin          float64   `json:"monthlyBudgetMin" db:"monthly_budget_min"`
-	MonthlyBudgetMax          float64   `json:"monthlyBudgetMax" db:"monthly_budget_max"`
-}
+type UserType string
 
-func New() *Dto {
-	return &Dto{
-		Id:                        uuid.New(),
-		FullName:                  "",
-		Email:                     "",
-		Password:                  "",
-		PhoneNumber:               "",
-		Nickname:                  "",
-		Bio:                       "",
-		City:                      "",
-		Province:                  "",
-		UserType:                  "",
-		SendNotifications:         false,
-		MovingReason:              "",
-		HasRoommates:              false,
-		HasSecurityDeposit:        false,
-		IsSmoker:                  false,
-		HasPreviousLawsuit:        false,
-		HasPreviousEviction:       false,
-		CanCreditCheck:            false,
-		HasPets:                   false,
-		AdditionalDetails:         "",
-		MoveInDate:                "",
-		MoveOutDate:               "",
-		PropertyManagementCompany: "",
-		AdditionalDetailsLease:    "",
-		MonthlyBudgetMin:          0.00,
-		MonthlyBudgetMax:          0.00,
-	}
+const (
+	RENTER   = "renter"
+	LANDLORD = "landlord"
+)
+
+var AllUserTypes []UserType = []UserType{RENTER, LANDLORD}
+
+type ProvinceType string
+
+const (
+	YUKON                 = "YK"
+	NORTHWEST_TERRITORIES = "NW"
+	NUNAVUT               = "NU"
+	BRITISH_COLUMBIA      = "BC"
+	ALBERTA               = "AB"
+	SASKATCHEWAN          = "SK"
+	MANITOBA              = "MB"
+	ONTARIO               = "ON"
+	QUEBEC                = "QC"
+	NEWFOUNDLAND_LABRADOR = "NL"
+	NEW_BRUNSWICK         = "NB"
+	NOVA_SCOTIA           = "NS"
+	PRINCE_EDWARD_ISLAND  = "PE"
+)
+
+var AllProvinceTypes []ProvinceType = []ProvinceType{YUKON, NORTHWEST_TERRITORIES, NUNAVUT, BRITISH_COLUMBIA, ALBERTA, SASKATCHEWAN, MANITOBA, ONTARIO, QUEBEC, NEWFOUNDLAND_LABRADOR, NEW_BRUNSWICK, NOVA_SCOTIA, PRINCE_EDWARD_ISLAND}
+
+type Dto struct {
+	Id                        string       `json:"id" validate:"omitempty,uuid" db:"id"`
+	FullName                  string       `json:"fullName" validate:"required" db:"full_name"`
+	Email                     string       `json:"email" validate:"required,email" db:"email"`
+	Password                  string       `json:"password" validate:"required" db:"password"`
+	PhoneNumber               string       `json:"phoneNumber" db:"phone_number"`
+	Nickname                  string       `json:"nickname" validate:"required" db:"nickname"`
+	Bio                       string       `json:"bio" db:"bio"`
+	City                      string       `json:"city" validate:"required" db:"city"`
+	Province                  ProvinceType `json:"province" validate:"required,provinceType" db:"province"`
+	UserType                  UserType     `json:"userType" validate:"required,userType" db:"user_type"`
+	SendNotifications         bool         `json:"sendNotifications" validate:"required" db:"send_notifications"`
+	MovingReason              string       `json:"movingReason" validate:"renter,renterRequired" db:"moving_reason"`
+	HasRoommates              bool         `json:"roommates" validate:"renter,renterRequired" db:"has_roommates"`
+	HasSecurityDeposit        bool         `json:"securityDeposit" validate:"renter,renterRequired" db:"has_security_deposit"`
+	IsSmoker                  bool         `json:"smoker" validate:"renter,renterRequired" db:"is_smoker"`
+	HasPreviousLawsuit        bool         `json:"lawsuit" validate:"renter,renterRequired" db:"has_prev_lawsuit"`
+	HasPreviousEviction       bool         `json:"evicted" validate:"renter,renterRequired" db:"has_prev_eviction"`
+	CanCreditCheck            bool         `json:"creditCheck" validate:"renter,renterRequired" db:"can_credit_check"`
+	HasPets                   bool         `json:"pets" validate:"renter,renterRequired" db:"has_pets"`
+	AdditionalDetails         string       `json:"additionalDetails" validate:"renter" db:"additional_details"`
+	MoveInDate                string       `json:"moveInDate" validate:"renter,renterRequired" db:"move_in_date"`
+	MoveOutDate               string       `json:"moveOutDate" validate:"renter,renterRequired" db:"move_out_date"`
+	PropertyManagementCompany string       `json:"propertyManagementCompany" validate:"landlord" db:"property_management_company"`
+	AdditionalDetailsLease    string       `json:"additionalDetailsLease" validate:"renter" db:"additional_details_lease"`
+	MonthlyBudgetMin          float64      `json:"monthlyBudgetMin" validate:"renter,renterRequired" db:"monthly_budget_min"`
+	MonthlyBudgetMax          float64      `json:"monthlyBudgetMax" validate:"renter,renterRequired" db:"monthly_budget_max"`
 }
 
 func Read(r io.Reader) (*Dto, error) {
@@ -74,11 +73,53 @@ func Read(r io.Reader) (*Dto, error) {
 	return &d, err
 }
 
+func (d *Dto) Write(w io.Writer) error {
+	return json.NewEncoder(w).Encode(d)
+}
+
 func (d *Dto) Validate() error {
 	v := validator.New()
+	v.RegisterValidation("renterRequired", valRenterRequired)
+	v.RegisterValidation("renter", valRenter)
+	v.RegisterValidation("landlord", valLandlord)
+	v.RegisterValidation("userType", valUserType)
+	v.RegisterValidation("provinceType", valProvinceType)
 	return v.Struct(d)
 }
 
-func (d *Dto) Write(w io.Writer) error {
-	return json.NewEncoder(w).Encode(d)
+func valRenterRequired(fl validator.FieldLevel) bool {
+	d := fl.Parent().Interface().(*Dto)
+	if d.UserType == RENTER {
+		return fl.Field().String() != ""
+	}
+	return true
+}
+
+func valRenter(fl validator.FieldLevel) bool {
+	d := fl.Parent().Interface().(*Dto)
+	if d.UserType != RENTER {
+		log.Println(fl.Field())
+		return fl.Field().IsZero()
+	}
+	return true
+}
+
+func valLandlord(fl validator.FieldLevel) bool {
+	d := fl.Parent().Interface().(*Dto)
+	if d.UserType != LANDLORD {
+		return fl.Field().IsZero()
+	}
+	return true
+}
+
+func valUserType(fl validator.FieldLevel) bool {
+	return util.Contains(len(AllUserTypes), func(index int) bool {
+		return string(AllUserTypes[index]) == fl.Field().String()
+	})
+}
+
+func valProvinceType(fl validator.FieldLevel) bool {
+	return util.Contains(len(AllProvinceTypes), func(index int) bool {
+		return string(AllProvinceTypes[index]) == fl.Field().String()
+	})
 }
