@@ -184,75 +184,6 @@ paths:
           $ref: '#/responses/employmentErrorResponse'
       tags:
       - employment
-  /api/listing:
-    post:
-      description: create a new listing
-      operationId: createListing
-      responses:
-        "200":
-          $ref: '#/responses/listingResponse'
-        "422":
-          $ref: '#/responses/listingErrorValidation'
-        "500":
-          $ref: '#/responses/listingErrorResponse'
-      tags:
-      - listing
-    put:
-      description: update a listing
-      operationId: updateListing
-      parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the listing for which the operation relates
-        in: path
-        name: id
-        required: true
-        x-go-name: Id
-      responses:
-        "201":
-          $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/listingErrorResponse'
-        "422":
-          $ref: '#/responses/listingErrorValidation'
-      tags:
-      - listing
-  /api/listing/{id}:
-    delete:
-      description: delete a listing
-      operationId: deleteListing
-      parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the listing for which the operation relates
-        in: path
-        name: id
-        required: true
-        x-go-name: Id
-      responses:
-        "201":
-          $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/listingErrorResponse'
-        "500":
-          $ref: '#/responses/listingErrorResponse'
-      tags:
-      - listing
-    get:
-      description: return a listing
-      operationId: getListing
-      parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the listing for which the operation relates
-        in: path
-        name: id
-        required: true
-        x-go-name: Id
-      responses:
-        "200":
-          $ref: '#/responses/listingResponse'
-        "404":
-          $ref: '#/responses/listingErrorResponse'
-      tags:
-      - listing
   /api/pet:
     post:
       description: create a new pet
@@ -548,18 +479,6 @@ responses:
       $ref: '#/definitions/ValidationError'
   employmentResponse:
     description: A employment
-    schema:
-      $ref: '#/definitions/Dto'
-  listingErrorResponse:
-    description: Generic error message returned as a string
-    schema:
-      $ref: '#/definitions/GenericError'
-  listingErrorValidation:
-    description: Validation errors defined as an array of strings
-    schema:
-      $ref: '#/definitions/ValidationError'
-  listingResponse:
-    description: A listing
     schema:
       $ref: '#/definitions/Dto'
   noContentResponse:

@@ -19,7 +19,6 @@ test :
 	go test ./...
 
 db-local-check :
-	which migrate || (echo "need to install migrate!" && exit 1)
 	which psql || (echo "need to install postgresql!" && exit 1)
 	which docker || (echo "need to install docker!" && exit 1)
 

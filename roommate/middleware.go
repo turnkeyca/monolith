@@ -23,15 +23,15 @@ func (h *Handler) GetBody(next http.Handler) http.Handler {
 		d, err := Read(r.Body)
 		if err != nil {
 			h.logger.Printf("decoding error: %#v", err)
-			http.Error(w, "Error reading product", http.StatusBadRequest)
+			http.Error(w, "Error reading roommate", http.StatusBadRequest)
 		}
 		err = d.Validate()
 		if err != nil {
 			h.logger.Printf("validation error: %#v", err)
 			http.Error(
 				w,
-				fmt.Sprintf("Error validating product: %s", err),
-				http.StatusBadRequest,
+				fmt.Sprintf("Error validating roommate: %s", err),
+				http.StatusUnprocessableEntity,
 			)
 			return
 		}
