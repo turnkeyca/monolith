@@ -29,7 +29,7 @@ func (h *Handler) HandleGetRoommate(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) GetRoommate(id uuid.UUID) (*Dto, error) {
+func (h *Handler) GetRoommate(id uuid.UUID) (*RoommateDto, error) {
 	result, err := NewRoommateDatabase(h.db).SelectRoommate(id)
 	if err != nil {
 		return nil, err

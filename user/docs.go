@@ -45,7 +45,7 @@ type userErrorValidationWrapper struct {
 type userResponseWrapper struct {
 	// A user
 	// in: body
-	Body Dto
+	Body UserDto
 }
 
 // No content is returned by this API endpoint

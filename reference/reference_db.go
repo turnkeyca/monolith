@@ -17,16 +17,16 @@ func NewReferenceDatabase(database *db.Database) *ReferenceDatabase {
 	}
 }
 
-func (rdb *ReferenceDatabase) SelectReference(id uuid.UUID) ([]Dto, error) {
+func (rdb *ReferenceDatabase) SelectReference(id uuid.UUID) ([]ReferenceDto, error) {
 	if os.Getenv("TEST") == "true" {
 		rdb.PushQuery("select * from reference where id = $1;", id.String())
-		dtos := []Dto{}
+		dtos := []ReferenceDto{}
 		for _, dto := range rdb.GetNextTestReturn() {
-			dtos = append(dtos, dto.(Dto))
+			dtos = append(dtos, dto.(ReferenceDto))
 		}
 		return dtos, rdb.GetNextTestError()
 	}
-	references := []Dto{}
+	references := []ReferenceDto{}
 	err := rdb.Select(&references, "select * from reference where id = $1;", id.String())
 	return references, err
 }

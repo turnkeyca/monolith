@@ -38,7 +38,7 @@ const (
 
 var AllProvinceTypes []ProvinceType = []ProvinceType{YUKON, NORTHWEST_TERRITORIES, NUNAVUT, BRITISH_COLUMBIA, ALBERTA, SASKATCHEWAN, MANITOBA, ONTARIO, QUEBEC, NEWFOUNDLAND_LABRADOR, NEW_BRUNSWICK, NOVA_SCOTIA, PRINCE_EDWARD_ISLAND}
 
-type Dto struct {
+type UserDto struct {
 	Id                        string       `json:"id" validate:"omitempty,uuid" db:"id"`
 	FullName                  string       `json:"fullName" validate:"required" db:"full_name"`
 	Email                     string       `json:"email" validate:"required,email" db:"email"`
@@ -67,17 +67,17 @@ type Dto struct {
 	MonthlyBudgetMax          float64      `json:"monthlyBudgetMax" validate:"renter,renterRequired" db:"monthly_budget_max"`
 }
 
-func Read(r io.Reader) (*Dto, error) {
-	d := Dto{}
+func Read(r io.Reader) (*UserDto, error) {
+	d := UserDto{}
 	err := json.NewDecoder(r).Decode(&d)
 	return &d, err
 }
 
-func (d *Dto) Write(w io.Writer) error {
+func (d *UserDto) Write(w io.Writer) error {
 	return json.NewEncoder(w).Encode(d)
 }
 
-func (d *Dto) Validate() error {
+func (d *UserDto) Validate() error {
 	v := validator.New()
 	v.RegisterValidation("renterRequired", valRenterRequired)
 	v.RegisterValidation("renter", valRenter)
@@ -88,7 +88,7 @@ func (d *Dto) Validate() error {
 }
 
 func valRenterRequired(fl validator.FieldLevel) bool {
-	d := fl.Parent().Interface().(*Dto)
+	d := fl.Parent().Interface().(*UserDto)
 	if d.UserType == RENTER {
 		return fl.Field().String() != ""
 	}
@@ -96,7 +96,7 @@ func valRenterRequired(fl validator.FieldLevel) bool {
 }
 
 func valRenter(fl validator.FieldLevel) bool {
-	d := fl.Parent().Interface().(*Dto)
+	d := fl.Parent().Interface().(*UserDto)
 	if d.UserType != RENTER {
 		log.Println(fl.Field())
 		return fl.Field().IsZero()
@@ -105,7 +105,7 @@ func valRenter(fl validator.FieldLevel) bool {
 }
 
 func valLandlord(fl validator.FieldLevel) bool {
-	d := fl.Parent().Interface().(*Dto)
+	d := fl.Parent().Interface().(*UserDto)
 	if d.UserType != LANDLORD {
 		return fl.Field().IsZero()
 	}

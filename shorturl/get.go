@@ -25,6 +25,6 @@ func (h *Handler) HandleGetShortUrl(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (h *Handler) GetShortUrl(longUrl string) *Dto {
+func (h *Handler) GetShortUrl(longUrl string) *ShortUrlDto {
 	return New(h.bitlyClient.GetShortUrl(longUrl))
 }

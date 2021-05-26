@@ -45,7 +45,7 @@ type roommateErrorValidationWrapper struct {
 type roommateResponseWrapper struct {
 	// A roommate
 	// in: body
-	Body Dto
+	Body RoommateDto
 }
 
 // No content is returned by this API endpoint

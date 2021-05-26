@@ -29,7 +29,7 @@ func (h *Handler) HandleGetEmployment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) GetEmployment(id uuid.UUID) (*Dto, error) {
+func (h *Handler) GetEmployment(id uuid.UUID) (*EmploymentDto, error) {
 	result, err := NewEmploymentDatabase(h.db).SelectEmployment(id)
 	if err != nil {
 		return nil, err

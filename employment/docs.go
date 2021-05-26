@@ -45,7 +45,7 @@ type employmentErrorValidationWrapper struct {
 type employmentResponseWrapper struct {
 	// A employment
 	// in: body
-	Body Dto
+	Body EmploymentDto
 }
 
 // No content is returned by this API endpoint

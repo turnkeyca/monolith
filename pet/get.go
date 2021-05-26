@@ -29,7 +29,7 @@ func (h *Handler) HandleGetPet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) GetPet(id uuid.UUID) (*Dto, error) {
+func (h *Handler) GetPet(id uuid.UUID) (*PetDto, error) {
 	result, err := NewPetDatabase(h.db).SelectPet(id)
 	if err != nil {
 		return nil, err

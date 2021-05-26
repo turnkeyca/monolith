@@ -16,7 +16,7 @@ import (
 // Update handles PUT requests to update references
 func (h *Handler) HandlePutReference(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value(KeyId{}).(string)
-	dto := r.Context().Value(KeyBody{}).(*Dto)
+	dto := r.Context().Value(KeyBody{}).(*ReferenceDto)
 	dto.Id = id
 	err := h.UpdateReference(dto)
 	if err != nil {
@@ -27,7 +27,7 @@ func (h *Handler) HandlePutReference(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func (h *Handler) UpdateReference(dto *Dto) error {
+func (h *Handler) UpdateReference(dto *ReferenceDto) error {
 	err := h.db.Run("update reference set id=$1, user_id=$2, full_name=$3, email=$4, phone_number=$5, relationship=$6,additional_details=$7 where id=$1;", dto.Id, dto.UserId, dto.FullName, dto.Email, dto.PhoneNumber, dto.Relationship, dto.AdditionalDetails)
 	return err
 }

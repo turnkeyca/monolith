@@ -17,16 +17,16 @@ func NewRoommateDatabase(database *db.Database) *RoommateDatabase {
 	}
 }
 
-func (rdb *RoommateDatabase) SelectRoommate(id uuid.UUID) ([]Dto, error) {
+func (rdb *RoommateDatabase) SelectRoommate(id uuid.UUID) ([]RoommateDto, error) {
 	if os.Getenv("TEST") == "true" {
 		rdb.PushQuery("select * from roommate where id = $1;", id.String())
-		dtos := []Dto{}
+		dtos := []RoommateDto{}
 		for _, dto := range rdb.GetNextTestReturn() {
-			dtos = append(dtos, dto.(Dto))
+			dtos = append(dtos, dto.(RoommateDto))
 		}
 		return dtos, rdb.GetNextTestError()
 	}
-	roommates := []Dto{}
+	roommates := []RoommateDto{}
 	err := rdb.Select(&roommates, "select * from roommate where id = $1;", id.String())
 	return roommates, err
 }

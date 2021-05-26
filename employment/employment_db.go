@@ -17,16 +17,16 @@ func NewEmploymentDatabase(database *db.Database) *EmploymentDatabase {
 	}
 }
 
-func (edb *EmploymentDatabase) SelectEmployment(id uuid.UUID) ([]Dto, error) {
+func (edb *EmploymentDatabase) SelectEmployment(id uuid.UUID) ([]EmploymentDto, error) {
 	if os.Getenv("TEST") == "true" {
 		edb.PushQuery("select * from employment where id = $1;", id.String())
-		dtos := []Dto{}
+		dtos := []EmploymentDto{}
 		for _, dto := range edb.GetNextTestReturn() {
-			dtos = append(dtos, dto.(Dto))
+			dtos = append(dtos, dto.(EmploymentDto))
 		}
 		return dtos, edb.GetNextTestError()
 	}
-	employments := []Dto{}
+	employments := []EmploymentDto{}
 	err := edb.Select(&employments, "select * from employment where id = $1;", id.String())
 	return employments, err
 }

@@ -29,7 +29,7 @@ func (h *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) GetUser(id uuid.UUID) (*Dto, error) {
+func (h *Handler) GetUser(id uuid.UUID) (*UserDto, error) {
 	result, err := NewUserDatabase(h.db).SelectUser(id)
 	if err != nil {
 		return nil, err

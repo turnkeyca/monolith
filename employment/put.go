@@ -16,7 +16,7 @@ import (
 // Update handles PUT requests to update employments
 func (h *Handler) HandlePutEmployment(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value(KeyId{}).(string)
-	dto := r.Context().Value(KeyBody{}).(*Dto)
+	dto := r.Context().Value(KeyBody{}).(*EmploymentDto)
 	dto.Id = id
 	err := h.UpdateEmployment(dto)
 	if err != nil {
@@ -27,7 +27,7 @@ func (h *Handler) HandlePutEmployment(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func (h *Handler) UpdateEmployment(dto *Dto) error {
+func (h *Handler) UpdateEmployment(dto *EmploymentDto) error {
 	err := h.db.Run("update employment set id=$1, user_id=$2, employer=$3, occupation=$4, duration=$5, additional_details=$6, annual_salary=$7 where id=$1;", dto.Id, dto.UserId, dto.Employer, dto.Occupation, dto.Duration, dto.AdditionalDetails, dto.AnnualSalary)
 	return err
 }

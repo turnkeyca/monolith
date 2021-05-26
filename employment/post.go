@@ -17,7 +17,7 @@ import (
 
 // Create handles POST requests to add new products
 func (h *Handler) HandlePostEmployment(w http.ResponseWriter, r *http.Request) {
-	dto := r.Context().Value(KeyBody{}).(*Dto)
+	dto := r.Context().Value(KeyBody{}).(*EmploymentDto)
 	err := h.CreateEmployment(dto)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error creating employment: %#v\n", err), http.StatusInternalServerError)
@@ -27,7 +27,7 @@ func (h *Handler) HandlePostEmployment(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func (h *Handler) CreateEmployment(dto *Dto) error {
+func (h *Handler) CreateEmployment(dto *EmploymentDto) error {
 	dto.Id = uuid.New().String()
 	err := h.db.Run("insert into employment (id, user_id, employer, occupation, duration, additional_details, annual_salary) values ($1, $2, $3, $4, $5, $6, $7);", dto.Id, dto.UserId, dto.Employer, dto.Occupation, dto.Duration, dto.AdditionalDetails, dto.AnnualSalary)
 	return err

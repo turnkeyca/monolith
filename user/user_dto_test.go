@@ -5,7 +5,7 @@ import (
 )
 
 func TestValidateLandlord(t *testing.T) {
-	d := &Dto{
+	d := &UserDto{
 		FullName:                  "riley herman",
 		Email:                     "riley@herman.ca",
 		Password:                  "password",
@@ -24,7 +24,7 @@ func TestValidateLandlord(t *testing.T) {
 }
 
 func TestValidateRenter(t *testing.T) {
-	d := &Dto{
+	d := &UserDto{
 		FullName:          "riley herman",
 		Email:             "riley@herman.ca",
 		Password:          "password",

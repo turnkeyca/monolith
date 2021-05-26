@@ -29,7 +29,7 @@ func (h *Handler) HandleGetReference(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) GetReference(id uuid.UUID) (*Dto, error) {
+func (h *Handler) GetReference(id uuid.UUID) (*ReferenceDto, error) {
 	result, err := NewReferenceDatabase(h.db).SelectReference(id)
 	if err != nil {
 		return nil, err

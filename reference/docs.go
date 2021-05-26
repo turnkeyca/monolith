@@ -45,7 +45,7 @@ type referenceErrorValidationWrapper struct {
 type referenceResponseWrapper struct {
 	// A reference
 	// in: body
-	Body Dto
+	Body ReferenceDto
 }
 
 // No content is returned by this API endpoint

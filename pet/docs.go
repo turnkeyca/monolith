@@ -45,7 +45,7 @@ type petErrorValidationWrapper struct {
 type petResponseWrapper struct {
 	// A pet
 	// in: body
-	Body Dto
+	Body PetDto
 }
 
 // No content is returned by this API endpoint
