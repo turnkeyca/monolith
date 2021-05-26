@@ -3,7 +3,6 @@ package user
 import (
 	"encoding/json"
 	"io"
-	"log"
 
 	"github.com/go-playground/validator"
 	"github.com/turnkeyca/monolith/util"
@@ -98,7 +97,6 @@ func valRenterRequired(fl validator.FieldLevel) bool {
 func valRenter(fl validator.FieldLevel) bool {
 	d := fl.Parent().Interface().(*UserDto)
 	if d.UserType != RENTER {
-		log.Println(fl.Field())
 		return fl.Field().IsZero()
 	}
 	return true
