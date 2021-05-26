@@ -2,7 +2,120 @@ basePath: /
 consumes:
 - application/json
 definitions:
-  Dto:
+  EmploymentDto:
+    properties:
+      additionalDetails:
+        type: string
+        x-go-name: AdditionalDetails
+      annualSalary:
+        format: double
+        type: number
+        x-go-name: AnnualSalary
+      duration:
+        type: string
+        x-go-name: Duration
+      employer:
+        type: string
+        x-go-name: Employer
+      id:
+        type: string
+        x-go-name: Id
+      occupation:
+        type: string
+        x-go-name: Occupation
+      userId:
+        type: string
+        x-go-name: UserId
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/employment
+  GenericError:
+    properties:
+      message:
+        type: string
+        x-go-name: Message
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/user
+  PetDto:
+    properties:
+      breed:
+        type: string
+        x-go-name: Breed
+      id:
+        type: string
+        x-go-name: Id
+      userId:
+        type: string
+        x-go-name: UserId
+      weight:
+        format: double
+        type: number
+        x-go-name: Weight
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/pet
+  ProvinceType:
+    type: string
+    x-go-package: github.com/turnkeyca/monolith/user
+  ReferenceDto:
+    properties:
+      additionalDetails:
+        type: string
+        x-go-name: AdditionalDetails
+      email:
+        type: string
+        x-go-name: Email
+      fullName:
+        type: string
+        x-go-name: FullName
+      id:
+        type: string
+        x-go-name: Id
+      phoneNumber:
+        type: string
+        x-go-name: PhoneNumber
+      relationship:
+        type: string
+        x-go-name: Relationship
+      userId:
+        type: string
+        x-go-name: UserId
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/reference
+  RoommateDto:
+    properties:
+      additionalDetails:
+        type: string
+        x-go-name: AdditionalDetails
+      email:
+        type: string
+        x-go-name: Email
+      fullName:
+        type: string
+        x-go-name: FullName
+      id:
+        type: string
+        x-go-name: Id
+      userId:
+        type: string
+        x-go-name: UserId
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/roommate
+  ShortUrlDto:
+    properties:
+      url:
+        type: string
+        x-go-name: Url
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/shorturl
+  UUID:
+    description: |-
+      A UUID is a 128 bit (16 byte) Universal Unique IDentifier as defined in RFC
+      4122.
+    items:
+      format: uint8
+      type: integer
+    type: array
+    x-go-package: github.com/google/uuid
+  UserDto:
     properties:
       additionalDetails:
         type: string
@@ -84,25 +197,6 @@ definitions:
         $ref: '#/definitions/UserType'
     type: object
     x-go-package: github.com/turnkeyca/monolith/user
-  GenericError:
-    properties:
-      message:
-        type: string
-        x-go-name: Message
-    type: object
-    x-go-package: github.com/turnkeyca/monolith/user
-  ProvinceType:
-    type: string
-    x-go-package: github.com/turnkeyca/monolith/user
-  UUID:
-    description: |-
-      A UUID is a 128 bit (16 byte) Universal Unique IDentifier as defined in RFC
-      4122.
-    items:
-      format: uint8
-      type: integer
-    type: array
-    x-go-package: github.com/google/uuid
   UserType:
     type: string
     x-go-package: github.com/turnkeyca/monolith/user
@@ -485,7 +579,7 @@ responses:
   employmentResponse:
     description: A employment
     schema:
-      $ref: '#/definitions/Dto'
+      $ref: '#/definitions/EmploymentDto'
   noContentResponse:
     description: No content is returned by this API endpoint
   petErrorResponse:
@@ -499,7 +593,7 @@ responses:
   petResponse:
     description: A pet
     schema:
-      $ref: '#/definitions/Dto'
+      $ref: '#/definitions/PetDto'
   referenceErrorResponse:
     description: Generic error message returned as a string
     schema:
@@ -511,7 +605,7 @@ responses:
   referenceResponse:
     description: A reference
     schema:
-      $ref: '#/definitions/Dto'
+      $ref: '#/definitions/ReferenceDto'
   roommateErrorResponse:
     description: Generic error message returned as a string
     schema:
@@ -523,7 +617,7 @@ responses:
   roommateResponse:
     description: A roommate
     schema:
-      $ref: '#/definitions/Dto'
+      $ref: '#/definitions/RoommateDto'
   shortUrlErrorResponse:
     description: Generic error message returned as a string
     schema:
@@ -531,7 +625,7 @@ responses:
   shortUrlResponse:
     description: A short url
     schema:
-      $ref: '#/definitions/Dto'
+      $ref: '#/definitions/ShortUrlDto'
   userErrorResponse:
     description: Generic error message returned as a string
     schema:
@@ -543,7 +637,7 @@ responses:
   userResponse:
     description: A user
     schema:
-      $ref: '#/definitions/Dto'
+      $ref: '#/definitions/UserDto'
 schemes:
 - http
 swagger: "2.0"
