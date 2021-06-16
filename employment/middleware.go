@@ -1,4 +1,4 @@
-package user
+package employment
 
 import (
 	"context"
@@ -23,14 +23,14 @@ func (h *Handler) GetBody(next http.Handler) http.Handler {
 		d, err := Read(r.Body)
 		if err != nil {
 			h.logger.Printf("decoding error: %#v", err)
-			http.Error(w, "Error reading user", http.StatusBadRequest)
+			http.Error(w, "Error reading employment", http.StatusBadRequest)
 		}
 		err = d.Validate()
 		if err != nil {
 			h.logger.Printf("validation error: %#v", err)
 			http.Error(
 				w,
-				fmt.Sprintf("Error validating user: %s", err),
+				fmt.Sprintf("Error validating employment: %s", err),
 				http.StatusUnprocessableEntity,
 			)
 			return

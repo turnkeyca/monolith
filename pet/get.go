@@ -1,4 +1,4 @@
-package user
+package pet
 
 import (
 	"fmt"
@@ -7,30 +7,30 @@ import (
 	"github.com/google/uuid"
 )
 
-// swagger:route GET /api/user/{id} user getUser
-// return a user
+// swagger:route GET /api/pet/{id} pet getPet
+// return a pet
 // responses:
-//	200: userResponse
-//	404: userErrorResponse
+//	200: petResponse
+//	404: petErrorResponse
 
-// HandleGetUser handles GET requests
-func (h *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {
+// HandleGetPet handles GET requests
+func (h *Handler) HandleGetPet(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value(KeyId{}).(uuid.UUID)
-	user, err := h.GetUser(id)
+	pet, err := h.GetPet(id)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error getting user by id: %s, %#v\n", id, err), http.StatusNotFound)
+		http.Error(w, fmt.Sprintf("error getting pet by id: %s, %#v\n", id, err), http.StatusNotFound)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	err = user.Write(w)
+	err = pet.Write(w)
 	if err != nil {
 		h.logger.Printf("encoding error: %#v", err)
 	}
 }
 
-func (h *Handler) GetUser(id uuid.UUID) (*UserDto, error) {
-	result, err := NewUserDatabase(h.db).SelectUser(id)
+func (h *Handler) GetPet(id uuid.UUID) (*PetDto, error) {
+	result, err := NewPetDatabase(h.db).SelectPet(id)
 	if err != nil {
 		return nil, err
 	}

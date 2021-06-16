@@ -13,7 +13,7 @@
 //	- application/json
 //
 // swagger:meta
-package user
+package pet
 
 import "github.com/google/uuid"
 
@@ -22,30 +22,30 @@ import "github.com/google/uuid"
 // these types are not used by any of the handers
 
 // Generic error message returned as a string
-// swagger:response userErrorResponse
+// swagger:response petErrorResponse
 //lint:ignore U1000 for docs
-type userErrorResponseWrapper struct {
+type petErrorResponseWrapper struct {
 	// Description of the error
 	// in: body
 	Body GenericError
 }
 
 // Validation errors defined as an array of strings
-// swagger:response userErrorValidation
+// swagger:response petErrorValidation
 //lint:ignore U1000 for docs
-type userErrorValidationWrapper struct {
+type petErrorValidationWrapper struct {
 	// Collection of the validation errors
 	// in: body
 	Body ValidationError
 }
 
-// A user
-// swagger:response userResponse
+// A pet
+// swagger:response petResponse
 //lint:ignore U1000 for docs
-type userResponseWrapper struct {
-	// A user
+type petResponseWrapper struct {
+	// A pet
 	// in: body
-	Body UserDto
+	Body PetDto
 }
 
 // No content is returned by this API endpoint
@@ -54,10 +54,10 @@ type userResponseWrapper struct {
 type noContentResponseWrapper struct {
 }
 
-// swagger:parameters updateUser getUser deleteUser
+// swagger:parameters updatePet getPet deletePet
 //lint:ignore U1000 for docs
-type userIdParamsWrapper struct {
-	// The id of the user for which the operation relates
+type petIdParamsWrapper struct {
+	// The id of the pet for which the operation relates
 	// in: path
 	// required: true
 	Id uuid.UUID `json:"id"`

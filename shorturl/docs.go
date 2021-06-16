@@ -34,5 +34,5 @@ type shortUrlErrorResponseWrapper struct {
 type shortUrlResponseWrapper struct {
 	// A short url
 	// in: body
-	Body Dto
+	Body ShortUrlDto
 }

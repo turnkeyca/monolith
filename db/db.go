@@ -13,36 +13,31 @@ type Database struct {
 	*sqlx.DB
 }
 
-func New(logger *log.Logger) (*Database, error, error) {
+func New(logger *log.Logger) (*Database, error) {
 	if os.Getenv("TEST") == "true" {
 		return &Database{
 			logger: logger,
-		}, nil, nil
+		}, nil
 	}
 	db, errOpen := sqlx.Open(os.Getenv("DB_DRIVER"), os.Getenv("DB_CONN"))
+	if errOpen != nil {
+		return nil, errOpen
+	}
 	errPing := db.Ping()
+	if errPing != nil {
+		return nil, errPing
+	}
 	return &Database{
 		logger: logger,
 		DB:     db,
-	}, errOpen, errPing
-}
-
-func (db *Database) Query(query string, parameters ...interface{}) ([]interface{}, error) {
-	if os.Getenv("TEST") == "true" {
-		db.logger.Printf("returning test result for query: %s with parameters %s\n", query, parameters)
-		pushQuery(query, parameters...)
-		return db.getNextTestReturn(), db.getNextTestError()
-	}
-	temp := []interface{}{}
-	err := db.Select(&temp, query, parameters...)
-	return temp, err
+	}, nil
 }
 
 func (db *Database) Run(query string, parameters ...interface{}) error {
 	if os.Getenv("TEST") == "true" {
 		db.logger.Printf("returning test result for query: %s with parameters %s\n", query, parameters)
-		pushQuery(query, parameters...)
-		return db.getNextTestError()
+		db.PushQuery(query, parameters...)
+		return db.GetNextTestError()
 	}
 	_, err := db.Exec(query, parameters...)
 	return err

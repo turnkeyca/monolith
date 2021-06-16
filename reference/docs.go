@@ -13,7 +13,7 @@
 //	- application/json
 //
 // swagger:meta
-package user
+package reference
 
 import "github.com/google/uuid"
 
@@ -22,30 +22,30 @@ import "github.com/google/uuid"
 // these types are not used by any of the handers
 
 // Generic error message returned as a string
-// swagger:response userErrorResponse
+// swagger:response referenceErrorResponse
 //lint:ignore U1000 for docs
-type userErrorResponseWrapper struct {
+type referenceErrorResponseWrapper struct {
 	// Description of the error
 	// in: body
 	Body GenericError
 }
 
 // Validation errors defined as an array of strings
-// swagger:response userErrorValidation
+// swagger:response referenceErrorValidation
 //lint:ignore U1000 for docs
-type userErrorValidationWrapper struct {
+type referenceErrorValidationWrapper struct {
 	// Collection of the validation errors
 	// in: body
 	Body ValidationError
 }
 
-// A user
-// swagger:response userResponse
+// A reference
+// swagger:response referenceResponse
 //lint:ignore U1000 for docs
-type userResponseWrapper struct {
-	// A user
+type referenceResponseWrapper struct {
+	// A reference
 	// in: body
-	Body UserDto
+	Body ReferenceDto
 }
 
 // No content is returned by this API endpoint
@@ -54,10 +54,10 @@ type userResponseWrapper struct {
 type noContentResponseWrapper struct {
 }
 
-// swagger:parameters updateUser getUser deleteUser
+// swagger:parameters updateReference getReference deleteReference
 //lint:ignore U1000 for docs
-type userIdParamsWrapper struct {
-	// The id of the user for which the operation relates
+type referenceIdParamsWrapper struct {
+	// The id of the reference for which the operation relates
 	// in: path
 	// required: true
 	Id uuid.UUID `json:"id"`
