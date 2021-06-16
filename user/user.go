@@ -1,0 +1,54 @@
+package user
+
+import (
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/gorilla/mux"
+	"github.com/turnkeyca/monolith/auth"
+	"github.com/turnkeyca/monolith/db"
+)
+
+type Handler struct {
+	logger *log.Logger
+	db     *db.Database
+}
+
+type KeyId struct{}
+type KeyBody struct{}
+
+func NewHandler(logger *log.Logger, db *db.Database) *Handler {
+	return &Handler{
+		logger: logger,
+		db:     db,
+	}
+}
+
+type GenericError struct {
+	Message string `json:"message"`
+}
+
+type ValidationError struct {
+	Messages []string `json:"messages"`
+}
+
+func ConfigureUserRoutes(regexUuid string, router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator) {
+	userHandler := NewHandler(logger, database)
+
+	getRouter := router.Methods(http.MethodGet).Subrouter()
+	getRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", regexUuid), userHandler.HandleGetUser)
+	getRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath)
+
+	postRouter := router.Methods(http.MethodPost).Subrouter()
+	postRouter.HandleFunc("/api/user", userHandler.HandlePostUser)
+	postRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody)
+
+	putRouter := router.Methods(http.MethodPut).Subrouter()
+	putRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", regexUuid), userHandler.HandlePutUser)
+	putRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody, userHandler.GetIdFromPath)
+
+	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
+	deleteRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", regexUuid), userHandler.HandleDeleteUser)
+	deleteRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath)
+}
