@@ -18,6 +18,5 @@
 .certs
 .env
 monolith
-__debug_bin
-
 swagger.yml
+__debug_bin
