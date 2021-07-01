@@ -3,8 +3,6 @@ package roommate
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/google/uuid"
 )
 
 // swagger:route DELETE /api/roommate/{id} roommate deleteRoommate
@@ -17,7 +15,7 @@ import (
 
 // Delete handles DELETE requests and removes items from the database
 func (h *Handler) HandleDeleteRoommate(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value(KeyId{}).(uuid.UUID)
+	id := r.Context().Value(KeyId{}).(string)
 	err := h.DeleteRoommate(id)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error deleting roommate by id: %s, %#v\n", id, err), http.StatusNotFound)
@@ -27,7 +25,7 @@ func (h *Handler) HandleDeleteRoommate(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func (h *Handler) DeleteRoommate(id uuid.UUID) error {
-	err := h.db.Run("delete from roommate where id = $1;", id.String())
+func (h *Handler) DeleteRoommate(id string) error {
+	err := h.db.Run("delete from roommate where id = $1;", id)
 	return err
 }

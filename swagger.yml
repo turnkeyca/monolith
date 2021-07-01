@@ -106,15 +106,6 @@ definitions:
         x-go-name: Url
     type: object
     x-go-package: github.com/turnkeyca/monolith/shorturl
-  UUID:
-    description: |-
-      A UUID is a 128 bit (16 byte) Universal Unique IDentifier as defined in RFC
-      4122.
-    items:
-      format: uint8
-      type: integer
-    type: array
-    x-go-package: github.com/google/uuid
   UserDto:
     properties:
       additionalDetails:
@@ -227,35 +218,16 @@ paths:
           $ref: '#/responses/employmentErrorResponse'
       tags:
       - employment
-    put:
-      description: update a employment
-      operationId: updateEmployment
-      parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the employment for which the operation relates
-        in: path
-        name: id
-        required: true
-        x-go-name: Id
-      responses:
-        "201":
-          $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/employmentErrorResponse'
-        "422":
-          $ref: '#/responses/employmentErrorValidation'
-      tags:
-      - employment
   /api/employment/{id}:
     delete:
       description: delete a employment
       operationId: deleteEmployment
       parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the employment for which the operation relates
+      - description: The id of the employment for which the operation relates
         in: path
         name: id
         required: true
+        type: string
         x-go-name: Id
       responses:
         "201":
@@ -270,17 +242,36 @@ paths:
       description: return a employment
       operationId: getEmployment
       parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the employment for which the operation relates
+      - description: The id of the employment for which the operation relates
         in: path
         name: id
         required: true
+        type: string
         x-go-name: Id
       responses:
         "200":
           $ref: '#/responses/employmentResponse'
         "404":
           $ref: '#/responses/employmentErrorResponse'
+      tags:
+      - employment
+    put:
+      description: update a employment
+      operationId: updateEmployment
+      parameters:
+      - description: The id of the employment for which the operation relates
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/employmentErrorResponse'
+        "422":
+          $ref: '#/responses/employmentErrorValidation'
       tags:
       - employment
   /api/pet:
@@ -296,35 +287,16 @@ paths:
           $ref: '#/responses/petErrorResponse'
       tags:
       - pet
-    put:
-      description: update a pet
-      operationId: updatePet
-      parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the pet for which the operation relates
-        in: path
-        name: id
-        required: true
-        x-go-name: Id
-      responses:
-        "201":
-          $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/petErrorResponse'
-        "422":
-          $ref: '#/responses/petErrorValidation'
-      tags:
-      - pet
   /api/pet/{id}:
     delete:
       description: delete a pet
       operationId: deletePet
       parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the pet for which the operation relates
+      - description: The id of the pet for which the operation relates
         in: path
         name: id
         required: true
+        type: string
         x-go-name: Id
       responses:
         "201":
@@ -339,17 +311,36 @@ paths:
       description: return a pet
       operationId: getPet
       parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the pet for which the operation relates
+      - description: The id of the pet for which the operation relates
         in: path
         name: id
         required: true
+        type: string
         x-go-name: Id
       responses:
         "200":
           $ref: '#/responses/petResponse'
         "404":
           $ref: '#/responses/petErrorResponse'
+      tags:
+      - pet
+    put:
+      description: update a pet
+      operationId: updatePet
+      parameters:
+      - description: The id of the pet for which the operation relates
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/petErrorResponse'
+        "422":
+          $ref: '#/responses/petErrorValidation'
       tags:
       - pet
   /api/reference:
@@ -365,35 +356,16 @@ paths:
           $ref: '#/responses/referenceErrorResponse'
       tags:
       - reference
-    put:
-      description: update a reference
-      operationId: updateReference
-      parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the reference for which the operation relates
-        in: path
-        name: id
-        required: true
-        x-go-name: Id
-      responses:
-        "201":
-          $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/referenceErrorResponse'
-        "422":
-          $ref: '#/responses/referenceErrorValidation'
-      tags:
-      - reference
   /api/reference/{id}:
     delete:
       description: delete a reference
       operationId: deleteReference
       parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the reference for which the operation relates
+      - description: The id of the reference for which the operation relates
         in: path
         name: id
         required: true
+        type: string
         x-go-name: Id
       responses:
         "201":
@@ -408,17 +380,36 @@ paths:
       description: return a reference
       operationId: getReference
       parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the reference for which the operation relates
+      - description: The id of the reference for which the operation relates
         in: path
         name: id
         required: true
+        type: string
         x-go-name: Id
       responses:
         "200":
           $ref: '#/responses/referenceResponse'
         "404":
           $ref: '#/responses/referenceErrorResponse'
+      tags:
+      - reference
+    put:
+      description: update a reference
+      operationId: updateReference
+      parameters:
+      - description: The id of the reference for which the operation relates
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/referenceErrorResponse'
+        "422":
+          $ref: '#/responses/referenceErrorValidation'
       tags:
       - reference
   /api/roommate:
@@ -434,35 +425,16 @@ paths:
           $ref: '#/responses/roommateErrorResponse'
       tags:
       - roommate
-    put:
-      description: update a roommate
-      operationId: updateRoommate
-      parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the roommate for which the operation relates
-        in: path
-        name: id
-        required: true
-        x-go-name: Id
-      responses:
-        "201":
-          $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/roommateErrorResponse'
-        "422":
-          $ref: '#/responses/roommateErrorValidation'
-      tags:
-      - roommate
   /api/roommate/{id}:
     delete:
       description: delete a roommate
       operationId: deleteRoommate
       parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the roommate for which the operation relates
+      - description: The id of the roommate for which the operation relates
         in: path
         name: id
         required: true
+        type: string
         x-go-name: Id
       responses:
         "201":
@@ -477,17 +449,36 @@ paths:
       description: return a roommate
       operationId: getRoommate
       parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the roommate for which the operation relates
+      - description: The id of the roommate for which the operation relates
         in: path
         name: id
         required: true
+        type: string
         x-go-name: Id
       responses:
         "200":
           $ref: '#/responses/roommateResponse'
         "404":
           $ref: '#/responses/roommateErrorResponse'
+      tags:
+      - roommate
+    put:
+      description: update a roommate
+      operationId: updateRoommate
+      parameters:
+      - description: The id of the roommate for which the operation relates
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/roommateErrorResponse'
+        "422":
+          $ref: '#/responses/roommateErrorValidation'
       tags:
       - roommate
   /api/short-url:
@@ -514,35 +505,16 @@ paths:
           $ref: '#/responses/userErrorResponse'
       tags:
       - user
-    put:
-      description: update a user
-      operationId: updateUser
-      parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the user for which the operation relates
-        in: path
-        name: id
-        required: true
-        x-go-name: Id
-      responses:
-        "201":
-          $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/userErrorResponse'
-        "422":
-          $ref: '#/responses/userErrorValidation'
-      tags:
-      - user
   /api/user/{id}:
     delete:
       description: delete a user
       operationId: deleteUser
       parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the user for which the operation relates
+      - description: The id of the user for which the operation relates
         in: path
         name: id
         required: true
+        type: string
         x-go-name: Id
       responses:
         "201":
@@ -557,17 +529,36 @@ paths:
       description: return a user
       operationId: getUser
       parameters:
-      - $ref: '#/definitions/UUID'
-        description: The id of the user for which the operation relates
+      - description: The id of the user for which the operation relates
         in: path
         name: id
         required: true
+        type: string
         x-go-name: Id
       responses:
         "200":
           $ref: '#/responses/userResponse'
         "404":
           $ref: '#/responses/userErrorResponse'
+      tags:
+      - user
+    put:
+      description: update a user
+      operationId: updateUser
+      parameters:
+      - description: The id of the user for which the operation relates
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/userErrorResponse'
+        "422":
+          $ref: '#/responses/userErrorValidation'
       tags:
       - user
 produces:

@@ -3,8 +3,6 @@ package user
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/google/uuid"
 )
 
 // swagger:route GET /api/user/{id} user getUser
@@ -15,7 +13,7 @@ import (
 
 // HandleGetUser handles GET requests
 func (h *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value(KeyId{}).(uuid.UUID)
+	id := r.Context().Value(KeyId{}).(string)
 	user, err := h.GetUser(id)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error getting user by id: %s, %#v\n", id, err), http.StatusNotFound)
@@ -29,16 +27,16 @@ func (h *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) GetUser(id uuid.UUID) (*UserDto, error) {
+func (h *Handler) GetUser(id string) (*UserDto, error) {
 	result, err := NewUserDatabase(h.db).SelectUser(id)
 	if err != nil {
 		return nil, err
 	}
 	if result == nil {
-		return nil, fmt.Errorf("no results for id: %s", id.String())
+		return nil, fmt.Errorf("no results for id: %s", id)
 	}
 	if len(result) != 1 {
-		return nil, fmt.Errorf("duplicate results for id: %s", id.String())
+		return nil, fmt.Errorf("duplicate results for id: %s", id)
 	}
 	return &result[0], err
 }

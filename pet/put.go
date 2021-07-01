@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route PUT /api/pet pet updatePet
+// swagger:route PUT /api/pet/{id} pet updatePet
 // update a pet
 //
 // responses:

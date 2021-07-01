@@ -15,8 +15,6 @@
 // swagger:meta
 package user
 
-import "github.com/google/uuid"
-
 //
 // NOTE: Types defined here are purely for documentation purposes
 // these types are not used by any of the handlers
@@ -60,5 +58,5 @@ type userIdParamsWrapper struct {
 	// The id of the user for which the operation relates
 	// in: path
 	// required: true
-	Id uuid.UUID `json:"id"`
+	Id string `json:"id"`
 }

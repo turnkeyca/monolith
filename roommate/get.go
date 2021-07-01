@@ -3,8 +3,6 @@ package roommate
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/google/uuid"
 )
 
 // swagger:route GET /api/roommate/{id} roommate getRoommate
@@ -15,7 +13,7 @@ import (
 
 // HandleGetRoommate handles GET requests
 func (h *Handler) HandleGetRoommate(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value(KeyId{}).(uuid.UUID)
+	id := r.Context().Value(KeyId{}).(string)
 	roommate, err := h.GetRoommate(id)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error getting roommate by id: %s, %#v\n", id, err), http.StatusNotFound)
@@ -29,16 +27,16 @@ func (h *Handler) HandleGetRoommate(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) GetRoommate(id uuid.UUID) (*RoommateDto, error) {
+func (h *Handler) GetRoommate(id string) (*RoommateDto, error) {
 	result, err := NewRoommateDatabase(h.db).SelectRoommate(id)
 	if err != nil {
 		return nil, err
 	}
 	if result == nil {
-		return nil, fmt.Errorf("no results for id: %s", id.String())
+		return nil, fmt.Errorf("no results for id: %s", id)
 	}
 	if len(result) != 1 {
-		return nil, fmt.Errorf("duplicate results for id: %s", id.String())
+		return nil, fmt.Errorf("duplicate results for id: %s", id)
 	}
 	return &result[0], err
 }

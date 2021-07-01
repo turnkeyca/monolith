@@ -3,7 +3,6 @@ package reference
 import (
 	"os"
 
-	"github.com/google/uuid"
 	"github.com/turnkeyca/monolith/db"
 )
 
@@ -17,9 +16,9 @@ func NewReferenceDatabase(database *db.Database) *ReferenceDatabase {
 	}
 }
 
-func (rdb *ReferenceDatabase) SelectReference(id uuid.UUID) ([]ReferenceDto, error) {
+func (rdb *ReferenceDatabase) SelectReference(id string) ([]ReferenceDto, error) {
 	if os.Getenv("TEST") == "true" {
-		rdb.PushQuery("select * from reference where id = $1;", id.String())
+		rdb.PushQuery("select * from reference where id = $1;", id)
 		dtos := []ReferenceDto{}
 		for _, dto := range rdb.GetNextTestReturn() {
 			dtos = append(dtos, dto.(ReferenceDto))
@@ -27,6 +26,6 @@ func (rdb *ReferenceDatabase) SelectReference(id uuid.UUID) ([]ReferenceDto, err
 		return dtos, rdb.GetNextTestError()
 	}
 	references := []ReferenceDto{}
-	err := rdb.Select(&references, "select * from reference where id = $1;", id.String())
+	err := rdb.Select(&references, "select * from reference where id = $1;", id)
 	return references, err
 }

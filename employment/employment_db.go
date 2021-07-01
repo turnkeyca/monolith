@@ -3,7 +3,6 @@ package employment
 import (
 	"os"
 
-	"github.com/google/uuid"
 	"github.com/turnkeyca/monolith/db"
 )
 
@@ -17,9 +16,9 @@ func NewEmploymentDatabase(database *db.Database) *EmploymentDatabase {
 	}
 }
 
-func (edb *EmploymentDatabase) SelectEmployment(id uuid.UUID) ([]EmploymentDto, error) {
+func (edb *EmploymentDatabase) SelectEmployment(id string) ([]EmploymentDto, error) {
 	if os.Getenv("TEST") == "true" {
-		edb.PushQuery("select * from employment where id = $1;", id.String())
+		edb.PushQuery("select * from employment where id = $1;", id)
 		dtos := []EmploymentDto{}
 		for _, dto := range edb.GetNextTestReturn() {
 			dtos = append(dtos, dto.(EmploymentDto))
@@ -27,6 +26,6 @@ func (edb *EmploymentDatabase) SelectEmployment(id uuid.UUID) ([]EmploymentDto, 
 		return dtos, edb.GetNextTestError()
 	}
 	employments := []EmploymentDto{}
-	err := edb.Select(&employments, "select * from employment where id = $1;", id.String())
+	err := edb.Select(&employments, "select * from employment where id = $1;", id)
 	return employments, err
 }

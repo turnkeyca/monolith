@@ -3,8 +3,6 @@ package employment
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/google/uuid"
 )
 
 // swagger:route GET /api/employment/{id} employment getEmployment
@@ -15,7 +13,7 @@ import (
 
 // HandleGetEmployment handles GET requests
 func (h *Handler) HandleGetEmployment(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value(KeyId{}).(uuid.UUID)
+	id := r.Context().Value(KeyId{}).(string)
 	employment, err := h.GetEmployment(id)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error getting employment by id: %s, %#v\n", id, err), http.StatusNotFound)
@@ -29,16 +27,16 @@ func (h *Handler) HandleGetEmployment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) GetEmployment(id uuid.UUID) (*EmploymentDto, error) {
+func (h *Handler) GetEmployment(id string) (*EmploymentDto, error) {
 	result, err := NewEmploymentDatabase(h.db).SelectEmployment(id)
 	if err != nil {
 		return nil, err
 	}
 	if result == nil {
-		return nil, fmt.Errorf("no results for id: %s", id.String())
+		return nil, fmt.Errorf("no results for id: %s", id)
 	}
 	if len(result) != 1 {
-		return nil, fmt.Errorf("duplicate results for id: %s", id.String())
+		return nil, fmt.Errorf("duplicate results for id: %s", id)
 	}
 	return &result[0], err
 }

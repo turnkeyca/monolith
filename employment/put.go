@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route PUT /api/employment employment updateEmployment
+// swagger:route PUT /api/employment/{id} employment updateEmployment
 // update a employment
 //
 // responses:

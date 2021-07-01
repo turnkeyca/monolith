@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route PUT /api/reference reference updateReference
+// swagger:route PUT /api/reference/{id} reference updateReference
 // update a reference
 //
 // responses:
