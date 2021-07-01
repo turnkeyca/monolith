@@ -490,10 +490,15 @@ paths:
           $ref: '#/responses/roommateErrorResponse'
       tags:
       - roommate
-  /api/short-url?longUrl={url}:
+  /api/short-url:
     get:
-      description: get a bitly short url
+      description: return a bitly short url
       operationId: getShortUrl
+      responses:
+        "200":
+          $ref: '#/responses/shortUrlResponse'
+        "500":
+          $ref: '#/responses/shortUrlErrorResponse'
       tags:
       - shorturl
   /api/user:
