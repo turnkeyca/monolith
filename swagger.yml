@@ -206,6 +206,23 @@ info:
   version: 1.0.0
 paths:
   /api/employment:
+    get:
+      description: return an employment
+      operationId: getEmploymentByUserId
+      parameters:
+      - description: The user id
+        in: query
+        name: userId
+        required: true
+        type: string
+        x-go-name: UserId
+      responses:
+        "200":
+          $ref: '#/responses/employmentResponse'
+        "404":
+          $ref: '#/responses/employmentErrorResponse'
+      tags:
+      - employment
     post:
       description: create a new employment
       operationId: createEmployment
@@ -239,7 +256,7 @@ paths:
       tags:
       - employment
     get:
-      description: return a employment
+      description: return an employment
       operationId: getEmployment
       parameters:
       - description: The id of the employment for which the operation relates
@@ -485,6 +502,13 @@ paths:
     get:
       description: return a bitly short url
       operationId: getShortUrl
+      parameters:
+      - description: The url to be converted
+        in: query
+        name: url
+        required: true
+        type: string
+        x-go-name: Url
       responses:
         "200":
           $ref: '#/responses/shortUrlResponse'
@@ -635,5 +659,5 @@ responses:
     schema:
       $ref: '#/definitions/UserDto'
 schemes:
-- http
+- http,https
 swagger: "2.0"

@@ -45,3 +45,12 @@ type roommateIdParamsWrapper struct {
 	// required: true
 	Id string `json:"id"`
 }
+
+// swagger:parameters getRoommateByUserId
+//lint:ignore U1000 for docs
+type roommateUserIdParamsWrapper struct {
+	// The user id
+	// in: query
+	// required: true
+	UserId string `json:"userId"`
+}

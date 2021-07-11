@@ -45,3 +45,12 @@ type employmentIdParamsWrapper struct {
 	// required: true
 	Id string `json:"id"`
 }
+
+// swagger:parameters getEmploymentByUserId
+//lint:ignore U1000 for docs
+type employmentUserIdParamsWrapper struct {
+	// The user id
+	// in: query
+	// required: true
+	UserId string `json:"userId"`
+}

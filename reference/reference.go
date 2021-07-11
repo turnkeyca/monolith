@@ -15,9 +15,6 @@ type Handler struct {
 	db     *db.Database
 }
 
-type KeyId struct{}
-type KeyBody struct{}
-
 func NewHandler(logger *log.Logger, db *db.Database) *Handler {
 	return &Handler{
 		logger: logger,
