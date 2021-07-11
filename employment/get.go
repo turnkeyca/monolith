@@ -36,14 +36,14 @@ func (h *Handler) HandleGetEmployment(w http.ResponseWriter, r *http.Request) {
 // HandleGetEmploymentByUserId handles GET requests
 func (h *Handler) HandleGetEmploymentByUserId(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value(KeyUserId{}).(string)
-	employment, err := h.GetEmployment(id)
+	employments, err := h.GetEmploymentByUserId(id)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error getting employment by user id: %s, %#v\n", id, err), http.StatusNotFound)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	err = employment.Write(w)
+	err = WriteAll(employments, w)
 	if err != nil {
 		h.logger.Printf("encoding error: %#v", err)
 	}

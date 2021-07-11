@@ -23,6 +23,10 @@ func Read(r io.Reader) (*EmploymentDto, error) {
 	return &d, err
 }
 
+func WriteAll(e *[]EmploymentDto, w io.Writer) error {
+	return json.NewEncoder(w).Encode(e)
+}
+
 func (d *EmploymentDto) Write(w io.Writer) error {
 	return json.NewEncoder(w).Encode(d)
 }

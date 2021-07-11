@@ -27,6 +27,28 @@ func (h *Handler) HandleGetReference(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// swagger:route GET /api/reference reference getReferenceByUserId
+// return an reference
+// responses:
+//	200: referencesResponse
+//	404: referenceErrorResponse
+
+// HandleGetReferenceByUserId handles GET requests
+func (h *Handler) HandleGetReferenceByUserId(w http.ResponseWriter, r *http.Request) {
+	id := r.Context().Value(KeyUserId{}).(string)
+	references, err := h.GetReferenceByUserId(id)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("error getting reference by user id: %s, %#v\n", id, err), http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	err = WriteAll(references, w)
+	if err != nil {
+		h.logger.Printf("encoding error: %#v", err)
+	}
+}
+
 func (h *Handler) GetReference(id string) (*ReferenceDto, error) {
 	result, err := NewReferenceDatabase(h.db).SelectReference(id)
 	if err != nil {
@@ -39,4 +61,15 @@ func (h *Handler) GetReference(id string) (*ReferenceDto, error) {
 		return nil, fmt.Errorf("duplicate results for id: %s", id)
 	}
 	return &result[0], err
+}
+
+func (h *Handler) GetReferenceByUserId(userId string) (*[]ReferenceDto, error) {
+	result, err := NewReferenceDatabase(h.db).SelectReferencesByUserId(userId)
+	if err != nil {
+		return nil, err
+	}
+	if result == nil {
+		return nil, fmt.Errorf("no results for user id: %s", userId)
+	}
+	return &result, err
 }
