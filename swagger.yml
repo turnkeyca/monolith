@@ -218,7 +218,7 @@ paths:
         x-go-name: UserId
       responses:
         "200":
-          $ref: '#/responses/employmentResponse'
+          $ref: '#/responses/employmentsResponse'
         "404":
           $ref: '#/responses/employmentErrorResponse'
       tags:
@@ -600,6 +600,12 @@ responses:
     description: A employment
     schema:
       $ref: '#/definitions/EmploymentDto'
+  employmentsResponse:
+    description: A list of employment
+    schema:
+      items:
+        $ref: '#/definitions/EmploymentDto'
+      type: array
   noContentResponse:
     description: No content is returned by this API endpoint
   petErrorResponse:
@@ -614,6 +620,12 @@ responses:
     description: A pet
     schema:
       $ref: '#/definitions/PetDto'
+  petsResponse:
+    description: A list of pets
+    schema:
+      items:
+        $ref: '#/definitions/PetDto'
+      type: array
   referenceErrorResponse:
     description: Generic error message returned as a string
     schema:
@@ -626,6 +638,12 @@ responses:
     description: A reference
     schema:
       $ref: '#/definitions/ReferenceDto'
+  referencesResponse:
+    description: A list of references
+    schema:
+      items:
+        $ref: '#/definitions/ReferenceDto'
+      type: array
   roommateErrorResponse:
     description: Generic error message returned as a string
     schema:
@@ -638,6 +656,12 @@ responses:
     description: A roommate
     schema:
       $ref: '#/definitions/RoommateDto'
+  roommatesResponse:
+    description: A list of roommates
+    schema:
+      items:
+        $ref: '#/definitions/RoommateDto'
+      type: array
   shortUrlErrorResponse:
     description: Generic error message returned as a string
     schema:

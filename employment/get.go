@@ -30,7 +30,7 @@ func (h *Handler) HandleGetEmployment(w http.ResponseWriter, r *http.Request) {
 // swagger:route GET /api/employment employment getEmploymentByUserId
 // return an employment
 // responses:
-//	200: employmentResponse
+//	200: employmentsResponse
 //	404: employmentErrorResponse
 
 // HandleGetEmploymentByUserId handles GET requests
@@ -63,7 +63,7 @@ func (h *Handler) GetEmployment(id string) (*EmploymentDto, error) {
 	return &result[0], err
 }
 
-func (h *Handler) GetEmploymentByUserId(userId string) (*EmploymentDto, error) {
+func (h *Handler) GetEmploymentByUserId(userId string) (*[]EmploymentDto, error) {
 	result, err := NewEmploymentDatabase(h.db).SelectEmploymentByUserId(userId)
 	if err != nil {
 		return nil, err
@@ -71,8 +71,5 @@ func (h *Handler) GetEmploymentByUserId(userId string) (*EmploymentDto, error) {
 	if result == nil {
 		return nil, fmt.Errorf("no results for user id: %s", userId)
 	}
-	if len(result) != 1 {
-		return nil, fmt.Errorf("duplicate results for user id: %s", userId)
-	}
-	return &result[0], err
+	return &result, err
 }

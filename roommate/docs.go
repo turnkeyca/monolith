@@ -31,6 +31,15 @@ type roommateResponseWrapper struct {
 	Body RoommateDto
 }
 
+// A list of roommates
+// swagger:response roommatesResponse
+//lint:ignore U1000 for docs
+type roommatesResponseWrapper struct {
+	// A list of roommates
+	// in: body
+	Body []RoommateDto
+}
+
 // No content is returned by this API endpoint
 // swagger:response noContentResponse
 //lint:ignore U1000 for docs
@@ -46,9 +55,9 @@ type roommateIdParamsWrapper struct {
 	Id string `json:"id"`
 }
 
-// swagger:parameters getRoommateByUserId
+// swagger:parameters getRoommatesByUserId
 //lint:ignore U1000 for docs
-type roommateUserIdParamsWrapper struct {
+type roommatesUserIdParamsWrapper struct {
 	// The user id
 	// in: query
 	// required: true
