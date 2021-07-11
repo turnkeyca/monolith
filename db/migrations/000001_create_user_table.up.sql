@@ -1,15 +1,15 @@
 create table users (
     id uuid primary key,
-    full_name varchar(64) not null,
-    email varchar(64) not null,
+    full_name varchar(64),
+    email varchar(64),
 	password varchar(64),
 	phone_number varchar(64),
-	nickname varchar(64) not null,
-	bio varchar(64) not null,
-	city varchar(64) not null,
-	province varchar(64) not null,
-	user_type varchar(64) not null,
-	send_notifications boolean not null,
+	nickname varchar(64),
+	bio varchar(64),
+	city varchar(64),
+	province varchar(64),
+	user_type varchar(64),
+	send_notifications boolean,
 	moving_reason varchar(64),
 	has_roommates boolean,
 	has_security_deposit boolean,
@@ -22,8 +22,5 @@ create table users (
 	move_in_date varchar(64),
 	move_out_date varchar(64),
 	property_management_company varchar(64),
-	additional_details_lease varchar(64),
-	monthly_budget_min numeric(10, 2) not null,
-	monthly_budget_max numeric(10, 2) not null
+	additional_details_lease varchar(64)
 );
-
