@@ -15,9 +15,6 @@ type Handler struct {
 	db     *db.Database
 }
 
-type KeyId struct{}
-type KeyBody struct{}
-
 func NewHandler(logger *log.Logger, db *db.Database) *Handler {
 	return &Handler{
 		logger: logger,
@@ -39,6 +36,8 @@ func ConfigureReferenceRoutes(regexUuid string, router *mux.Router, logger *log.
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/api/reference/{id:%s}", regexUuid), referenceHandler.HandleGetReference)
 	getRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetIdFromPath)
+	getRouter.HandleFunc(fmt.Sprintf("/api/reference?userId={userId:%s}", regexUuid), referenceHandler.HandleGetReference)
+	getRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetUserIdFromQueryParameters)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/api/reference", referenceHandler.HandlePostReference)

@@ -206,6 +206,23 @@ info:
   version: 1.0.0
 paths:
   /api/employment:
+    get:
+      description: return an employment
+      operationId: getEmploymentByUserId
+      parameters:
+      - description: The user id
+        in: query
+        name: userId
+        required: true
+        type: string
+        x-go-name: UserId
+      responses:
+        "200":
+          $ref: '#/responses/employmentsResponse'
+        "404":
+          $ref: '#/responses/employmentErrorResponse'
+      tags:
+      - employment
     post:
       description: create a new employment
       operationId: createEmployment
@@ -239,7 +256,7 @@ paths:
       tags:
       - employment
     get:
-      description: return a employment
+      description: return an employment
       operationId: getEmployment
       parameters:
       - description: The id of the employment for which the operation relates
@@ -485,6 +502,13 @@ paths:
     get:
       description: return a bitly short url
       operationId: getShortUrl
+      parameters:
+      - description: The url to be converted
+        in: query
+        name: url
+        required: true
+        type: string
+        x-go-name: Url
       responses:
         "200":
           $ref: '#/responses/shortUrlResponse'
@@ -576,6 +600,12 @@ responses:
     description: A employment
     schema:
       $ref: '#/definitions/EmploymentDto'
+  employmentsResponse:
+    description: A list of employment
+    schema:
+      items:
+        $ref: '#/definitions/EmploymentDto'
+      type: array
   noContentResponse:
     description: No content is returned by this API endpoint
   petErrorResponse:
@@ -590,6 +620,12 @@ responses:
     description: A pet
     schema:
       $ref: '#/definitions/PetDto'
+  petsResponse:
+    description: A list of pets
+    schema:
+      items:
+        $ref: '#/definitions/PetDto'
+      type: array
   referenceErrorResponse:
     description: Generic error message returned as a string
     schema:
@@ -602,6 +638,12 @@ responses:
     description: A reference
     schema:
       $ref: '#/definitions/ReferenceDto'
+  referencesResponse:
+    description: A list of references
+    schema:
+      items:
+        $ref: '#/definitions/ReferenceDto'
+      type: array
   roommateErrorResponse:
     description: Generic error message returned as a string
     schema:
@@ -614,6 +656,12 @@ responses:
     description: A roommate
     schema:
       $ref: '#/definitions/RoommateDto'
+  roommatesResponse:
+    description: A list of roommates
+    schema:
+      items:
+        $ref: '#/definitions/RoommateDto'
+      type: array
   shortUrlErrorResponse:
     description: Generic error message returned as a string
     schema:
@@ -635,5 +683,5 @@ responses:
     schema:
       $ref: '#/definitions/UserDto'
 schemes:
-- http
+- http,https
 swagger: "2.0"

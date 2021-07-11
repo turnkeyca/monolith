@@ -15,9 +15,6 @@ type Handler struct {
 	db     *db.Database
 }
 
-type KeyId struct{}
-type KeyBody struct{}
-
 func NewHandler(logger *log.Logger, db *db.Database) *Handler {
 	return &Handler{
 		logger: logger,
@@ -39,6 +36,8 @@ func ConfigureEmploymentRoutes(regexUuid string, router *mux.Router, logger *log
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/api/employment/{id:%s}", regexUuid), employmentHandler.HandleGetEmployment)
 	getRouter.Use(authenticator.AuthenticateHttp, employmentHandler.GetIdFromPath)
+	getRouter.HandleFunc(fmt.Sprintf("/api/employment?userId={userId:%s}", regexUuid), employmentHandler.HandleGetEmploymentByUserId)
+	getRouter.Use(authenticator.AuthenticateHttp, employmentHandler.GetUserIdFromQueryParameters)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/api/employment", employmentHandler.HandlePostEmployment)

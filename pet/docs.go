@@ -31,6 +31,15 @@ type petResponseWrapper struct {
 	Body PetDto
 }
 
+// A list of pets
+// swagger:response petsResponse
+//lint:ignore U1000 for docs
+type petsResponseWrapper struct {
+	// A list of pets
+	// in: body
+	Body []PetDto
+}
+
 // No content is returned by this API endpoint
 // swagger:response noContentResponse
 //lint:ignore U1000 for docs
@@ -44,4 +53,13 @@ type petIdParamsWrapper struct {
 	// in: path
 	// required: true
 	Id string `json:"id"`
+}
+
+// swagger:parameters getPetsByUserId
+//lint:ignore U1000 for docs
+type petsUserIdParamsWrapper struct {
+	// The user id
+	// in: query
+	// required: true
+	UserId string `json:"userId"`
 }

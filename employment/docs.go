@@ -31,6 +31,15 @@ type employmentResponseWrapper struct {
 	Body EmploymentDto
 }
 
+// A list of employment
+// swagger:response employmentsResponse
+//lint:ignore U1000 for docs
+type employmentsResponseWrapper struct {
+	// A list of employment
+	// in: body
+	Body []EmploymentDto
+}
+
 // No content is returned by this API endpoint
 // swagger:response noContentResponse
 //lint:ignore U1000 for docs
@@ -44,4 +53,13 @@ type employmentIdParamsWrapper struct {
 	// in: path
 	// required: true
 	Id string `json:"id"`
+}
+
+// swagger:parameters getEmploymentByUserId
+//lint:ignore U1000 for docs
+type employmentUserIdParamsWrapper struct {
+	// The user id
+	// in: query
+	// required: true
+	UserId string `json:"userId"`
 }

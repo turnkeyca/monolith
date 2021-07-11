@@ -31,6 +31,15 @@ type referenceResponseWrapper struct {
 	Body ReferenceDto
 }
 
+// A list of references
+// swagger:response referencesResponse
+//lint:ignore U1000 for docs
+type referencesResponseWrapper struct {
+	// A list of references
+	// in: body
+	Body []ReferenceDto
+}
+
 // No content is returned by this API endpoint
 // swagger:response noContentResponse
 //lint:ignore U1000 for docs
@@ -44,4 +53,13 @@ type referenceIdParamsWrapper struct {
 	// in: path
 	// required: true
 	Id string `json:"id"`
+}
+
+// swagger:parameters getReferencesByUserId
+//lint:ignore U1000 for docs
+type referencesUserIdParamsWrapper struct {
+	// The user id
+	// in: query
+	// required: true
+	UserId string `json:"userId"`
 }

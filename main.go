@@ -2,7 +2,7 @@
 //
 // Documentation for Turnkey API
 //
-//	Schemes: https
+//	Schemes: http,https
 //	BasePath: /
 //	Version: 1.0.0
 //

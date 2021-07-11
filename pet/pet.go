@@ -15,9 +15,6 @@ type Handler struct {
 	db     *db.Database
 }
 
-type KeyId struct{}
-type KeyBody struct{}
-
 func NewHandler(logger *log.Logger, db *db.Database) *Handler {
 	return &Handler{
 		logger: logger,
@@ -39,6 +36,8 @@ func ConfigurePetRoutes(regexUuid string, router *mux.Router, logger *log.Logger
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/api/pet/{id:%s}", regexUuid), petHandler.HandleGetPet)
 	getRouter.Use(authenticator.AuthenticateHttp, petHandler.GetIdFromPath)
+	getRouter.HandleFunc(fmt.Sprintf("/api/pet?userId={userId:%s}", regexUuid), petHandler.HandleGetPetByUserId)
+	getRouter.Use(authenticator.AuthenticateHttp, petHandler.GetUserIdFromQueryParameters)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/api/pet", petHandler.HandlePostPet)

@@ -18,7 +18,7 @@ func NewUserDatabase(database *db.Database) *UserDatabase {
 
 func (udb *UserDatabase) SelectUser(id string) ([]UserDto, error) {
 	if os.Getenv("TEST") == "true" {
-		udb.PushQuery("select * from employments where id = $1;", id)
+		udb.PushQuery("select * from users where id = $1;", id)
 		dtos := []UserDto{}
 		for _, dto := range udb.GetNextTestReturn() {
 			dtos = append(dtos, dto.(UserDto))
