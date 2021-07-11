@@ -1,7 +1,6 @@
 basePath: /
 consumes:
 - application/json
-host: localhost:4202
 definitions:
   EmploymentDto:
     properties:
