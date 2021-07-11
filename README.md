@@ -13,12 +13,3 @@ I also included swagger documentation support for the api. If you want to edit o
 To run, run `make run`. In order for it to be usable you will need environment variable configurations. These can come from a `.env` file in the root directory if you wish. Reach out to riley to get that. 
 
 I can also provide the `launch.json` that I use with VS Code. 
-
-
-## important note
-the swagger file generated needs to be editted in order to have the correct server to point to. Please add (for the time being):
-
-```
-host: <the server url>
-```
-to the root configuration after generation. Yes, it's Swagger 2.0. Don't @ at me about that - when go-swagger ups it properly, I'll follow suit.
