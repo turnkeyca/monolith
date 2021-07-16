@@ -207,8 +207,8 @@ info:
 paths:
   /api/employment:
     get:
-      description: return an employment
-      operationId: getEmploymentByUserId
+      description: return employments for a user
+      operationId: getEmploymentsByUserId
       parameters:
       - description: The user id
         in: query
@@ -226,6 +226,12 @@ paths:
     post:
       description: create a new employment
       operationId: createEmployment
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/EmploymentDto'
       responses:
         "200":
           $ref: '#/responses/employmentResponse'
@@ -282,6 +288,11 @@ paths:
         required: true
         type: string
         x-go-name: Id
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/EmploymentDto'
       responses:
         "201":
           $ref: '#/responses/noContentResponse'
@@ -293,7 +304,7 @@ paths:
       - employment
   /api/pet:
     get:
-      description: return an pet
+      description: return all pets ofr a user
       operationId: getPetsByUserId
       parameters:
       - description: The user id
@@ -312,6 +323,12 @@ paths:
     post:
       description: create a new pet
       operationId: createPet
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/PetDto'
       responses:
         "200":
           $ref: '#/responses/petResponse'
@@ -368,6 +385,11 @@ paths:
         required: true
         type: string
         x-go-name: Id
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/PetDto'
       responses:
         "201":
           $ref: '#/responses/noContentResponse'
@@ -379,7 +401,7 @@ paths:
       - pet
   /api/reference:
     get:
-      description: return an reference
+      description: return all references ofr a user
       operationId: getReferencesByUserId
       parameters:
       - description: The user id
@@ -398,6 +420,12 @@ paths:
     post:
       description: create a new reference
       operationId: createReference
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/ReferenceDto'
       responses:
         "200":
           $ref: '#/responses/referenceResponse'
@@ -454,6 +482,11 @@ paths:
         required: true
         type: string
         x-go-name: Id
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/ReferenceDto'
       responses:
         "201":
           $ref: '#/responses/noContentResponse'
@@ -465,7 +498,7 @@ paths:
       - reference
   /api/roommate:
     get:
-      description: return an roommate
+      description: return all roommates for a user
       operationId: getRoommatesByUserId
       parameters:
       - description: The user id
@@ -484,6 +517,12 @@ paths:
     post:
       description: create a new roommate
       operationId: createRoommate
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/RoommateDto'
       responses:
         "200":
           $ref: '#/responses/roommateResponse'
@@ -540,6 +579,11 @@ paths:
         required: true
         type: string
         x-go-name: Id
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/RoommateDto'
       responses:
         "201":
           $ref: '#/responses/noContentResponse'
