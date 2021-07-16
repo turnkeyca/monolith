@@ -63,3 +63,11 @@ type referencesUserIdParamsWrapper struct {
 	// required: true
 	UserId string `json:"userId"`
 }
+
+// swagger:parameters updateReference createReference
+//lint:ignore U1000 for docs
+type referenceParamsWrapper struct {
+	// in: body
+	// required: true
+	Body ReferenceDto
+}

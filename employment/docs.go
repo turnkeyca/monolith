@@ -55,11 +55,19 @@ type employmentIdParamsWrapper struct {
 	Id string `json:"id"`
 }
 
-// swagger:parameters getEmploymentByUserId
+// swagger:parameters getEmploymentsByUserId
 //lint:ignore U1000 for docs
 type employmentUserIdParamsWrapper struct {
 	// The user id
 	// in: query
 	// required: true
 	UserId string `json:"userId"`
+}
+
+// swagger:parameters updateEmployment createEmployment
+//lint:ignore U1000 for docs
+type employmentParamsWrapper struct {
+	// in: body
+	// required: true
+	Body EmploymentDto
 }

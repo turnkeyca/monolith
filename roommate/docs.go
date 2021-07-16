@@ -63,3 +63,11 @@ type roommatesUserIdParamsWrapper struct {
 	// required: true
 	UserId string `json:"userId"`
 }
+
+// swagger:parameters updateRoommate createRoommate
+//lint:ignore U1000 for docs
+type roommateParamsWrapper struct {
+	// in: body
+	// required: true
+	Body RoommateDto
+}

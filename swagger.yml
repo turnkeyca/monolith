@@ -292,6 +292,23 @@ paths:
       tags:
       - employment
   /api/pet:
+    get:
+      description: return an pet
+      operationId: getPetsByUserId
+      parameters:
+      - description: The user id
+        in: query
+        name: userId
+        required: true
+        type: string
+        x-go-name: UserId
+      responses:
+        "200":
+          $ref: '#/responses/petsResponse'
+        "404":
+          $ref: '#/responses/petErrorResponse'
+      tags:
+      - pet
     post:
       description: create a new pet
       operationId: createPet
@@ -361,6 +378,23 @@ paths:
       tags:
       - pet
   /api/reference:
+    get:
+      description: return an reference
+      operationId: getReferencesByUserId
+      parameters:
+      - description: The user id
+        in: query
+        name: userId
+        required: true
+        type: string
+        x-go-name: UserId
+      responses:
+        "200":
+          $ref: '#/responses/referencesResponse'
+        "404":
+          $ref: '#/responses/referenceErrorResponse'
+      tags:
+      - reference
     post:
       description: create a new reference
       operationId: createReference
@@ -430,6 +464,23 @@ paths:
       tags:
       - reference
   /api/roommate:
+    get:
+      description: return an roommate
+      operationId: getRoommatesByUserId
+      parameters:
+      - description: The user id
+        in: query
+        name: userId
+        required: true
+        type: string
+        x-go-name: UserId
+      responses:
+        "200":
+          $ref: '#/responses/roommatesResponse'
+        "404":
+          $ref: '#/responses/roommateErrorResponse'
+      tags:
+      - roommate
     post:
       description: create a new roommate
       operationId: createRoommate

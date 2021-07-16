@@ -27,8 +27,8 @@ func (h *Handler) HandleGetPet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// swagger:route GET /api/pet pet getPetByUserId
-// return an pet
+// swagger:route GET /api/pet pet getPetsByUserId
+// return all pets ofr a user
 // responses:
 //	200: petsResponse
 //	404: petErrorResponse

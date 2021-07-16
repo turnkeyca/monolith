@@ -63,3 +63,11 @@ type petsUserIdParamsWrapper struct {
 	// required: true
 	UserId string `json:"userId"`
 }
+
+// swagger:parameters updatePet createPet
+//lint:ignore U1000 for docs
+type petParamsWrapper struct {
+	// in: body
+	// required: true
+	Body PetDto
+}

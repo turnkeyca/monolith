@@ -27,8 +27,8 @@ func (h *Handler) HandleGetEmployment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// swagger:route GET /api/employment employment getEmploymentByUserId
-// return an employment
+// swagger:route GET /api/employment employment getEmploymentsByUserId
+// return employments for a user
 // responses:
 //	200: employmentsResponse
 //	404: employmentErrorResponse

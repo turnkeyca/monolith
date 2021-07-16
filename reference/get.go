@@ -27,8 +27,8 @@ func (h *Handler) HandleGetReference(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// swagger:route GET /api/reference reference getReferenceByUserId
-// return an reference
+// swagger:route GET /api/reference reference getReferencesByUserId
+// return all references ofr a user
 // responses:
 //	200: referencesResponse
 //	404: referenceErrorResponse

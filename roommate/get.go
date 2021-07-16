@@ -27,8 +27,8 @@ func (h *Handler) HandleGetRoommate(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// swagger:route GET /api/roommate roommate getRoommateByUserId
-// return an roommate
+// swagger:route GET /api/roommate roommate getRoommatesByUserId
+// return all roommates for a user
 // responses:
 //	200: roommatesResponse
 //	404: roommateErrorResponse
