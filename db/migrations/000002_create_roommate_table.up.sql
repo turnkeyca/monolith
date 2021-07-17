@@ -3,6 +3,5 @@ create table roommate (
     user_id uuid, 
     full_name varchar(64),
     email varchar(64),
-    additional_details varchar(256),
     constraint FK_user_id foreign key (user_id) references users(id)
 );
