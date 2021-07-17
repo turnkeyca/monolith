@@ -19,8 +19,8 @@ create table users (
 	has_prev_eviction boolean,
 	can_credit_check boolean,
 	has_pets boolean,
-	additional_details_general varchar(64),
+	additional_details_general varchar(256),
 	move_in_date varchar(64),
 	move_out_date varchar(64),
-	additional_details_lease varchar(64)
+	additional_details_lease varchar(256)
 );
