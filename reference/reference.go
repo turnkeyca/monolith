@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/turnkeyca/monolith/auth"
 	"github.com/turnkeyca/monolith/db"
+	"github.com/turnkeyca/monolith/util"
 )
 
 type Handler struct {
@@ -30,13 +31,13 @@ type ValidationError struct {
 	Messages []string `json:"messages"`
 }
 
-func ConfigureReferenceRoutes(regexUuid string, router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator) {
+func ConfigureReferenceRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator) {
 	referenceHandler := NewHandler(logger, database)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc(fmt.Sprintf("/api/reference/{id:%s}", regexUuid), referenceHandler.HandleGetReference)
+	getRouter.HandleFunc(fmt.Sprintf("/api/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandleGetReference)
 	getRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetIdFromPath)
-	getRouter.HandleFunc(fmt.Sprintf("/api/reference?userId={userId:%s}", regexUuid), referenceHandler.HandleGetReference)
+	getRouter.HandleFunc("/api/reference", referenceHandler.HandleGetReferenceByUserId)
 	getRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetUserIdFromQueryParameters)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
@@ -44,10 +45,10 @@ func ConfigureReferenceRoutes(regexUuid string, router *mux.Router, logger *log.
 	postRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetBody)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc(fmt.Sprintf("/api/reference/{id:%s}", regexUuid), referenceHandler.HandlePutReference)
+	putRouter.HandleFunc(fmt.Sprintf("/api/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandlePutReference)
 	putRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetBody, referenceHandler.GetIdFromPath)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc(fmt.Sprintf("/api/reference/{id:%s}", regexUuid), referenceHandler.HandleDeleteReference)
+	deleteRouter.HandleFunc(fmt.Sprintf("/api/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandleDeleteReference)
 	deleteRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetIdFromPath)
 }

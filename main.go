@@ -38,8 +38,6 @@ import (
 	"github.com/turnkeyca/monolith/user"
 )
 
-const REGEX_UUID = "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
-
 func configureDocRoutes(router *mux.Router) {
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	opts := middleware.RedocOpts{SpecURL: "./swagger.yml"}
@@ -58,11 +56,11 @@ func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 
 	configureDocRoutes(router)
 	shorturl.ConfigureShortUrlRoutes(router, logger, bitly, authenticator)
-	user.ConfigureUserRoutes(REGEX_UUID, router, logger, database, authenticator)
-	roommate.ConfigureRoommateRoutes(REGEX_UUID, router, logger, database, authenticator)
-	reference.ConfigureReferenceRoutes(REGEX_UUID, router, logger, database, authenticator)
-	pet.ConfigurePetRoutes(REGEX_UUID, router, logger, database, authenticator)
-	employment.ConfigureEmploymentRoutes(REGEX_UUID, router, logger, database, authenticator)
+	user.ConfigureUserRoutes(router, logger, database, authenticator)
+	roommate.ConfigureRoommateRoutes(router, logger, database, authenticator)
+	reference.ConfigureReferenceRoutes(router, logger, database, authenticator)
+	pet.ConfigurePetRoutes(router, logger, database, authenticator)
+	employment.ConfigureEmploymentRoutes(router, logger, database, authenticator)
 
 	return router, nil
 }
