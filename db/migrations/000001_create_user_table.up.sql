@@ -3,7 +3,7 @@ create table users (
     full_name varchar(64),
     email varchar(64),
 	password varchar(32),
-	user_status varchar(23),
+	user_status varchar(8),
 	last_updated varchar(23),
 	created_on varchar(23),
 	phone_number varchar(16),
