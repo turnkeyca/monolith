@@ -11,7 +11,7 @@ import (
 // create a new employment
 //
 // responses:
-//	200: employmentResponse
+//	204: noContentResponse
 //  422: employmentErrorValidation
 //  500: employmentErrorResponse
 

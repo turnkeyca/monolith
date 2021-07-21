@@ -11,7 +11,7 @@ import (
 // create a new pet
 //
 // responses:
-//	200: petResponse
+//	204: noContentResponse
 //  422: petErrorValidation
 //  500: petErrorResponse
 

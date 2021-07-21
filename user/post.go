@@ -11,7 +11,7 @@ import (
 // create a new user
 //
 // responses:
-//	200: userResponse
+//	204: noContentResponse
 //  422: userErrorValidation
 //  500: userErrorResponse
 
