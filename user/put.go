@@ -60,7 +60,7 @@ func (h *Handler) UpdateUser(dto *UserDto) error {
 		dto.Email,
 		dto.Password,
 		dto.UserStatus,
-		fmt.Sprint("%23s", time.Now()),
+		time.Now().Format(time.RFC3339Nano),
 		dto.PhoneNumber,
 		dto.Nickname,
 		dto.Bio,
