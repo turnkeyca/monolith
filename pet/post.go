@@ -37,20 +37,23 @@ func (h *Handler) CreatePet(dto *PetDto) error {
 			pet_type,
 			breed, 
 			size_type, 
-			created_on
+			created_on,
+			last_updated
 		) values (
 			$1, 
 			$2, 
 			$3, 
 			$4, 
 			$5, 
-			$6
+			$6,
+			$7
 		);`,
 		dto.Id,
 		dto.UserId,
 		dto.PetType,
 		dto.Breed,
 		dto.SizeType,
+		time.Now().Format(time.RFC3339Nano),
 		time.Now().Format(time.RFC3339Nano),
 	)
 	return err

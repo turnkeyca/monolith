@@ -38,7 +38,9 @@ func (h *Handler) CreateReference(dto *ReferenceDto) error {
 			email, 
 			phone_number, 
 			relationship, 
-			additional_details
+			additional_details,
+			created_on, 
+			last_updated
 		) values (
 			$1, 
 			$2, 
@@ -46,7 +48,9 @@ func (h *Handler) CreateReference(dto *ReferenceDto) error {
 			$4, 
 			$5, 
 			$6, 
-			$7
+			$7,
+			$8,
+			$9
 		);`,
 		dto.Id,
 		dto.UserId,
@@ -55,6 +59,7 @@ func (h *Handler) CreateReference(dto *ReferenceDto) error {
 		dto.PhoneNumber,
 		dto.Relationship,
 		dto.AdditionalDetails,
+		time.Now().Format(time.RFC3339Nano),
 		time.Now().Format(time.RFC3339Nano),
 	)
 	return err
