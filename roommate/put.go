@@ -35,14 +35,12 @@ func (h *Handler) UpdateRoommate(dto *RoommateDto) error {
 			user_id=$2, 
 			full_name=$3, 
 			email=$4, 
-			additional_details=$5 
-			last_updated=$6
+			last_updated=$5
 		where id=$1;`,
 		dto.Id,
 		dto.UserId,
 		dto.FullName,
 		dto.Email,
-		dto.AdditionalDetails,
 		time.Now().Format(time.RFC3339Nano),
 	)
 	return err

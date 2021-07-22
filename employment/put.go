@@ -38,7 +38,7 @@ func (h *Handler) UpdateEmployment(dto *EmploymentDto) error {
 			duration=$5, 
 			additional_details=$6, 
 			annual_salary=$7,
-			rent_affordability=$8
+			rent_affordability=$8,
 			last_updated=$9
 		where id=$1;`,
 		dto.Id,

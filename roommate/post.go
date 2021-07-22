@@ -36,7 +36,6 @@ func (h *Handler) CreateRoommate(dto *RoommateDto) error {
 			user_id, 
 			full_name, 
 			email, 
-			additional_details,
 			created_on,
 			last_updated
 		) values (
@@ -45,14 +44,12 @@ func (h *Handler) CreateRoommate(dto *RoommateDto) error {
 			$3, 
 			$4, 
 			$5,
-			$6,
-			$7
+			$6
 		);`,
 		dto.Id,
 		dto.UserId,
 		dto.FullName,
 		dto.Email,
-		dto.AdditionalDetails,
 		time.Now().Format(time.RFC3339Nano),
 		time.Now().Format(time.RFC3339Nano),
 	)

@@ -40,7 +40,7 @@ func (h *Handler) CreateEmployment(dto *EmploymentDto) error {
 			additional_details, 
 			annual_salary, 
 			created_on,
-			last_updated,
+			last_updated
 		) values (
 			$1, 
 			$2, 

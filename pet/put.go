@@ -35,7 +35,8 @@ func (h *Handler) UpdatePet(dto *PetDto) error {
 			user_id=$2, 
 			pet_type=$3,
 			breed=$4, 
-			size_type=$5
+			size_type=$5,
+			last_updated=$6
 		where id=$1;`,
 		dto.Id,
 		dto.UserId,

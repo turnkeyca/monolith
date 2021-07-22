@@ -12,7 +12,6 @@ type RoommateDto struct {
 	UserId            string `json:"userId" validate:"omitempty,uuid" db:"user_id"`
 	FullName          string `json:"fullName" db:"full_name"`
 	Email             string `json:"email" db:"email"`
-	AdditionalDetails string `json:"additionalDetails" db:"additional_details"`
 	LastUpdated       string `json:"lastUpdated" db:"last_updated"`
 	CreatedOn         string `json:"createdOn" db:"created_on"`
 }

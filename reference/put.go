@@ -37,7 +37,7 @@ func (h *Handler) UpdateReference(dto *ReferenceDto) error {
 			email=$4, 
 			phone_number=$5, 
 			relationship=$6, 
-			additional_details=$7 
+			additional_details=$7, 
 			last_updated=$8
 		where id=$1;`,
 		dto.Id,
