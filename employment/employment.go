@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/turnkeyca/monolith/auth"
 	"github.com/turnkeyca/monolith/db"
+	"github.com/turnkeyca/monolith/util"
 )
 
 type Handler struct {
@@ -30,11 +31,11 @@ type ValidationError struct {
 	Messages []string `json:"messages"`
 }
 
-func ConfigureEmploymentRoutes(regexUuid string, router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator) {
+func ConfigureEmploymentRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator) {
 	employmentHandler := NewHandler(logger, database)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc(fmt.Sprintf("/api/employment/{id:%s}", regexUuid), employmentHandler.HandleGetEmployment)
+	getRouter.HandleFunc(fmt.Sprintf("/api/employment/{id:%s}", util.REGEX_UUID), employmentHandler.HandleGetEmployment)
 	getRouter.Use(authenticator.AuthenticateHttp, employmentHandler.GetIdFromPath)
 	getRouter.HandleFunc("/api/employment", employmentHandler.HandleGetEmploymentByUserId)
 	getRouter.Use(authenticator.AuthenticateHttp, employmentHandler.GetUserIdFromQueryParameters)
@@ -44,10 +45,10 @@ func ConfigureEmploymentRoutes(regexUuid string, router *mux.Router, logger *log
 	postRouter.Use(authenticator.AuthenticateHttp, employmentHandler.GetBody)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc(fmt.Sprintf("/api/employment/{id:%s}", regexUuid), employmentHandler.HandlePutEmployment)
+	putRouter.HandleFunc(fmt.Sprintf("/api/employment/{id:%s}", util.REGEX_UUID), employmentHandler.HandlePutEmployment)
 	putRouter.Use(authenticator.AuthenticateHttp, employmentHandler.GetBody, employmentHandler.GetIdFromPath)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc(fmt.Sprintf("/api/employment/{id:%s}", regexUuid), employmentHandler.HandleDeleteEmployment)
+	deleteRouter.HandleFunc(fmt.Sprintf("/api/employment/{id:%s}", util.REGEX_UUID), employmentHandler.HandleDeleteEmployment)
 	deleteRouter.Use(authenticator.AuthenticateHttp, employmentHandler.GetIdFromPath)
 }

@@ -11,7 +11,7 @@ import (
 // create a new roommate
 //
 // responses:
-//	200: roommateResponse
+//	204: noContentResponse
 //  422: roommateErrorValidation
 //  500: roommateErrorResponse
 

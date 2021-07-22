@@ -233,8 +233,8 @@ paths:
         schema:
           $ref: '#/definitions/EmploymentDto'
       responses:
-        "200":
-          $ref: '#/responses/employmentResponse'
+        "204":
+          $ref: '#/responses/noContentResponse'
         "422":
           $ref: '#/responses/employmentErrorValidation'
         "500":
@@ -330,8 +330,8 @@ paths:
         schema:
           $ref: '#/definitions/PetDto'
       responses:
-        "200":
-          $ref: '#/responses/petResponse'
+        "204":
+          $ref: '#/responses/noContentResponse'
         "422":
           $ref: '#/responses/petErrorValidation'
         "500":
@@ -427,8 +427,8 @@ paths:
         schema:
           $ref: '#/definitions/ReferenceDto'
       responses:
-        "200":
-          $ref: '#/responses/referenceResponse'
+        "204":
+          $ref: '#/responses/noContentResponse'
         "422":
           $ref: '#/responses/referenceErrorValidation'
         "500":
@@ -524,8 +524,8 @@ paths:
         schema:
           $ref: '#/definitions/RoommateDto'
       responses:
-        "200":
-          $ref: '#/responses/roommateResponse'
+        "204":
+          $ref: '#/responses/noContentResponse'
         "422":
           $ref: '#/responses/roommateErrorValidation'
         "500":
@@ -615,9 +615,15 @@ paths:
     post:
       description: create a new user
       operationId: createUser
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/UserDto'
       responses:
-        "200":
-          $ref: '#/responses/userResponse'
+        "204":
+          $ref: '#/responses/noContentResponse'
         "422":
           $ref: '#/responses/userErrorValidation'
         "500":
@@ -671,6 +677,11 @@ paths:
         required: true
         type: string
         x-go-name: Id
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/UserDto'
       responses:
         "201":
           $ref: '#/responses/noContentResponse'

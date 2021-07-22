@@ -11,7 +11,7 @@ import (
 // create a new reference
 //
 // responses:
-//	200: referenceResponse
+//	204: noContentResponse
 //  422: referenceErrorValidation
 //  500: referenceErrorResponse
 

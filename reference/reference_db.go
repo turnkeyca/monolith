@@ -40,6 +40,6 @@ func (rdb *ReferenceDatabase) SelectReferencesByUserId(id string) ([]ReferenceDt
 		return dtos, rdb.GetNextTestError()
 	}
 	references := []ReferenceDto{}
-	err := rdb.Select(&references, "select * from reference where id = $1;", id)
+	err := rdb.Select(&references, "select * from reference where user_id = $1;", id)
 	return references, err
 }

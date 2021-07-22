@@ -40,6 +40,6 @@ func (edb *EmploymentDatabase) SelectEmploymentByUserId(id string) ([]Employment
 		return dtos, edb.GetNextTestError()
 	}
 	employments := []EmploymentDto{}
-	err := edb.Select(&employments, "select * from employment where id = $1;", id)
+	err := edb.Select(&employments, "select * from employment where user_id = $1;", id)
 	return employments, err
 }
