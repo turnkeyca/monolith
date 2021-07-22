@@ -3,6 +3,7 @@ package pet
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 // swagger:route PUT /api/pet/{id} pet updatePet
@@ -28,6 +29,20 @@ func (h *Handler) HandlePutPet(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) UpdatePet(dto *PetDto) error {
-	err := h.db.Run("update pet set id=$1, user_id=$2, breed=$3, weight=$4 where id=$1;", dto.Id, dto.UserId, dto.Breed, dto.Weight)
+	err := h.db.Run(
+		`update pet set 
+			id=$1, 
+			user_id=$2, 
+			pet_type=$3,
+			breed=$4, 
+			size_type=$5
+		where id=$1;`,
+		dto.Id,
+		dto.UserId,
+		dto.PetType,
+		dto.Breed,
+		dto.SizeType,
+		time.Now().Format(time.RFC3339Nano),
+	)
 	return err
 }
