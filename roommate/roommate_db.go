@@ -40,6 +40,6 @@ func (rdb *RoommateDatabase) SelectRoommatesByUserId(id string) ([]RoommateDto, 
 		return dtos, rdb.GetNextTestError()
 	}
 	roommates := []RoommateDto{}
-	err := rdb.Select(&roommates, "select * from roommate where id = $1;", id)
+	err := rdb.Select(&roommates, "select * from roommate where user_id = $1;", id)
 	return roommates, err
 }

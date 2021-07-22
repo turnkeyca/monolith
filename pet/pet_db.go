@@ -40,6 +40,6 @@ func (pdb *PetDatabase) SelectPetsByUserId(id string) ([]PetDto, error) {
 		return dtos, pdb.GetNextTestError()
 	}
 	pets := []PetDto{}
-	err := pdb.Select(&pets, "select * from pet where id = $1;", id)
+	err := pdb.Select(&pets, "select * from pet where user_id = $1;", id)
 	return pets, err
 }
