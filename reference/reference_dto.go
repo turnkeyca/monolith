@@ -9,12 +9,14 @@ import (
 
 type ReferenceDto struct {
 	Id                string `json:"id" validate:"omitempty,uuid" db:"id"`
-	UserId            string `json:"userId" validate:"required,uuid" db:"user_id"`
-	FullName          string `json:"fullName" validate:"required" db:"full_name"`
+	UserId            string `json:"userId" validate:"omitempty,uuid" db:"user_id"`
+	FullName          string `json:"fullName" db:"full_name"`
 	Email             string `json:"email" db:"email"`
 	PhoneNumber       string `json:"phoneNumber" db:"phone_number"`
-	Relationship      string `json:"relationship" validate:"required" db:"relationship"`
+	Relationship      string `json:"relationship" db:"relationship"`
 	AdditionalDetails string `json:"additionalDetails" db:"additional_details"`
+	LastUpdated       string `json:"lastUpdated" db:"last_updated"`
+	CreatedOn         string `json:"createdOn" db:"created_on"`
 }
 
 func Read(r io.Reader) (*ReferenceDto, error) {

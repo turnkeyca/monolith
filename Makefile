@@ -29,7 +29,7 @@ db-local : db-local-check
 	sudo docker run --rm -ti --network host -e POSTGRES_PASSWORD=password postgres
 
 db-local-file : db-local-check
-	psql -h localhost -U postgres -w turnkey -f ./db/migrations/$(FILE)
+	psql -h localhost -U postgres -w turnkey -f ./$(FILE)
 
 db-local-up : 
 	./db-run-all.sh up

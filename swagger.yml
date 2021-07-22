@@ -11,6 +11,9 @@ definitions:
         format: double
         type: number
         x-go-name: AnnualSalary
+      createdOn:
+        type: string
+        x-go-name: CreatedOn
       duration:
         type: string
         x-go-name: Duration
@@ -20,9 +23,15 @@ definitions:
       id:
         type: string
         x-go-name: Id
+      lastUpdated:
+        type: string
+        x-go-name: LastUpdated
       occupation:
         type: string
         x-go-name: Occupation
+      rentAfforsability:
+        type: string
+        x-go-name: RentAffordability
       userId:
         type: string
         x-go-name: UserId
@@ -40,26 +49,34 @@ definitions:
       breed:
         type: string
         x-go-name: Breed
+      createdOn:
+        type: string
+        x-go-name: CreatedOn
       id:
         type: string
         x-go-name: Id
+      lastUpdated:
+        type: string
+        x-go-name: LastUpdated
+      petType:
+        type: string
+        x-go-name: PetType
+      sizeType:
+        type: string
+        x-go-name: SizeType
       userId:
         type: string
         x-go-name: UserId
-      weight:
-        format: double
-        type: number
-        x-go-name: Weight
     type: object
     x-go-package: github.com/turnkeyca/monolith/pet
-  ProvinceType:
-    type: string
-    x-go-package: github.com/turnkeyca/monolith/user
   ReferenceDto:
     properties:
       additionalDetails:
         type: string
         x-go-name: AdditionalDetails
+      createdOn:
+        type: string
+        x-go-name: CreatedOn
       email:
         type: string
         x-go-name: Email
@@ -69,6 +86,9 @@ definitions:
       id:
         type: string
         x-go-name: Id
+      lastUpdated:
+        type: string
+        x-go-name: LastUpdated
       phoneNumber:
         type: string
         x-go-name: PhoneNumber
@@ -82,9 +102,9 @@ definitions:
     x-go-package: github.com/turnkeyca/monolith/reference
   RoommateDto:
     properties:
-      additionalDetails:
+      createdOn:
         type: string
-        x-go-name: AdditionalDetails
+        x-go-name: CreatedOn
       email:
         type: string
         x-go-name: Email
@@ -94,6 +114,9 @@ definitions:
       id:
         type: string
         x-go-name: Id
+      lastUpdated:
+        type: string
+        x-go-name: LastUpdated
       userId:
         type: string
         x-go-name: UserId
@@ -108,18 +131,18 @@ definitions:
     x-go-package: github.com/turnkeyca/monolith/shorturl
   UserDto:
     properties:
-      additionalDetails:
+      additionalDetailsGeneral:
         type: string
-        x-go-name: AdditionalDetails
+        x-go-name: AdditionalDetailsGeneral
       additionalDetailsLease:
         type: string
         x-go-name: AdditionalDetailsLease
       bio:
         type: string
         x-go-name: Bio
-      city:
+      createdOn:
         type: string
-        x-go-name: City
+        x-go-name: CreatedOn
       creditCheck:
         type: boolean
         x-go-name: CanCreditCheck
@@ -135,17 +158,12 @@ definitions:
       id:
         type: string
         x-go-name: Id
+      lastUpdated:
+        type: string
+        x-go-name: LastUpdated
       lawsuit:
         type: boolean
         x-go-name: HasPreviousLawsuit
-      monthlyBudgetMax:
-        format: double
-        type: number
-        x-go-name: MonthlyBudgetMax
-      monthlyBudgetMin:
-        format: double
-        type: number
-        x-go-name: MonthlyBudgetMin
       moveInDate:
         type: string
         x-go-name: MoveInDate
@@ -167,11 +185,6 @@ definitions:
       phoneNumber:
         type: string
         x-go-name: PhoneNumber
-      propertyManagementCompany:
-        type: string
-        x-go-name: PropertyManagementCompany
-      province:
-        $ref: '#/definitions/ProvinceType'
       roommates:
         type: boolean
         x-go-name: HasRoommates
@@ -184,9 +197,14 @@ definitions:
       smoker:
         type: boolean
         x-go-name: IsSmoker
+      userStatusType:
+        $ref: '#/definitions/UserStatusType'
       userType:
         $ref: '#/definitions/UserType'
     type: object
+    x-go-package: github.com/turnkeyca/monolith/user
+  UserStatusType:
+    type: string
     x-go-package: github.com/turnkeyca/monolith/user
   UserType:
     type: string

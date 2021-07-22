@@ -3,6 +3,7 @@ package reference
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -29,6 +30,37 @@ func (h *Handler) HandlePostReference(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) CreateReference(dto *ReferenceDto) error {
 	dto.Id = uuid.New().String()
-	err := h.db.Run("insert into reference (id, user_id, full_name, email, phone_number, relationship, additional_details) values ($1, $2, $3, $4, $5, $6, $7);", dto.Id, dto.UserId, dto.FullName, dto.Email, dto.PhoneNumber, dto.Relationship, dto.AdditionalDetails)
+	err := h.db.Run(
+		`insert into reference (
+			id, 
+			user_id, 
+			full_name, 
+			email, 
+			phone_number, 
+			relationship, 
+			additional_details,
+			created_on, 
+			last_updated
+		) values (
+			$1, 
+			$2, 
+			$3, 
+			$4, 
+			$5, 
+			$6, 
+			$7,
+			$8,
+			$9
+		);`,
+		dto.Id,
+		dto.UserId,
+		dto.FullName,
+		dto.Email,
+		dto.PhoneNumber,
+		dto.Relationship,
+		dto.AdditionalDetails,
+		time.Now().Format(time.RFC3339Nano),
+		time.Now().Format(time.RFC3339Nano),
+	)
 	return err
 }

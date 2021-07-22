@@ -5,6 +5,7 @@ case $1 in
         for filename in db/migrations/*; do
             if [[ "$filename" == *.down.sql ]]
             then
+                echo $filename
                 FILE="$filename" make db-local-file
             fi
         done;

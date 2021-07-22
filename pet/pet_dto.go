@@ -8,10 +8,13 @@ import (
 )
 
 type PetDto struct {
-	Id     string  `json:"id" validate:"omitempty,uuid" db:"id"`
-	UserId string  `json:"userId" validate:"required,uuid" db:"user_id"`
-	Breed  string  `json:"breed" db:"breed"`
-	Weight float64 `json:"weight" db:"weight"`
+	Id          string `json:"id" validate:"omitempty,uuid" db:"id"`
+	UserId      string `json:"userId" validate:"omitempty,uuid" db:"user_id"`
+	PetType     string `json:"petType" db:"pet_type"`
+	Breed       string `json:"breed" db:"breed"`
+	SizeType    string `json:"sizeType" db:"size_type"`
+	LastUpdated string `json:"lastUpdated" db:"last_updated"`
+	CreatedOn   string `json:"createdOn" db:"created_on"`
 }
 
 func Read(r io.Reader) (*PetDto, error) {
