@@ -615,6 +615,12 @@ paths:
     post:
       description: create a new user
       operationId: createUser
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/UserDto'
       responses:
         "204":
           $ref: '#/responses/noContentResponse'
@@ -671,6 +677,11 @@ paths:
         required: true
         type: string
         x-go-name: Id
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/UserDto'
       responses:
         "201":
           $ref: '#/responses/noContentResponse'
