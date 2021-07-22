@@ -27,7 +27,7 @@ const (
 var AllUserStatusTypes []UserStatusType = []UserStatusType{INACTIVE, ACTIVE}
 
 type UserDto struct {
-	Id                       string         `json:"id" db:"id"`
+	Id                       string         `json:"id" validate:"omitempty,uuid" db:"id"`
 	FullName                 string         `json:"fullName" db:"full_name"`
 	Email                    string         `json:"email" db:"email"`
 	Password                 string         `json:"password" db:"password"`

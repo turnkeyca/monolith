@@ -3,6 +3,7 @@ package roommate
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -29,6 +30,28 @@ func (h *Handler) HandlePostRoommate(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) CreateRoommate(dto *RoommateDto) error {
 	dto.Id = uuid.New().String()
-	err := h.db.Run("insert into roommate (id, user_id, full_name, email, additional_details) values ($1, $2, $3, $4, $5);", dto.Id, dto.UserId, dto.FullName, dto.Email, dto.AdditionalDetails)
+	err := h.db.Run(
+		`insert into roommate (
+			id, 
+			user_id, 
+			full_name, 
+			email, 
+			additional_details,
+			created_on
+		) values (
+			$1, 
+			$2, 
+			$3, 
+			$4, 
+			$5,
+			$6
+		);`,
+		dto.Id,
+		dto.UserId,
+		dto.FullName,
+		dto.Email,
+		dto.AdditionalDetails,
+		time.Now().Format(time.RFC3339Nano),
+	)
 	return err
 }

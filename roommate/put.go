@@ -3,6 +3,7 @@ package roommate
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 // swagger:route PUT /api/roommate/{id} roommate updateRoommate
@@ -28,6 +29,21 @@ func (h *Handler) HandlePutRoommate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) UpdateRoommate(dto *RoommateDto) error {
-	err := h.db.Run("update roommate set id=$1, user_id=$2, full_name=$3, email=$4, additional_details=$5 where id=$1;", dto.Id, dto.UserId, dto.FullName, dto.Email, dto.AdditionalDetails)
+	err := h.db.Run(
+		`update roommate set 
+			id=$1, 
+			user_id=$2, 
+			full_name=$3, 
+			email=$4, 
+			additional_details=$5 
+			last_updated=$6
+		where id=$1;`,
+		dto.Id,
+		dto.UserId,
+		dto.FullName,
+		dto.Email,
+		dto.AdditionalDetails,
+		time.Now().Format(time.RFC3339Nano),
+	)
 	return err
 }

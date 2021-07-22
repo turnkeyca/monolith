@@ -9,10 +9,12 @@ import (
 
 type RoommateDto struct {
 	Id                string `json:"id" validate:"omitempty,uuid" db:"id"`
-	UserId            string `json:"userId" validate:"required,uuid" db:"user_id"`
-	FullName          string `json:"fullName" validate:"required" db:"full_name"`
-	Email             string `json:"email" validate:"omitempty,email" db:"email"`
+	UserId            string `json:"userId" validate:"omitempty,uuid" db:"user_id"`
+	FullName          string `json:"fullName" db:"full_name"`
+	Email             string `json:"email" db:"email"`
 	AdditionalDetails string `json:"additionalDetails" db:"additional_details"`
+	LastUpdated       string `json:"lastUpdated" db:"last_updated"`
+	CreatedOn         string `json:"createdOn" db:"created_on"`
 }
 
 func Read(r io.Reader) (*RoommateDto, error) {
