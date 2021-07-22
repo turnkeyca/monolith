@@ -6,16 +6,13 @@ import (
 
 func TestValidateLandlord(t *testing.T) {
 	d := &UserDto{
-		FullName:                  "riley herman",
-		Email:                     "riley@herman.ca",
-		Password:                  "password",
-		PhoneNumber:               "3069999999",
-		Nickname:                  "nick",
-		City:                      "Regina",
-		Province:                  SASKATCHEWAN,
-		UserType:                  LANDLORD,
-		SendNotifications:         true,
-		PropertyManagementCompany: "PMC Co",
+		FullName:          "riley herman",
+		Email:             "riley@herman.ca",
+		Password:          "password",
+		PhoneNumber:       "3069999999",
+		Nickname:          "nick",
+		UserType:          LANDLORD,
+		SendNotifications: true,
 	}
 	err := d.Validate()
 	if err != nil {
@@ -30,8 +27,6 @@ func TestValidateRenter(t *testing.T) {
 		Password:          "password",
 		PhoneNumber:       "3069999999",
 		Nickname:          "nick",
-		City:              "Regina",
-		Province:          SASKATCHEWAN,
 		UserType:          RENTER,
 		SendNotifications: true,
 		MovingReason:      "because I can",
