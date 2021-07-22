@@ -15,6 +15,8 @@ type ReferenceDto struct {
 	PhoneNumber       string `json:"phoneNumber" db:"phone_number"`
 	Relationship      string `json:"relationship" validate:"required" db:"relationship"`
 	AdditionalDetails string `json:"additionalDetails" db:"additional_details"`
+	LastUpdated       string `json:"lastUpdated" db:"last_updated"`
+	CreatedOn         string `json:"createdOn" db:"created_on"`
 }
 
 func Read(r io.Reader) (*ReferenceDto, error) {
