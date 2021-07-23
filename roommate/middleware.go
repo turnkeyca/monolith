@@ -9,10 +9,31 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type KeyId struct{}
+type KeyBody struct{}
+type KeyUserId struct{}
+
 func (h *Handler) GetIdFromPath(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if mux.Vars(r)["id"] == "" {
+			next.ServeHTTP(w, r)
+			return
+		}
 		id := uuid.MustParse(mux.Vars(r)["id"]).String()
 		ctx := context.WithValue(r.Context(), KeyId{}, id)
+		r = r.WithContext(ctx)
+		next.ServeHTTP(w, r)
+	})
+}
+
+func (h *Handler) GetUserIdFromQueryParameters(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Query().Get("userId") == "" {
+			next.ServeHTTP(w, r)
+			return
+		}
+		userId := uuid.MustParse(r.URL.Query().Get("userId")).String()
+		ctx := context.WithValue(r.Context(), KeyUserId{}, userId)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
 	})

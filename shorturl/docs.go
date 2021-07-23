@@ -1,23 +1,8 @@
-// Package classification of Turnkey API
-//
-// Documentation for Turnkey API
-//
-//	Schemes: http
-//	BasePath: /
-//	Version: 1.0.0
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	- application/json
-//
-// swagger:meta
 package shorturl
 
 //
 // NOTE: Types defined here are purely for documentation purposes
-// these types are not used by any of the handers
+// these types are not used by any of the handlers
 
 // Generic error message returned as a string
 // swagger:response shortUrlErrorResponse
@@ -35,4 +20,13 @@ type shortUrlResponseWrapper struct {
 	// A short url
 	// in: body
 	Body ShortUrlDto
+}
+
+// swagger:parameters getShortUrl
+//lint:ignore U1000 for docs
+type shortUrlParamsWrapper struct {
+	// The url to be converted
+	// in: query
+	// required: true
+	Url string `json:"url"`
 }

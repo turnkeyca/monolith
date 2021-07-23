@@ -1,25 +1,8 @@
-// Package classification of Turnkey API
-//
-// Documentation for Turnkey API
-//
-//	Schemes: http
-//	BasePath: /
-//	Version: 1.0.0
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	- application/json
-//
-// swagger:meta
 package roommate
-
-import "github.com/google/uuid"
 
 //
 // NOTE: Types defined here are purely for documentation purposes
-// these types are not used by any of the handers
+// these types are not used by any of the handlers
 
 // Generic error message returned as a string
 // swagger:response roommateErrorResponse
@@ -48,6 +31,15 @@ type roommateResponseWrapper struct {
 	Body RoommateDto
 }
 
+// A list of roommates
+// swagger:response roommatesResponse
+//lint:ignore U1000 for docs
+type roommatesResponseWrapper struct {
+	// A list of roommates
+	// in: body
+	Body []RoommateDto
+}
+
 // No content is returned by this API endpoint
 // swagger:response noContentResponse
 //lint:ignore U1000 for docs
@@ -60,5 +52,22 @@ type roommateIdParamsWrapper struct {
 	// The id of the roommate for which the operation relates
 	// in: path
 	// required: true
-	Id uuid.UUID `json:"id"`
+	Id string `json:"id"`
+}
+
+// swagger:parameters getRoommatesByUserId
+//lint:ignore U1000 for docs
+type roommatesUserIdParamsWrapper struct {
+	// The user id
+	// in: query
+	// required: true
+	UserId string `json:"userId"`
+}
+
+// swagger:parameters updateRoommate createRoommate
+//lint:ignore U1000 for docs
+type roommateParamsWrapper struct {
+	// in: body
+	// required: true
+	Body RoommateDto
 }

@@ -5,10 +5,8 @@ import (
 	"net/http"
 )
 
-// swagger:route GET /api/short-url?longUrl={url} shorturl getShortUrl
-// get a bitly short url
-
-// Return a bitly short url
+// swagger:route GET /api/short-url shorturl getShortUrl
+// return a bitly short url
 // responses:
 //	200: shortUrlResponse
 //	500: shortUrlErrorResponse

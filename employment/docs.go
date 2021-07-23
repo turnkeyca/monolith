@@ -1,25 +1,8 @@
-// Package classification of Turnkey API
-//
-// Documentation for Turnkey API
-//
-//	Schemes: http
-//	BasePath: /
-//	Version: 1.0.0
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	- application/json
-//
-// swagger:meta
 package employment
-
-import "github.com/google/uuid"
 
 //
 // NOTE: Types defined here are purely for documentation purposes
-// these types are not used by any of the handers
+// these types are not used by any of the handlers
 
 // Generic error message returned as a string
 // swagger:response employmentErrorResponse
@@ -48,6 +31,15 @@ type employmentResponseWrapper struct {
 	Body EmploymentDto
 }
 
+// A list of employment
+// swagger:response employmentsResponse
+//lint:ignore U1000 for docs
+type employmentsResponseWrapper struct {
+	// A list of employment
+	// in: body
+	Body []EmploymentDto
+}
+
 // No content is returned by this API endpoint
 // swagger:response noContentResponse
 //lint:ignore U1000 for docs
@@ -60,5 +52,22 @@ type employmentIdParamsWrapper struct {
 	// The id of the employment for which the operation relates
 	// in: path
 	// required: true
-	Id uuid.UUID `json:"id"`
+	Id string `json:"id"`
+}
+
+// swagger:parameters getEmploymentsByUserId
+//lint:ignore U1000 for docs
+type employmentUserIdParamsWrapper struct {
+	// The user id
+	// in: query
+	// required: true
+	UserId string `json:"userId"`
+}
+
+// swagger:parameters updateEmployment createEmployment
+//lint:ignore U1000 for docs
+type employmentParamsWrapper struct {
+	// in: body
+	// required: true
+	Body EmploymentDto
 }

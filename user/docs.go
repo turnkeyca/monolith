@@ -1,25 +1,8 @@
-// Package classification of Turnkey API
-//
-// Documentation for Turnkey API
-//
-//	Schemes: http
-//	BasePath: /
-//	Version: 1.0.0
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	- application/json
-//
-// swagger:meta
 package user
-
-import "github.com/google/uuid"
 
 //
 // NOTE: Types defined here are purely for documentation purposes
-// these types are not used by any of the handers
+// these types are not used by any of the handlers
 
 // Generic error message returned as a string
 // swagger:response userErrorResponse
@@ -60,5 +43,13 @@ type userIdParamsWrapper struct {
 	// The id of the user for which the operation relates
 	// in: path
 	// required: true
-	Id uuid.UUID `json:"id"`
+	Id string `json:"id"`
+}
+
+// swagger:parameters updateUser createUser
+//lint:ignore U1000 for docs
+type userParamsWrapper struct {
+	// in: body
+	// required: true
+	Body UserDto
 }

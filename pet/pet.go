@@ -8,15 +8,13 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/turnkeyca/monolith/auth"
 	"github.com/turnkeyca/monolith/db"
+	"github.com/turnkeyca/monolith/util"
 )
 
 type Handler struct {
 	logger *log.Logger
 	db     *db.Database
 }
-
-type KeyId struct{}
-type KeyBody struct{}
 
 func NewHandler(logger *log.Logger, db *db.Database) *Handler {
 	return &Handler{
@@ -33,22 +31,24 @@ type ValidationError struct {
 	Messages []string `json:"messages"`
 }
 
-func ConfigurePetRoutes(regexUuid string, router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator) {
+func ConfigurePetRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator) {
 	petHandler := NewHandler(logger, database)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc(fmt.Sprintf("/api/pet/{id:%s}", regexUuid), petHandler.HandleGetPet)
+	getRouter.HandleFunc(fmt.Sprintf("/api/pet/{id:%s}", util.REGEX_UUID), petHandler.HandleGetPet)
 	getRouter.Use(authenticator.AuthenticateHttp, petHandler.GetIdFromPath)
+	getRouter.HandleFunc("/api/pet", petHandler.HandleGetPetByUserId)
+	getRouter.Use(authenticator.AuthenticateHttp, petHandler.GetUserIdFromQueryParameters)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/api/pet", petHandler.HandlePostPet)
 	postRouter.Use(authenticator.AuthenticateHttp, petHandler.GetBody)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc(fmt.Sprintf("/api/pet/{id:%s}", regexUuid), petHandler.HandlePutPet)
+	putRouter.HandleFunc(fmt.Sprintf("/api/pet/{id:%s}", util.REGEX_UUID), petHandler.HandlePutPet)
 	putRouter.Use(authenticator.AuthenticateHttp, petHandler.GetBody, petHandler.GetIdFromPath)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc(fmt.Sprintf("/api/pet/{id:%s}", regexUuid), petHandler.HandleDeletePet)
+	deleteRouter.HandleFunc(fmt.Sprintf("/api/pet/{id:%s}", util.REGEX_UUID), petHandler.HandleDeletePet)
 	deleteRouter.Use(authenticator.AuthenticateHttp, petHandler.GetIdFromPath)
 }

@@ -3,7 +3,6 @@ package roommate
 import (
 	"os"
 
-	"github.com/google/uuid"
 	"github.com/turnkeyca/monolith/db"
 )
 
@@ -17,9 +16,9 @@ func NewRoommateDatabase(database *db.Database) *RoommateDatabase {
 	}
 }
 
-func (rdb *RoommateDatabase) SelectRoommate(id uuid.UUID) ([]RoommateDto, error) {
+func (rdb *RoommateDatabase) SelectRoommate(id string) ([]RoommateDto, error) {
 	if os.Getenv("TEST") == "true" {
-		rdb.PushQuery("select * from roommate where id = $1;", id.String())
+		rdb.PushQuery("select * from roommate where id = $1;", id)
 		dtos := []RoommateDto{}
 		for _, dto := range rdb.GetNextTestReturn() {
 			dtos = append(dtos, dto.(RoommateDto))
@@ -27,6 +26,20 @@ func (rdb *RoommateDatabase) SelectRoommate(id uuid.UUID) ([]RoommateDto, error)
 		return dtos, rdb.GetNextTestError()
 	}
 	roommates := []RoommateDto{}
-	err := rdb.Select(&roommates, "select * from roommate where id = $1;", id.String())
+	err := rdb.Select(&roommates, "select * from roommate where id = $1;", id)
+	return roommates, err
+}
+
+func (rdb *RoommateDatabase) SelectRoommatesByUserId(id string) ([]RoommateDto, error) {
+	if os.Getenv("TEST") == "true" {
+		rdb.PushQuery("select * from roommate where user_id = $1;", id)
+		dtos := []RoommateDto{}
+		for _, dto := range rdb.GetNextTestReturn() {
+			dtos = append(dtos, dto.(RoommateDto))
+		}
+		return dtos, rdb.GetNextTestError()
+	}
+	roommates := []RoommateDto{}
+	err := rdb.Select(&roommates, "select * from roommate where user_id = $1;", id)
 	return roommates, err
 }

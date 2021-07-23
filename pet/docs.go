@@ -1,25 +1,8 @@
-// Package classification of Turnkey API
-//
-// Documentation for Turnkey API
-//
-//	Schemes: http
-//	BasePath: /
-//	Version: 1.0.0
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	- application/json
-//
-// swagger:meta
 package pet
-
-import "github.com/google/uuid"
 
 //
 // NOTE: Types defined here are purely for documentation purposes
-// these types are not used by any of the handers
+// these types are not used by any of the handlers
 
 // Generic error message returned as a string
 // swagger:response petErrorResponse
@@ -48,6 +31,15 @@ type petResponseWrapper struct {
 	Body PetDto
 }
 
+// A list of pets
+// swagger:response petsResponse
+//lint:ignore U1000 for docs
+type petsResponseWrapper struct {
+	// A list of pets
+	// in: body
+	Body []PetDto
+}
+
 // No content is returned by this API endpoint
 // swagger:response noContentResponse
 //lint:ignore U1000 for docs
@@ -60,5 +52,22 @@ type petIdParamsWrapper struct {
 	// The id of the pet for which the operation relates
 	// in: path
 	// required: true
-	Id uuid.UUID `json:"id"`
+	Id string `json:"id"`
+}
+
+// swagger:parameters getPetsByUserId
+//lint:ignore U1000 for docs
+type petsUserIdParamsWrapper struct {
+	// The user id
+	// in: query
+	// required: true
+	UserId string `json:"userId"`
+}
+
+// swagger:parameters updatePet createPet
+//lint:ignore U1000 for docs
+type petParamsWrapper struct {
+	// in: body
+	// required: true
+	Body PetDto
 }

@@ -3,6 +3,7 @@ package pet
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -11,7 +12,7 @@ import (
 // create a new pet
 //
 // responses:
-//	200: petResponse
+//	204: noContentResponse
 //  422: petErrorValidation
 //  500: petErrorResponse
 
@@ -29,6 +30,31 @@ func (h *Handler) HandlePostPet(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) CreatePet(dto *PetDto) error {
 	dto.Id = uuid.New().String()
-	err := h.db.Run("insert into pet (id, user_id, breed, weight) values ($1, $2, $3, $4);", dto.Id, dto.UserId, dto.Breed, dto.Weight)
+	err := h.db.Run(
+		`insert into pet (
+			id, 
+			user_id, 
+			pet_type,
+			breed, 
+			size_type, 
+			created_on,
+			last_updated
+		) values (
+			$1, 
+			$2, 
+			$3, 
+			$4, 
+			$5, 
+			$6,
+			$7
+		);`,
+		dto.Id,
+		dto.UserId,
+		dto.PetType,
+		dto.Breed,
+		dto.SizeType,
+		time.Now().Format(time.RFC3339Nano),
+		time.Now().Format(time.RFC3339Nano),
+	)
 	return err
 }

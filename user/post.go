@@ -3,6 +3,7 @@ package user
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -11,7 +12,7 @@ import (
 // create a new user
 //
 // responses:
-//	200: userResponse
+//	204: noContentResponse
 //  422: userErrorValidation
 //  500: userErrorResponse
 
@@ -29,6 +30,81 @@ func (h *Handler) HandlePostUser(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) CreateUser(dto *UserDto) error {
 	dto.Id = uuid.New().String()
-	err := h.db.Run("insert into users (id, full_name, email, password, phone_number, nickname, bio, city, province, user_type, send_notifications, moving_reason, has_roommates, has_security_deposit, is_smoker, has_prev_lawsuit, has_prev_eviction, can_credit_check, has_pets, additional_details, move_in_date, move_out_date, property_management_company, additional_details_lease, monthly_budget_min, monthly_budget_max) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26);", dto.Id, dto.FullName, dto.Email, dto.Password, dto.PhoneNumber, dto.Nickname, dto.Bio, dto.City, dto.Province, dto.UserType, dto.SendNotifications, dto.MovingReason, dto.HasRoommates, dto.HasSecurityDeposit, dto.IsSmoker, dto.HasPreviousLawsuit, dto.HasPreviousEviction, dto.CanCreditCheck, dto.HasPets, dto.AdditionalDetails, dto.MoveInDate, dto.MoveOutDate, dto.PropertyManagementCompany, dto.AdditionalDetailsLease, dto.MonthlyBudgetMin, dto.MonthlyBudgetMax)
+	err := h.db.Run(
+		`insert into users (
+			id, 
+			full_name, 
+			email, 
+			password, 
+			user_status, 
+			created_on, 
+			last_updated,
+			phone_number, 
+			nickname, 
+			bio, 
+			user_type, 
+			send_notifications, 
+			moving_reason, 
+			has_roommates, 
+			has_security_deposit, 
+			is_smoker, 
+			has_prev_lawsuit, 
+			has_prev_eviction, 
+			can_credit_check, 
+			has_pets, 
+			additional_details_general, 
+			move_in_date, 
+			move_out_date, 
+			additional_details_lease
+		) values (
+			$1, 
+			$2, 
+			$3, 
+			$4, 
+			$5, 
+			$6, 
+			$7, 
+			$8, 
+			$9, 
+			$10, 
+			$11, 
+			$12, 
+			$13, 
+			$14, 
+			$15, 
+			$16, 
+			$17, 
+			$18, 
+			$19, 
+			$20, 
+			$21, 
+			$22, 
+			$23
+		);`,
+		dto.Id,
+		dto.FullName,
+		dto.Email,
+		dto.Password,
+		dto.UserStatus,
+		time.Now().Format(time.RFC3339Nano),
+		time.Now().Format(time.RFC3339Nano),
+		dto.PhoneNumber,
+		dto.Nickname,
+		dto.Bio,
+		dto.UserType,
+		dto.SendNotifications,
+		dto.MovingReason,
+		dto.HasRoommates,
+		dto.HasSecurityDeposit,
+		dto.IsSmoker,
+		dto.HasPreviousLawsuit,
+		dto.HasPreviousEviction,
+		dto.CanCreditCheck,
+		dto.HasPets,
+		dto.AdditionalDetailsGeneral,
+		dto.MoveInDate,
+		dto.MoveOutDate,
+		dto.AdditionalDetailsLease,
+	)
 	return err
 }

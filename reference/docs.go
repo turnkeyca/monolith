@@ -1,25 +1,8 @@
-// Package classification of Turnkey API
-//
-// Documentation for Turnkey API
-//
-//	Schemes: http
-//	BasePath: /
-//	Version: 1.0.0
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	- application/json
-//
-// swagger:meta
 package reference
-
-import "github.com/google/uuid"
 
 //
 // NOTE: Types defined here are purely for documentation purposes
-// these types are not used by any of the handers
+// these types are not used by any of the handlers
 
 // Generic error message returned as a string
 // swagger:response referenceErrorResponse
@@ -48,6 +31,15 @@ type referenceResponseWrapper struct {
 	Body ReferenceDto
 }
 
+// A list of references
+// swagger:response referencesResponse
+//lint:ignore U1000 for docs
+type referencesResponseWrapper struct {
+	// A list of references
+	// in: body
+	Body []ReferenceDto
+}
+
 // No content is returned by this API endpoint
 // swagger:response noContentResponse
 //lint:ignore U1000 for docs
@@ -60,5 +52,22 @@ type referenceIdParamsWrapper struct {
 	// The id of the reference for which the operation relates
 	// in: path
 	// required: true
-	Id uuid.UUID `json:"id"`
+	Id string `json:"id"`
+}
+
+// swagger:parameters getReferencesByUserId
+//lint:ignore U1000 for docs
+type referencesUserIdParamsWrapper struct {
+	// The user id
+	// in: query
+	// required: true
+	UserId string `json:"userId"`
+}
+
+// swagger:parameters updateReference createReference
+//lint:ignore U1000 for docs
+type referenceParamsWrapper struct {
+	// in: body
+	// required: true
+	Body ReferenceDto
 }
