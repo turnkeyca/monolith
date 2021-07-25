@@ -27,6 +27,7 @@ func New(logger *log.Logger) (*Database, error) {
 	if errPing != nil {
 		return nil, errPing
 	}
+	logger.Println(os.Getenv("DB_CONN"))
 	return &Database{
 		logger: logger,
 		DB:     db,
