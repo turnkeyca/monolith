@@ -47,7 +47,7 @@ type UserDto struct {
 	HasPreviousEviction      bool           `json:"evicted" db:"has_prev_eviction"`
 	CanCreditCheck           bool           `json:"creditCheck" db:"can_credit_check"`
 	HasPets                  bool           `json:"pets" db:"has_pets"`
-	AdditionalDetailsGeneral string         `json:"additionalDetailsGeneral" db:"additional_details"`
+	AdditionalDetailsGeneral string         `json:"additionalDetailsGeneral" db:"additional_details_general"`
 	MoveInDate               string         `json:"moveInDate" db:"move_in_date"`
 	MoveOutDate              string         `json:"moveOutDate" db:"move_out_date"`
 	AdditionalDetailsLease   string         `json:"additionalDetailsLease" db:"additional_details_lease"`

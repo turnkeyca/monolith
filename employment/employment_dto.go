@@ -15,7 +15,7 @@ type EmploymentDto struct {
 	Duration          string  `json:"duration" db:"duration"`
 	AdditionalDetails string  `json:"additionalDetails" db:"additional_details"`
 	AnnualSalary      float64 `json:"annualSalary" db:"annual_salary"`
-	RentAffordability string  `json:"rentAfforsability" db:"rent_affordability"`
+	RentAffordability string  `json:"rentAffordability" db:"rent_affordability"`
 	LastUpdated       string  `json:"lastUpdated" db:"last_updated"`
 	CreatedOn         string  `json:"createdOn" db:"created_on"`
 }
