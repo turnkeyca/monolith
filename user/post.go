@@ -78,8 +78,9 @@ func (h *Handler) CreateUser(dto *UserDto) error {
 			$19, 
 			$20, 
 			$21, 
-			$22, 
-			$23
+			$22,
+			$23,
+			$24
 		);`,
 		dto.Id,
 		dto.FullName,

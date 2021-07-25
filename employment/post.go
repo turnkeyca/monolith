@@ -38,6 +38,7 @@ func (h *Handler) CreateEmployment(dto *EmploymentDto) error {
 			occupation, 
 			duration, 
 			additional_details, 
+			rent_affordability,
 			annual_salary, 
 			created_on,
 			last_updated
@@ -50,7 +51,8 @@ func (h *Handler) CreateEmployment(dto *EmploymentDto) error {
 			$6, 
 			$7,
 			$8,
-			$9
+			$9,
+			$10
 		);`,
 		dto.Id,
 		dto.UserId,
@@ -58,6 +60,7 @@ func (h *Handler) CreateEmployment(dto *EmploymentDto) error {
 		dto.Occupation,
 		dto.Duration,
 		dto.AdditionalDetails,
+		dto.RentAffordability,
 		dto.AnnualSalary,
 		time.Now().Format(time.RFC3339Nano),
 		time.Now().Format(time.RFC3339Nano),

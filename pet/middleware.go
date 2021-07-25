@@ -45,6 +45,7 @@ func (h *Handler) GetBody(next http.Handler) http.Handler {
 		if err != nil {
 			h.logger.Printf("decoding error: %#v", err)
 			http.Error(w, "Error reading pet", http.StatusBadRequest)
+			return
 		}
 		err = d.Validate()
 		if err != nil {
