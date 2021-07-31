@@ -61,6 +61,7 @@ func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 	reference.ConfigureReferenceRoutes(router, logger, database, authenticator)
 	pet.ConfigurePetRoutes(router, logger, database, authenticator)
 	employment.ConfigureEmploymentRoutes(router, logger, database, authenticator)
+	auth.ConfigureAuthRoutes(router, logger, database)
 
 	return router, nil
 }
