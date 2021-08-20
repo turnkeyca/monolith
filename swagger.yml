@@ -2,6 +2,16 @@ basePath: /
 consumes:
 - application/json
 definitions:
+  AuthDto:
+    properties:
+      email:
+        type: string
+        x-go-name: Email
+      password:
+        type: string
+        x-go-name: Password
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/auth
   EmploymentDto:
     properties:
       additionalDetails:
@@ -29,7 +39,7 @@ definitions:
       occupation:
         type: string
         x-go-name: Occupation
-      rentAfforsability:
+      rentAffordability:
         type: string
         x-go-name: RentAffordability
       userId:
@@ -129,6 +139,16 @@ definitions:
         x-go-name: Url
     type: object
     x-go-package: github.com/turnkeyca/monolith/shorturl
+  Token:
+    properties:
+      email:
+        type: string
+        x-go-name: Email
+      token:
+        type: string
+        x-go-name: TokenString
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/auth
   UserDto:
     properties:
       additionalDetailsGeneral:
@@ -203,6 +223,13 @@ definitions:
         $ref: '#/definitions/UserType'
     type: object
     x-go-package: github.com/turnkeyca/monolith/user
+  UserId:
+    properties:
+      id:
+        type: string
+        x-go-name: Id
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/auth
   UserStatusType:
     type: string
     x-go-package: github.com/turnkeyca/monolith/user
@@ -223,6 +250,23 @@ info:
   title: of Turnkey API
   version: 1.0.0
 paths:
+  /api/auth:
+    post:
+      description: create a new auth
+      operationId: signIn
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/AuthDto'
+      responses:
+        "200":
+          $ref: '#/responses/tokenResponse'
+        "500":
+          $ref: '#/responses/authErrorResponse'
+      tags:
+      - auth
   /api/employment:
     get:
       description: return employments for a user
@@ -629,25 +673,6 @@ paths:
           $ref: '#/responses/shortUrlErrorResponse'
       tags:
       - shorturl
-  /api/user:
-    post:
-      description: create a new user
-      operationId: createUser
-      parameters:
-      - in: body
-        name: Body
-        required: true
-        schema:
-          $ref: '#/definitions/UserDto'
-      responses:
-        "204":
-          $ref: '#/responses/noContentResponse'
-        "422":
-          $ref: '#/responses/userErrorValidation'
-        "500":
-          $ref: '#/responses/userErrorResponse'
-      tags:
-      - user
   /api/user/{id}:
     delete:
       description: delete a user
@@ -712,6 +737,10 @@ paths:
 produces:
 - application/json
 responses:
+  authErrorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
   employmentErrorResponse:
     description: Generic error message returned as a string
     schema:
@@ -794,6 +823,10 @@ responses:
     description: A short url
     schema:
       $ref: '#/definitions/ShortUrlDto'
+  tokenResponse:
+    description: token
+    schema:
+      $ref: '#/definitions/Token'
   userErrorResponse:
     description: Generic error message returned as a string
     schema:
@@ -802,6 +835,10 @@ responses:
     description: Validation errors defined as an array of strings
     schema:
       $ref: '#/definitions/ValidationError'
+  userIdResponse:
+    description: new user id
+    schema:
+      $ref: '#/definitions/UserId'
   userResponse:
     description: A user
     schema:
