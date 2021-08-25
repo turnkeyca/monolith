@@ -1,0 +1,1 @@
+drop index employer_user_id_fk1;
