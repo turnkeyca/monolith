@@ -3,10 +3,8 @@ package auth
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
-	"os"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -15,6 +13,7 @@ type KeyBody struct{}
 
 func (h *Handler) GetBody(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		h.logger.Println("here it goes")
 		d, err := read(r.Body)
 		if err != nil {
 			http.Error(w, "error reading auth", http.StatusBadRequest)
@@ -33,29 +32,40 @@ func (a *Authenticator) AuthenticateHttp(next http.Handler) http.Handler {
 			return
 		}
 
-		var mySigningKey = []byte(os.Getenv("SECRET_KEY"))
-
-		token, err := jwt.Parse(r.Header["Token"][0], func(token *jwt.Token) (interface{}, error) {
-			_, ok := token.Method.(*jwt.SigningMethodHMAC)
-			if !ok {
-				return nil, fmt.Errorf("error parsing token")
-			}
-			return mySigningKey, nil
-		})
-
+		var activeTokens []string
+		err := a.db.Select(&activeTokens, `select token from tokens where status = 'active'`)
 		if err != nil {
-			http.Error(rw, "expired token", http.StatusUnauthorized)
+			http.Error(rw, "invalid token", http.StatusUnauthorized)
+			return
+		}
+		if !tokenIsRegistered(r.Header["Token"][0], activeTokens) {
+			http.Error(rw, "invalid token", http.StatusUnauthorized)
+			return
+		}
+		token, err := jwt.Parse(r.Header["Token"][0], nil)
+		if err != nil {
+			http.Error(rw, "invalid token", http.StatusUnauthorized)
 			return
 		}
 		if !token.Valid {
 			http.Error(rw, "invalid token", http.StatusUnauthorized)
+			return
 		}
 		next.ServeHTTP(rw, r)
 	})
 }
 
-func read(r io.Reader) (*AuthDto, error) {
-	d := AuthDto{}
+func read(r io.Reader) (*RegisterTokenDto, error) {
+	d := RegisterTokenDto{}
 	err := json.NewDecoder(r).Decode(&d)
 	return &d, err
+}
+
+func tokenIsRegistered(token string, activeTokens []string) bool {
+	for _, activeToken := range activeTokens {
+		if activeToken == token {
+			return true
+		}
+	}
+	return false
 }

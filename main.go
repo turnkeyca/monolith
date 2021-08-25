@@ -47,12 +47,12 @@ func configureDocRoutes(router *mux.Router) {
 
 func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 	router := mux.NewRouter()
-	authenticator := auth.New(logger)
 	bitly := bitly.NewClient(logger)
 	database, err := db.New(logger)
 	if err != nil {
 		logger.Fatalf("failed to create database %#v\n", err)
 	}
+	authenticator := auth.New(logger, database)
 
 	configureDocRoutes(router)
 	shorturl.ConfigureShortUrlRoutes(router, logger, bitly, authenticator)

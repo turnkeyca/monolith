@@ -14,6 +14,7 @@ type GenericError struct {
 
 type Authenticator struct {
 	logger *log.Logger
+	db     *db.Database
 }
 
 type Handler struct {
@@ -21,9 +22,10 @@ type Handler struct {
 	db     *db.Database
 }
 
-func New(logger *log.Logger) *Authenticator {
+func New(logger *log.Logger, db *db.Database) *Authenticator {
 	return &Authenticator{
 		logger: logger,
+		db:     db,
 	}
 }
 
@@ -38,7 +40,6 @@ func ConfigureAuthRoutes(router *mux.Router, logger *log.Logger, database *db.Da
 	authHandler := NewHandler(logger, database)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/api/auth/signup", authHandler.HandleSignUp)
-	postRouter.HandleFunc("/api/auth/signin", authHandler.HandleSignIn)
+	postRouter.HandleFunc("/api/auth/registertoken", authHandler.HandleRegisterToken)
 	postRouter.Use(authHandler.GetBody)
 }

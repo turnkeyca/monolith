@@ -18,19 +18,10 @@ type userIdResponseWrapper struct {
 	Body UserId
 }
 
-// token
-// swagger:response tokenResponse
+// swagger:parameters registerToken
 //lint:ignore U1000 for docs
-type tokenResponseWrapper struct {
-	// token
-	// in: body
-	Body Token
-}
-
-// swagger:parameters signUp signIn
-//lint:ignore U1000 for docs
-type authParamsWrapper struct {
+type registerTokenParamsWrapper struct {
 	// in: body
 	// required: true
-	Body AuthDto
+	Body RegisterTokenDto
 }

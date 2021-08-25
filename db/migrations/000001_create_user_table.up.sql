@@ -2,7 +2,6 @@ create table users (
     id uuid primary key,
     full_name varchar(64),
     email varchar(64),
-	password varchar(64),
 	user_status varchar(8),
 	last_updated varchar(35),
 	created_on varchar(35),

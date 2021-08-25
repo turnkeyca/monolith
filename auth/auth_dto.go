@@ -1,13 +1,9 @@
 package auth
 
-type AuthDto struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-type Token struct {
-	Email       string `json:"email"`
+type RegisterTokenDto struct {
 	TokenString string `json:"token"`
+	Secret      string `json:"secret"`
+	IsNewUser   bool   `json:"newUser"`
 }
 
 type UserId struct {

@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/google/uuid"
-	"golang.org/x/crypto/bcrypt"
 )
 
-// swagger:route POST /api/auth auth signUp
+// swagger:route POST /api/auth registerNewToken
 // create a new auth
 //
 // responses:
@@ -18,11 +18,16 @@ import (
 //  500: authErrorResponse
 
 // Create handles POST requests to add new users
-func (h *Handler) HandleSignUp(w http.ResponseWriter, r *http.Request) {
-	dto := r.Context().Value(KeyBody{}).(*AuthDto)
-	id, err := h.CreateUser(dto)
+func (h *Handler) HandleRegisterToken(w http.ResponseWriter, r *http.Request) {
+	dto := r.Context().Value(KeyBody{}).(*RegisterTokenDto)
+	id, err := h.getOrCreateUserId(dto)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error creating auth: %#v\n", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error registering token: %#v", err), http.StatusInternalServerError)
+		return
+	}
+	err = h.saveToken(dto)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("error registering token: %#v", err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
@@ -30,51 +35,48 @@ func (h *Handler) HandleSignUp(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(UserId{Id: id})
 }
 
-// swagger:route POST /api/auth auth signIn
-// create a new auth
-//
-// responses:
-//	200: tokenResponse
-//  500: authErrorResponse
-
-// Create handles POST requests to add new users
-func (h *Handler) HandleSignIn(w http.ResponseWriter, r *http.Request) {
-	dto := r.Context().Value(KeyBody{}).(*AuthDto)
-	token, err := h.VerifyUser(dto)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("error verifying auth: %#v\n", err), http.StatusInternalServerError)
-		return
+func (h *Handler) getOrCreateUserId(dto *RegisterTokenDto) (string, error) {
+	if dto.IsNewUser {
+		id, err := h.CreateUser(dto)
+		if err != nil {
+			return "", err
+		}
+		return id, nil
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(*token)
+	name, err := getNameFromToken(dto.TokenString)
+	if err != nil {
+		return "", err
+	}
+	var id string
+	err = h.db.Select(&id, `select id from users where name = $1`, name)
+	if err != nil {
+		return "", err
+	}
+	return id, nil
 }
 
-func (h *Handler) CreateUser(dto *AuthDto) (string, error) {
+func (h *Handler) CreateUser(dto *RegisterTokenDto) (string, error) {
 	id := uuid.New().String()
-	password, err := HashPassword(dto.Password)
+	name, err := getNameFromToken(dto.TokenString)
 	if err != nil {
 		return "", err
 	}
 	err = h.db.Run(
 		`insert into users (
 			id, 
-			email, 
-			password, 
+			name, 
 			user_status, 
 			created_on, 
 			last_updated
 		) values (
 			$1, 
-			$2, 
 			$3, 
 			$4, 
 			$5, 
 			$6
 		);`,
 		id,
-		dto.Email,
-		password,
+		name,
 		"active",
 		time.Now().Format(time.RFC3339Nano),
 		time.Now().Format(time.RFC3339Nano),
@@ -85,26 +87,31 @@ func (h *Handler) CreateUser(dto *AuthDto) (string, error) {
 	return id, nil
 }
 
-func (h *Handler) VerifyUser(dto *AuthDto) (*Token, error) {
-	var pwdRaw []string
-	err := h.db.Select(&pwdRaw, "select password from users where email=$1", dto.Email)
+func (h *Handler) saveToken(token *RegisterTokenDto) error {
+	id := uuid.New().String()
+	return h.db.Run(`insert into token (
+			id, 
+			token, 
+			status, 
+			created_on
+		) values (
+			$1, 
+			$2, 
+			$3, 
+			$4
+		)`,
+		id,
+		token.TokenString,
+		"active",
+		time.Now().Format(time.RFC3339Nano),
+	)
+}
+
+func getNameFromToken(tokenString string) (string, error) {
+	token, err := jwt.Parse(tokenString, nil)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	if len(pwdRaw) != 1 {
-		return nil, fmt.Errorf("invalid result for user %s: unable to count users with these credentials", dto.Email)
-	}
-	pwd := pwdRaw[0]
-	err = bcrypt.CompareHashAndPassword([]byte(pwd), []byte(dto.Password))
-	if err != nil {
-		return nil, err
-	}
-	t, err := GenerateJWT(dto.Email)
-	if err != nil {
-		return nil, err
-	}
-	return &Token{
-		Email:       dto.Email,
-		TokenString: t,
-	}, nil
+	claims := token.Claims.(jwt.MapClaims)
+	return claims["name"].(string), nil
 }
