@@ -89,6 +89,14 @@ func (h *Handler) CreateUser(dto *RegisterTokenDto) (string, error) {
 
 func (h *Handler) saveToken(token *RegisterTokenDto) error {
 	id := uuid.New().String()
+	var count int
+	err := h.db.Select(&count, `select count(*) from token where token = $1`, token.TokenString)
+	if err != nil {
+		return err
+	}
+	if count != 0 {
+		return fmt.Errorf(`token already registered: %s`, token.TokenString)
+	}
 	return h.db.Run(`insert into token (
 			id, 
 			token, 
