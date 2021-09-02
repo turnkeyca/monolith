@@ -10,15 +10,15 @@ type authErrorResponseWrapper struct {
 }
 
 // new user id
-// swagger:response userIdResponse
+// swagger:response tokenResponse
 //lint:ignore U1000 for docs
-type userIdResponseWrapper struct {
+type tokenResponseWrapper struct {
 	// user id
 	// in: body
-	Body UserId
+	Body Token
 }
 
-// swagger:parameters registerToken
+// swagger:parameters registerNewToken
 //lint:ignore U1000 for docs
 type registerTokenParamsWrapper struct {
 	// in: body

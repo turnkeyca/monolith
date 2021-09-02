@@ -4,79 +4,87 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/google/uuid"
 )
 
-// swagger:route POST /api/auth registerNewToken
-// create a new auth
+// swagger:route POST /api/auth/registertoken auth registerNewToken
+// register token
 //
 // responses:
-//	200: userIdResponse
+//	200: tokenResponse
 //  500: authErrorResponse
 
 // Create handles POST requests to add new users
 func (h *Handler) HandleRegisterToken(w http.ResponseWriter, r *http.Request) {
 	dto := r.Context().Value(KeyBody{}).(*RegisterTokenDto)
+	h.logger.Printf(`secret: %s`, dto.Secret)
+	h.logger.Printf(`new user?: %t`, dto.IsNewUser)
+	if dto.Secret != os.Getenv("SECRET_KEY") {
+		http.Error(w, "error registering token: invalid secret key", http.StatusInternalServerError)
+		return
+	}
 	id, err := h.getOrCreateUserId(dto)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error registering token: %#v", err), http.StatusInternalServerError)
 		return
 	}
-	err = h.saveToken(dto)
+	token, err := GenerateToken(dto.LoginId)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error registering token: %#v", err), http.StatusInternalServerError)
 		return
 	}
+	h.logger.Printf(`id: %s`, id)
+	h.logger.Printf(`token: %s`, token)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(UserId{Id: id})
+	json.NewEncoder(w).Encode(Token{Id: id, Token: token})
 }
 
 func (h *Handler) getOrCreateUserId(dto *RegisterTokenDto) (string, error) {
 	if dto.IsNewUser {
-		id, err := h.CreateUser(dto)
+		id, err := h.createUser(dto)
 		if err != nil {
 			return "", err
 		}
 		return id, nil
 	}
-	name, err := getNameFromToken(dto.TokenString)
-	if err != nil {
-		return "", err
-	}
 	var id string
-	err = h.db.Select(&id, `select id from users where name = $1`, name)
+	err := h.db.Select(&id, `select id from users where login_id = $1`, dto.LoginId)
 	if err != nil {
 		return "", err
 	}
 	return id, nil
 }
 
-func (h *Handler) CreateUser(dto *RegisterTokenDto) (string, error) {
-	id := uuid.New().String()
-	name, err := getNameFromToken(dto.TokenString)
+func (h *Handler) createUser(dto *RegisterTokenDto) (string, error) {
+	var count []int
+	err := h.db.Select(&count, `select count(*) from users where login_id = $1`, dto.LoginId)
 	if err != nil {
 		return "", err
 	}
+	if count[0] > 0 {
+		return "", fmt.Errorf("duplicate users")
+	}
+	id := uuid.New().String()
 	err = h.db.Run(
 		`insert into users (
 			id, 
-			name, 
+			login_id, 
 			user_status, 
 			created_on, 
 			last_updated
 		) values (
 			$1, 
+			$2, 
 			$3, 
 			$4, 
-			$5, 
-			$6
+			$5
 		);`,
 		id,
-		name,
+		dto.LoginId,
 		"active",
 		time.Now().Format(time.RFC3339Nano),
 		time.Now().Format(time.RFC3339Nano),
@@ -85,41 +93,4 @@ func (h *Handler) CreateUser(dto *RegisterTokenDto) (string, error) {
 		return "", err
 	}
 	return id, nil
-}
-
-func (h *Handler) saveToken(token *RegisterTokenDto) error {
-	id := uuid.New().String()
-	var count int
-	err := h.db.Select(&count, `select count(*) from token where token = $1`, token.TokenString)
-	if err != nil {
-		return err
-	}
-	if count != 0 {
-		return fmt.Errorf(`token already registered: %s`, token.TokenString)
-	}
-	return h.db.Run(`insert into token (
-			id, 
-			token, 
-			status, 
-			created_on
-		) values (
-			$1, 
-			$2, 
-			$3, 
-			$4
-		)`,
-		id,
-		token.TokenString,
-		"active",
-		time.Now().Format(time.RFC3339Nano),
-	)
-}
-
-func getNameFromToken(tokenString string) (string, error) {
-	token, err := jwt.Parse(tokenString, nil)
-	if err != nil {
-		return "", err
-	}
-	claims := token.Claims.(jwt.MapClaims)
-	return claims["name"].(string), nil
 }

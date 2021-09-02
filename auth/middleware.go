@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-
-	"github.com/dgrijalva/jwt-go"
 )
 
 type KeyBody struct{}
@@ -32,22 +30,8 @@ func (a *Authenticator) AuthenticateHttp(next http.Handler) http.Handler {
 			return
 		}
 
-		var activeTokens []string
-		err := a.db.Select(&activeTokens, `select token from tokens where status = 'active'`)
+		_, err := ValidateToken(r.Header["Token"][0])
 		if err != nil {
-			http.Error(rw, "invalid token", http.StatusUnauthorized)
-			return
-		}
-		if !tokenIsRegistered(r.Header["Token"][0], activeTokens) {
-			http.Error(rw, "invalid token", http.StatusUnauthorized)
-			return
-		}
-		token, err := jwt.Parse(r.Header["Token"][0], nil)
-		if err != nil {
-			http.Error(rw, "invalid token", http.StatusUnauthorized)
-			return
-		}
-		if !token.Valid {
 			http.Error(rw, "invalid token", http.StatusUnauthorized)
 			return
 		}
@@ -59,13 +43,4 @@ func read(r io.Reader) (*RegisterTokenDto, error) {
 	d := RegisterTokenDto{}
 	err := json.NewDecoder(r).Decode(&d)
 	return &d, err
-}
-
-func tokenIsRegistered(token string, activeTokens []string) bool {
-	for _, activeToken := range activeTokens {
-		if activeToken == token {
-			return true
-		}
-	}
-	return false
 }

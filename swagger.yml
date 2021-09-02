@@ -2,16 +2,6 @@ basePath: /
 consumes:
 - application/json
 definitions:
-  AuthDto:
-    properties:
-      email:
-        type: string
-        x-go-name: Email
-      password:
-        type: string
-        x-go-name: Password
-    type: object
-    x-go-package: github.com/turnkeyca/monolith/auth
   EmploymentDto:
     properties:
       additionalDetails:
@@ -110,6 +100,19 @@ definitions:
         x-go-name: UserId
     type: object
     x-go-package: github.com/turnkeyca/monolith/reference
+  RegisterTokenDto:
+    properties:
+      id:
+        type: string
+        x-go-name: LoginId
+      newUser:
+        type: boolean
+        x-go-name: IsNewUser
+      secret:
+        type: string
+        x-go-name: Secret
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/auth
   RoommateDto:
     properties:
       createdOn:
@@ -141,12 +144,12 @@ definitions:
     x-go-package: github.com/turnkeyca/monolith/shorturl
   Token:
     properties:
-      email:
+      id:
         type: string
-        x-go-name: Email
+        x-go-name: Id
       token:
         type: string
-        x-go-name: TokenString
+        x-go-name: Token
     type: object
     x-go-package: github.com/turnkeyca/monolith/auth
   UserDto:
@@ -223,13 +226,6 @@ definitions:
         $ref: '#/definitions/UserType'
     type: object
     x-go-package: github.com/turnkeyca/monolith/user
-  UserId:
-    properties:
-      id:
-        type: string
-        x-go-name: Id
-    type: object
-    x-go-package: github.com/turnkeyca/monolith/auth
   UserStatusType:
     type: string
     x-go-package: github.com/turnkeyca/monolith/user
@@ -250,16 +246,16 @@ info:
   title: of Turnkey API
   version: 1.0.0
 paths:
-  /api/auth:
+  /api/auth/registertoken:
     post:
-      description: create a new auth
-      operationId: signIn
+      description: register token
+      operationId: registerNewToken
       parameters:
       - in: body
         name: Body
         required: true
         schema:
-          $ref: '#/definitions/AuthDto'
+          $ref: '#/definitions/RegisterTokenDto'
       responses:
         "200":
           $ref: '#/responses/tokenResponse'
@@ -824,7 +820,7 @@ responses:
     schema:
       $ref: '#/definitions/ShortUrlDto'
   tokenResponse:
-    description: token
+    description: new user id
     schema:
       $ref: '#/definitions/Token'
   userErrorResponse:
@@ -835,10 +831,6 @@ responses:
     description: Validation errors defined as an array of strings
     schema:
       $ref: '#/definitions/ValidationError'
-  userIdResponse:
-    description: new user id
-    schema:
-      $ref: '#/definitions/UserId'
   userResponse:
     description: A user
     schema:
