@@ -1,5 +1,5 @@
 # monolith
-The whole back end of the Adalo app
+The whole back end of the Turnkey app
 
 ## setup
 You need go. It's a go app.
