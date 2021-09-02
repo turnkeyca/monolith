@@ -3,21 +3,43 @@ package auth
 import (
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
+	"github.com/turnkeyca/monolith/db"
 )
+
+type GenericError struct {
+	Message string `json:"message"`
+}
 
 type Authenticator struct {
 	logger *log.Logger
+	db     *db.Database
 }
 
-func New(logger *log.Logger) *Authenticator {
+type Handler struct {
+	logger *log.Logger
+	db     *db.Database
+}
+
+func New(logger *log.Logger, db *db.Database) *Authenticator {
 	return &Authenticator{
 		logger: logger,
+		db:     db,
 	}
 }
 
-func (a *Authenticator) AuthenticateHttp(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		a.logger.Println("authenticated")
-		next.ServeHTTP(rw, r)
-	})
+func NewHandler(logger *log.Logger, db *db.Database) *Handler {
+	return &Handler{
+		logger: logger,
+		db:     db,
+	}
+}
+
+func ConfigureAuthRoutes(router *mux.Router, logger *log.Logger, database *db.Database) {
+	authHandler := NewHandler(logger, database)
+
+	postRouter := router.Methods(http.MethodPost).Subrouter()
+	postRouter.HandleFunc("/api/auth/registertoken", authHandler.HandleRegisterToken)
+	postRouter.Use(authHandler.GetBody)
 }

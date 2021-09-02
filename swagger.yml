@@ -29,7 +29,7 @@ definitions:
       occupation:
         type: string
         x-go-name: Occupation
-      rentAfforsability:
+      rentAffordability:
         type: string
         x-go-name: RentAffordability
       userId:
@@ -100,6 +100,19 @@ definitions:
         x-go-name: UserId
     type: object
     x-go-package: github.com/turnkeyca/monolith/reference
+  RegisterTokenDto:
+    properties:
+      id:
+        type: string
+        x-go-name: LoginId
+      newUser:
+        type: boolean
+        x-go-name: IsNewUser
+      secret:
+        type: string
+        x-go-name: Secret
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/auth
   RoommateDto:
     properties:
       createdOn:
@@ -129,6 +142,16 @@ definitions:
         x-go-name: Url
     type: object
     x-go-package: github.com/turnkeyca/monolith/shorturl
+  Token:
+    properties:
+      id:
+        type: string
+        x-go-name: Id
+      token:
+        type: string
+        x-go-name: Token
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/auth
   UserDto:
     properties:
       additionalDetailsGeneral:
@@ -223,6 +246,23 @@ info:
   title: of Turnkey API
   version: 1.0.0
 paths:
+  /api/auth/registertoken:
+    post:
+      description: register token
+      operationId: registerNewToken
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/RegisterTokenDto'
+      responses:
+        "200":
+          $ref: '#/responses/tokenResponse'
+        "500":
+          $ref: '#/responses/authErrorResponse'
+      tags:
+      - auth
   /api/employment:
     get:
       description: return employments for a user
@@ -629,25 +669,6 @@ paths:
           $ref: '#/responses/shortUrlErrorResponse'
       tags:
       - shorturl
-  /api/user:
-    post:
-      description: create a new user
-      operationId: createUser
-      parameters:
-      - in: body
-        name: Body
-        required: true
-        schema:
-          $ref: '#/definitions/UserDto'
-      responses:
-        "204":
-          $ref: '#/responses/noContentResponse'
-        "422":
-          $ref: '#/responses/userErrorValidation'
-        "500":
-          $ref: '#/responses/userErrorResponse'
-      tags:
-      - user
   /api/user/{id}:
     delete:
       description: delete a user
@@ -712,6 +733,10 @@ paths:
 produces:
 - application/json
 responses:
+  authErrorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
   employmentErrorResponse:
     description: Generic error message returned as a string
     schema:
@@ -794,6 +819,10 @@ responses:
     description: A short url
     schema:
       $ref: '#/definitions/ShortUrlDto'
+  tokenResponse:
+    description: new user id
+    schema:
+      $ref: '#/definitions/Token'
   userErrorResponse:
     description: Generic error message returned as a string
     schema:

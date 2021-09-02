@@ -46,7 +46,7 @@ type userIdParamsWrapper struct {
 	Id string `json:"id"`
 }
 
-// swagger:parameters updateUser createUser
+// swagger:parameters updateUser
 //lint:ignore U1000 for docs
 type userParamsWrapper struct {
 	// in: body

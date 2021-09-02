@@ -41,10 +41,6 @@ func ConfigureUserRoutes(router *mux.Router, logger *log.Logger, database *db.Da
 	getRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", util.REGEX_UUID), userHandler.HandleGetUser)
 	getRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath)
 
-	postRouter := router.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/api/user", userHandler.HandlePostUser)
-	postRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody)
-
 	putRouter := router.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc(fmt.Sprintf("/api/user/{id:%s}", util.REGEX_UUID), userHandler.HandlePutUser)
 	putRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody, userHandler.GetIdFromPath)
