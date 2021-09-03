@@ -680,6 +680,10 @@ paths:
         required: true
         type: string
         x-go-name: Id
+      - in: header
+        name: Token
+        required: true
+        type: string
       responses:
         "201":
           $ref: '#/responses/noContentResponse'
@@ -699,6 +703,10 @@ paths:
         required: true
         type: string
         x-go-name: Id
+      - in: header
+        name: Token
+        required: true
+        type: string
       responses:
         "200":
           $ref: '#/responses/userResponse'
@@ -721,6 +729,10 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/UserDto'
+      - in: header
+        name: Token
+        required: true
+        type: string
       responses:
         "201":
           $ref: '#/responses/noContentResponse'

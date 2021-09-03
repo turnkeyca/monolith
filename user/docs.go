@@ -53,3 +53,11 @@ type userParamsWrapper struct {
 	// required: true
 	Body UserDto
 }
+
+// swagger:parameters updateUser getUser deleteUser
+//lint:ignore U1000 for docs
+type authHeaderWrapper struct {
+	// in: header
+	// required: true
+	Token string
+}

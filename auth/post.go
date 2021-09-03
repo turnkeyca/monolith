@@ -20,8 +20,7 @@ import (
 // Create handles POST requests to add new users
 func (h *Handler) HandleRegisterToken(w http.ResponseWriter, r *http.Request) {
 	dto := r.Context().Value(KeyBody{}).(*RegisterTokenDto)
-	h.logger.Printf(`secret: %s`, dto.Secret)
-	h.logger.Printf(`new user?: %t`, dto.IsNewUser)
+
 	if dto.Secret != os.Getenv("SECRET_KEY") {
 		http.Error(w, "error registering token: invalid secret key", http.StatusInternalServerError)
 		return
@@ -36,8 +35,6 @@ func (h *Handler) HandleRegisterToken(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("error registering token: %#v", err), http.StatusInternalServerError)
 		return
 	}
-	h.logger.Printf(`id: %s`, id)
-	h.logger.Printf(`token: %s`, token)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(Token{Id: id, Token: token})
@@ -51,12 +48,15 @@ func (h *Handler) getOrCreateUserId(dto *RegisterTokenDto) (string, error) {
 		}
 		return id, nil
 	}
-	var id string
+	var id []string
 	err := h.db.Select(&id, `select id from users where login_id = $1`, dto.LoginId)
+	if len(id) != 1 {
+		return "", fmt.Errorf("duplicate or nonexistent user")
+	}
 	if err != nil {
 		return "", err
 	}
-	return id, nil
+	return id[0], nil
 }
 
 func (h *Handler) createUser(dto *RegisterTokenDto) (string, error) {

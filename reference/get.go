@@ -23,7 +23,7 @@ func (h *Handler) HandleGetReference(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	err = reference.Write(w)
 	if err != nil {
-		h.logger.Printf("encoding error: %#v", err)
+		http.Error(w, fmt.Sprintf("encoding error: %#v", err), http.StatusInternalServerError)
 	}
 }
 
@@ -45,7 +45,7 @@ func (h *Handler) HandleGetReferenceByUserId(w http.ResponseWriter, r *http.Requ
 	w.WriteHeader(http.StatusOK)
 	err = WriteAll(references, w)
 	if err != nil {
-		h.logger.Printf("encoding error: %#v", err)
+		http.Error(w, fmt.Sprintf("encoding error: %#v", err), http.StatusInternalServerError)
 	}
 }
 

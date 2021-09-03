@@ -2,8 +2,6 @@ package auth
 
 import (
 	"context"
-	"encoding/json"
-	"io"
 	"net/http"
 )
 
@@ -11,8 +9,7 @@ type KeyBody struct{}
 
 func (h *Handler) GetBody(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		h.logger.Println("here it goes")
-		d, err := read(r.Body)
+		d, err := Read(r.Body)
 		if err != nil {
 			http.Error(w, "error reading auth", http.StatusBadRequest)
 			return
@@ -37,10 +34,4 @@ func (a *Authenticator) AuthenticateHttp(next http.Handler) http.Handler {
 		}
 		next.ServeHTTP(rw, r)
 	})
-}
-
-func read(r io.Reader) (*RegisterTokenDto, error) {
-	d := RegisterTokenDto{}
-	err := json.NewDecoder(r).Decode(&d)
-	return &d, err
 }

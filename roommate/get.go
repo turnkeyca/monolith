@@ -23,7 +23,7 @@ func (h *Handler) HandleGetRoommate(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	err = roommate.Write(w)
 	if err != nil {
-		h.logger.Printf("encoding error: %#v", err)
+		http.Error(w, fmt.Sprintf("encoding error: %#v", err), http.StatusInternalServerError)
 	}
 }
 
@@ -45,7 +45,7 @@ func (h *Handler) HandleGetRoommateByUserId(w http.ResponseWriter, r *http.Reque
 	w.WriteHeader(http.StatusOK)
 	err = WriteAll(roommates, w)
 	if err != nil {
-		h.logger.Printf("encoding error: %#v", err)
+		http.Error(w, fmt.Sprintf("encoding error: %#v", err), http.StatusInternalServerError)
 	}
 }
 
