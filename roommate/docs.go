@@ -71,3 +71,11 @@ type roommateParamsWrapper struct {
 	// required: true
 	Body RoommateDto
 }
+
+// swagger:parameters updateRoommate createRoommate getRoommatesByUserId getRoommate deleteRoommate
+//lint:ignore U1000 for docs
+type authHeaderWrapper struct {
+	// in: header
+	// required: true
+	Token string
+}
