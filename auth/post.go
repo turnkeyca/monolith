@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// swagger:route POST /api/auth/registertoken auth registerNewToken
+// swagger:route POST /v1/auth/registertoken auth registerNewToken
 // register token
 //
 // responses:

@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// swagger:route PUT /api/pet/{id} pet updatePet
+// swagger:route PUT /v1/pet/{id} pet updatePet
 // update a pet
 //
 // responses:

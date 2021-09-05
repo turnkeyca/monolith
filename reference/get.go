@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route GET /api/reference/{id} reference getReference
+// swagger:route GET /v1/reference/{id} reference getReference
 // return a reference
 // responses:
 //	200: referenceResponse
@@ -27,7 +27,7 @@ func (h *Handler) HandleGetReference(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// swagger:route GET /api/reference reference getReferencesByUserId
+// swagger:route GET /v1/reference reference getReferencesByUserId
 // return all references ofr a user
 // responses:
 //	200: referencesResponse

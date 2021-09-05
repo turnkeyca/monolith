@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route GET /api/roommate/{id} roommate getRoommate
+// swagger:route GET /v1/roommate/{id} roommate getRoommate
 // return a roommate
 // responses:
 //	200: roommateResponse
@@ -27,7 +27,7 @@ func (h *Handler) HandleGetRoommate(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// swagger:route GET /api/roommate roommate getRoommatesByUserId
+// swagger:route GET /v1/roommate roommate getRoommatesByUserId
 // return all roommates for a user
 // responses:
 //	200: roommatesResponse

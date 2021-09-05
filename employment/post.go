@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// swagger:route POST /api/employment employment createEmployment
+// swagger:route POST /v1/employment employment createEmployment
 // create a new employment
 //
 // responses:

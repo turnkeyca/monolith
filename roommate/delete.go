@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route DELETE /api/roommate/{id} roommate deleteRoommate
+// swagger:route DELETE /v1/roommate/{id} roommate deleteRoommate
 // delete a roommate
 //
 // responses:

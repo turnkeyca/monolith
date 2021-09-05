@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route GET /api/user/{id} user getUser
+// swagger:route GET /v1/user/{id} user getUser
 // return a user
 // responses:
 //	200: userResponse

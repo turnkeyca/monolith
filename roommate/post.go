@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// swagger:route POST /api/roommate roommate createRoommate
+// swagger:route POST /v1/roommate roommate createRoommate
 // create a new roommate
 //
 // responses:

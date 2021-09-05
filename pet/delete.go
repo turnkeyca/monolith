@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route DELETE /api/pet/{id} pet deletePet
+// swagger:route DELETE /v1/pet/{id} pet deletePet
 // delete a pet
 //
 // responses:
