@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// swagger:route PUT /api/user/{id} user updateUser
+// swagger:route PUT /v1/user/{id} user updateUser
 // update a user
 //
 // responses:

@@ -12,7 +12,7 @@ import (
 
 func TestGetShortUrl(t *testing.T) {
 	os.Setenv("TEST", "true")
-	in := httptest.NewRequest("GET", "/api/short-url?url=blah", nil)
+	in := httptest.NewRequest("GET", "/v1/short-url?url=blah", nil)
 	out := httptest.NewRecorder()
 	logger := log.New(os.Stdout, "", log.LstdFlags)
 	shorturlHandler := NewHandler(logger, bitly.NewClient(logger))

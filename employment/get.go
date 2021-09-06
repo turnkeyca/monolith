@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route GET /api/employment/{id} employment getEmployment
+// swagger:route GET /v1/employment/{id} employment getEmployment
 // return an employment
 // responses:
 //	200: employmentResponse
@@ -27,7 +27,7 @@ func (h *Handler) HandleGetEmployment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// swagger:route GET /api/employment employment getEmploymentsByUserId
+// swagger:route GET /v1/employment employment getEmploymentsByUserId
 // return employments for a user
 // responses:
 //	200: employmentsResponse

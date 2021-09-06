@@ -246,7 +246,7 @@ info:
   title: of Turnkey API
   version: 1.0.0
 paths:
-  /api/auth/registertoken:
+  /v1/auth/registertoken:
     post:
       description: register token
       operationId: registerNewToken
@@ -263,7 +263,7 @@ paths:
           $ref: '#/responses/authErrorResponse'
       tags:
       - auth
-  /api/employment:
+  /v1/employment:
     get:
       description: return employments for a user
       operationId: getEmploymentsByUserId
@@ -307,7 +307,7 @@ paths:
           $ref: '#/responses/employmentErrorResponse'
       tags:
       - employment
-  /api/employment/{id}:
+  /v1/employment/{id}:
     delete:
       description: delete a employment
       operationId: deleteEmployment
@@ -380,7 +380,7 @@ paths:
           $ref: '#/responses/employmentErrorValidation'
       tags:
       - employment
-  /api/pet:
+  /v1/pet:
     get:
       description: return all pets ofr a user
       operationId: getPetsByUserId
@@ -424,7 +424,7 @@ paths:
           $ref: '#/responses/petErrorResponse'
       tags:
       - pet
-  /api/pet/{id}:
+  /v1/pet/{id}:
     delete:
       description: delete a pet
       operationId: deletePet
@@ -497,7 +497,7 @@ paths:
           $ref: '#/responses/petErrorValidation'
       tags:
       - pet
-  /api/reference:
+  /v1/reference:
     get:
       description: return all references ofr a user
       operationId: getReferencesByUserId
@@ -541,7 +541,7 @@ paths:
           $ref: '#/responses/referenceErrorResponse'
       tags:
       - reference
-  /api/reference/{id}:
+  /v1/reference/{id}:
     delete:
       description: delete a reference
       operationId: deleteReference
@@ -614,7 +614,7 @@ paths:
           $ref: '#/responses/referenceErrorValidation'
       tags:
       - reference
-  /api/roommate:
+  /v1/roommate:
     get:
       description: return all roommates for a user
       operationId: getRoommatesByUserId
@@ -658,7 +658,7 @@ paths:
           $ref: '#/responses/roommateErrorResponse'
       tags:
       - roommate
-  /api/roommate/{id}:
+  /v1/roommate/{id}:
     delete:
       description: delete a roommate
       operationId: deleteRoommate
@@ -731,7 +731,7 @@ paths:
           $ref: '#/responses/roommateErrorValidation'
       tags:
       - roommate
-  /api/short-url:
+  /v1/shorturl:
     get:
       description: return a bitly short url
       operationId: getShortUrl
@@ -753,7 +753,7 @@ paths:
           $ref: '#/responses/shortUrlErrorResponse'
       tags:
       - shorturl
-  /api/user/{id}:
+  /v1/user/{id}:
     delete:
       description: delete a user
       operationId: deleteUser

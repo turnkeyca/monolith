@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route GET /api/pet/{id} pet getPet
+// swagger:route GET /v1/pet/{id} pet getPet
 // return a pet
 // responses:
 //	200: petResponse
@@ -27,7 +27,7 @@ func (h *Handler) HandleGetPet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// swagger:route GET /api/pet pet getPetsByUserId
+// swagger:route GET /v1/pet pet getPetsByUserId
 // return all pets ofr a user
 // responses:
 //	200: petsResponse

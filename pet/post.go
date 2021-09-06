@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// swagger:route POST /api/pet pet createPet
+// swagger:route POST /v1/pet pet createPet
 // create a new pet
 //
 // responses:

@@ -40,6 +40,6 @@ func ConfigureAuthRoutes(router *mux.Router, logger *log.Logger, database *db.Da
 	authHandler := NewHandler(logger, database)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/api/auth/registertoken", authHandler.HandleRegisterToken)
+	postRouter.HandleFunc("/v1/auth/registertoken", authHandler.HandleRegisterToken)
 	postRouter.Use(authHandler.GetBody)
 }

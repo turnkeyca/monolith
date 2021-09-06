@@ -35,20 +35,20 @@ func ConfigureRoommateRoutes(router *mux.Router, logger *log.Logger, database *d
 	roommateHandler := NewHandler(logger, database)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc(fmt.Sprintf("/api/roommate/{id:%s}", util.REGEX_UUID), roommateHandler.HandleGetRoommate)
+	getRouter.HandleFunc(fmt.Sprintf("/v1/roommate/{id:%s}", util.REGEX_UUID), roommateHandler.HandleGetRoommate)
 	getRouter.Use(authenticator.AuthenticateHttp, roommateHandler.GetIdFromPath)
-	getRouter.HandleFunc("/api/roommate", roommateHandler.HandleGetRoommateByUserId)
+	getRouter.HandleFunc("/v1/roommate", roommateHandler.HandleGetRoommateByUserId)
 	getRouter.Use(authenticator.AuthenticateHttp, roommateHandler.GetUserIdFromQueryParameters)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/api/roommate", roommateHandler.HandlePostRoommate)
+	postRouter.HandleFunc("/v1/roommate", roommateHandler.HandlePostRoommate)
 	postRouter.Use(authenticator.AuthenticateHttp, roommateHandler.GetBody)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc(fmt.Sprintf("/api/roommate/{id:%s}", util.REGEX_UUID), roommateHandler.HandlePutRoommate)
+	putRouter.HandleFunc(fmt.Sprintf("/v1/roommate/{id:%s}", util.REGEX_UUID), roommateHandler.HandlePutRoommate)
 	putRouter.Use(authenticator.AuthenticateHttp, roommateHandler.GetBody, roommateHandler.GetIdFromPath)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc(fmt.Sprintf("/api/roommate/{id:%s}", util.REGEX_UUID), roommateHandler.HandleDeleteRoommate)
+	deleteRouter.HandleFunc(fmt.Sprintf("/v1/roommate/{id:%s}", util.REGEX_UUID), roommateHandler.HandleDeleteRoommate)
 	deleteRouter.Use(authenticator.AuthenticateHttp, roommateHandler.GetIdFromPath)
 }

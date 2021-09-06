@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// swagger:route POST /api/auth/registertoken auth registerNewToken
+// swagger:route POST /v1/auth/registertoken auth registerNewToken
 // register token
 //
 // responses:
@@ -75,19 +75,76 @@ func (h *Handler) createUser(dto *RegisterTokenDto) (string, error) {
 			login_id, 
 			user_status, 
 			created_on, 
-			last_updated
+			last_updated,
+			full_name,
+			email,
+			phone_number,
+			nickname,
+			bio,
+			user_type,
+			moving_reason,
+			additional_details_general,
+			move_in_date,
+			move_out_date,
+			additional_details_lease,
+			send_notifications,
+			has_roommates,
+			has_security_deposit,
+			is_smoker,
+			has_prev_lawsuit,
+			has_prev_eviction,
+			can_credit_check,
+			has_pets
 		) values (
 			$1, 
 			$2, 
 			$3, 
 			$4, 
-			$5
+			$5,
+			$6,
+			$7,
+			$8,
+			$9,
+			$10,
+			$11,
+			$12,
+			$13,
+			$14,
+			$15,
+			$16,
+			$17, 
+			$18, 
+			$19, 
+			$20,
+			$21,
+			$22, 
+			$23,
+			$24
 		);`,
 		id,
 		dto.LoginId,
 		"active",
 		time.Now().Format(time.RFC3339Nano),
 		time.Now().Format(time.RFC3339Nano),
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
 	)
 	if err != nil {
 		return "", err

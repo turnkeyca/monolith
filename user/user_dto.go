@@ -28,9 +28,9 @@ var AllUserStatusTypes []UserStatusType = []UserStatusType{INACTIVE, ACTIVE}
 
 type UserDto struct {
 	Id                       string         `json:"id" validate:"omitempty,uuid" db:"id"`
+	LoginId                  string         `json:"loginId" db:"login_id"`
 	FullName                 string         `json:"fullName" db:"full_name"`
 	Email                    string         `json:"email" db:"email"`
-	Password                 string         `json:"password" db:"password"`
 	UserStatus               UserStatusType `json:"userStatusType" validate:"omitempty,userStatusType" db:"user_status"`
 	LastUpdated              string         `json:"lastUpdated" db:"last_updated"`
 	CreatedOn                string         `json:"createdOn" db:"created_on"`
