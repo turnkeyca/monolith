@@ -187,6 +187,9 @@ definitions:
       lawsuit:
         type: boolean
         x-go-name: HasPreviousLawsuit
+      loginId:
+        type: string
+        x-go-name: LoginId
       moveInDate:
         type: string
         x-go-name: MoveInDate
@@ -199,9 +202,6 @@ definitions:
       nickname:
         type: string
         x-go-name: Nickname
-      password:
-        type: string
-        x-go-name: Password
       pets:
         type: boolean
         x-go-name: HasPets
