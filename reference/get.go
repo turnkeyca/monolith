@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route GET /api/reference/{id} reference getReference
+// swagger:route GET /v1/reference/{id} reference getReference
 // return a reference
 // responses:
 //	200: referenceResponse
@@ -23,11 +23,11 @@ func (h *Handler) HandleGetReference(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	err = reference.Write(w)
 	if err != nil {
-		h.logger.Printf("encoding error: %#v", err)
+		http.Error(w, fmt.Sprintf("encoding error: %#v", err), http.StatusInternalServerError)
 	}
 }
 
-// swagger:route GET /api/reference reference getReferencesByUserId
+// swagger:route GET /v1/reference reference getReferencesByUserId
 // return all references ofr a user
 // responses:
 //	200: referencesResponse
@@ -45,7 +45,7 @@ func (h *Handler) HandleGetReferenceByUserId(w http.ResponseWriter, r *http.Requ
 	w.WriteHeader(http.StatusOK)
 	err = WriteAll(references, w)
 	if err != nil {
-		h.logger.Printf("encoding error: %#v", err)
+		http.Error(w, fmt.Sprintf("encoding error: %#v", err), http.StatusInternalServerError)
 	}
 }
 

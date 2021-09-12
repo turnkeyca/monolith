@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route DELETE /api/employment/{id} employment deleteEmployment
+// swagger:route DELETE /v1/employment/{id} employment deleteEmployment
 // delete a employment
 //
 // responses:

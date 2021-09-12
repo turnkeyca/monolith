@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route GET /api/roommate/{id} roommate getRoommate
+// swagger:route GET /v1/roommate/{id} roommate getRoommate
 // return a roommate
 // responses:
 //	200: roommateResponse
@@ -23,11 +23,11 @@ func (h *Handler) HandleGetRoommate(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	err = roommate.Write(w)
 	if err != nil {
-		h.logger.Printf("encoding error: %#v", err)
+		http.Error(w, fmt.Sprintf("encoding error: %#v", err), http.StatusInternalServerError)
 	}
 }
 
-// swagger:route GET /api/roommate roommate getRoommatesByUserId
+// swagger:route GET /v1/roommate roommate getRoommatesByUserId
 // return all roommates for a user
 // responses:
 //	200: roommatesResponse
@@ -45,7 +45,7 @@ func (h *Handler) HandleGetRoommateByUserId(w http.ResponseWriter, r *http.Reque
 	w.WriteHeader(http.StatusOK)
 	err = WriteAll(roommates, w)
 	if err != nil {
-		h.logger.Printf("encoding error: %#v", err)
+		http.Error(w, fmt.Sprintf("encoding error: %#v", err), http.StatusInternalServerError)
 	}
 }
 

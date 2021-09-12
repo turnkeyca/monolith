@@ -35,20 +35,20 @@ func ConfigurePetRoutes(router *mux.Router, logger *log.Logger, database *db.Dat
 	petHandler := NewHandler(logger, database)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc(fmt.Sprintf("/api/pet/{id:%s}", util.REGEX_UUID), petHandler.HandleGetPet)
+	getRouter.HandleFunc(fmt.Sprintf("/v1/pet/{id:%s}", util.REGEX_UUID), petHandler.HandleGetPet)
 	getRouter.Use(authenticator.AuthenticateHttp, petHandler.GetIdFromPath)
-	getRouter.HandleFunc("/api/pet", petHandler.HandleGetPetByUserId)
+	getRouter.HandleFunc("/v1/pet", petHandler.HandleGetPetByUserId)
 	getRouter.Use(authenticator.AuthenticateHttp, petHandler.GetUserIdFromQueryParameters)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/api/pet", petHandler.HandlePostPet)
+	postRouter.HandleFunc("/v1/pet", petHandler.HandlePostPet)
 	postRouter.Use(authenticator.AuthenticateHttp, petHandler.GetBody)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc(fmt.Sprintf("/api/pet/{id:%s}", util.REGEX_UUID), petHandler.HandlePutPet)
+	putRouter.HandleFunc(fmt.Sprintf("/v1/pet/{id:%s}", util.REGEX_UUID), petHandler.HandlePutPet)
 	putRouter.Use(authenticator.AuthenticateHttp, petHandler.GetBody, petHandler.GetIdFromPath)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc(fmt.Sprintf("/api/pet/{id:%s}", util.REGEX_UUID), petHandler.HandleDeletePet)
+	deleteRouter.HandleFunc(fmt.Sprintf("/v1/pet/{id:%s}", util.REGEX_UUID), petHandler.HandleDeletePet)
 	deleteRouter.Use(authenticator.AuthenticateHttp, petHandler.GetIdFromPath)
 }

@@ -1,0 +1,1 @@
+drop index roommate_user_id_fk1;

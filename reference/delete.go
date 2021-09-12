@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route DELETE /api/reference/{id} reference deleteReference
+// swagger:route DELETE /v1/reference/{id} reference deleteReference
 // delete a reference
 //
 // responses:

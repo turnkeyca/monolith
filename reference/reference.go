@@ -35,20 +35,20 @@ func ConfigureReferenceRoutes(router *mux.Router, logger *log.Logger, database *
 	referenceHandler := NewHandler(logger, database)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc(fmt.Sprintf("/api/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandleGetReference)
+	getRouter.HandleFunc(fmt.Sprintf("/v1/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandleGetReference)
 	getRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetIdFromPath)
-	getRouter.HandleFunc("/api/reference", referenceHandler.HandleGetReferenceByUserId)
+	getRouter.HandleFunc("/v1/reference", referenceHandler.HandleGetReferenceByUserId)
 	getRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetUserIdFromQueryParameters)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/api/reference", referenceHandler.HandlePostReference)
+	postRouter.HandleFunc("/v1/reference", referenceHandler.HandlePostReference)
 	postRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetBody)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc(fmt.Sprintf("/api/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandlePutReference)
+	putRouter.HandleFunc(fmt.Sprintf("/v1/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandlePutReference)
 	putRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetBody, referenceHandler.GetIdFromPath)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc(fmt.Sprintf("/api/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandleDeleteReference)
+	deleteRouter.HandleFunc(fmt.Sprintf("/v1/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandleDeleteReference)
 	deleteRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetIdFromPath)
 }

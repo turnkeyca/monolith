@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// swagger:route POST /api/reference reference createReference
+// swagger:route POST /v1/reference reference createReference
 // create a new reference
 //
 // responses:

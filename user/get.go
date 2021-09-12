@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route GET /api/user/{id} user getUser
+// swagger:route GET /v1/user/{id} user getUser
 // return a user
 // responses:
 //	200: userResponse
@@ -23,7 +23,7 @@ func (h *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	err = user.Write(w)
 	if err != nil {
-		h.logger.Printf("encoding error: %#v", err)
+		http.Error(w, fmt.Sprintf("encoding error: %#v", err), http.StatusInternalServerError)
 	}
 }
 

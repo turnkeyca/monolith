@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route GET /api/employment/{id} employment getEmployment
+// swagger:route GET /v1/employment/{id} employment getEmployment
 // return an employment
 // responses:
 //	200: employmentResponse
@@ -23,11 +23,11 @@ func (h *Handler) HandleGetEmployment(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	err = employment.Write(w)
 	if err != nil {
-		h.logger.Printf("encoding error: %#v", err)
+		http.Error(w, fmt.Sprintf("encoding error: %#v", err), http.StatusInternalServerError)
 	}
 }
 
-// swagger:route GET /api/employment employment getEmploymentsByUserId
+// swagger:route GET /v1/employment employment getEmploymentsByUserId
 // return employments for a user
 // responses:
 //	200: employmentsResponse
@@ -45,7 +45,7 @@ func (h *Handler) HandleGetEmploymentByUserId(w http.ResponseWriter, r *http.Req
 	w.WriteHeader(http.StatusOK)
 	err = WriteAll(employments, w)
 	if err != nil {
-		h.logger.Printf("encoding error: %#v", err)
+		http.Error(w, fmt.Sprintf("encoding error: %#v", err), http.StatusInternalServerError)
 	}
 }
 

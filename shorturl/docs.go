@@ -30,3 +30,11 @@ type shortUrlParamsWrapper struct {
 	// required: true
 	Url string `json:"url"`
 }
+
+// swagger:parameters getShortUrl
+//lint:ignore U1000 for docs
+type authHeaderWrapper struct {
+	// in: header
+	// required: true
+	Token string
+}

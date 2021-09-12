@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// swagger:route GET /api/pet/{id} pet getPet
+// swagger:route GET /v1/pet/{id} pet getPet
 // return a pet
 // responses:
 //	200: petResponse
@@ -23,11 +23,11 @@ func (h *Handler) HandleGetPet(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	err = pet.Write(w)
 	if err != nil {
-		h.logger.Printf("encoding error: %#v", err)
+		http.Error(w, fmt.Sprintf("encoding error: %#v", err), http.StatusInternalServerError)
 	}
 }
 
-// swagger:route GET /api/pet pet getPetsByUserId
+// swagger:route GET /v1/pet pet getPetsByUserId
 // return all pets ofr a user
 // responses:
 //	200: petsResponse
@@ -45,7 +45,7 @@ func (h *Handler) HandleGetPetByUserId(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	err = WriteAll(pets, w)
 	if err != nil {
-		h.logger.Printf("encoding error: %#v", err)
+		http.Error(w, fmt.Sprintf("encoding error: %#v", err), http.StatusInternalServerError)
 	}
 }
 

@@ -71,3 +71,11 @@ type employmentParamsWrapper struct {
 	// required: true
 	Body EmploymentDto
 }
+
+// swagger:parameters updateEmployment createEmployment getEmploymentsByUserId getEmployment deleteEmployment
+//lint:ignore U1000 for docs
+type authHeaderWrapper struct {
+	// in: header
+	// required: true
+	Token string
+}

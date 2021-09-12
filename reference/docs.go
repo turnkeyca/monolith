@@ -71,3 +71,11 @@ type referenceParamsWrapper struct {
 	// required: true
 	Body ReferenceDto
 }
+
+// swagger:parameters updateReference createReference getReferencesByUserId getReference deleteReference
+//lint:ignore U1000 for docs
+type authHeaderWrapper struct {
+	// in: header
+	// required: true
+	Token string
+}

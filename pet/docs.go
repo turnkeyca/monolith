@@ -71,3 +71,11 @@ type petParamsWrapper struct {
 	// required: true
 	Body PetDto
 }
+
+// swagger:parameters updatePet getPet deletePet createPet getPetsByUserId
+//lint:ignore U1000 for docs
+type authHeaderWrapper struct {
+	// in: header
+	// required: true
+	Token string
+}

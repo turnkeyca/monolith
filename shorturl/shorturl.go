@@ -28,6 +28,6 @@ type GenericError struct {
 func ConfigureShortUrlRoutes(router *mux.Router, logger *log.Logger, bitly *bitly.Client, authenticator *auth.Authenticator) {
 	shorturlHandler := NewHandler(logger, bitly)
 	getRouter := router.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc("/api/short-url", shorturlHandler.HandleGetShortUrl)
+	getRouter.HandleFunc("/v1/shorturl", shorturlHandler.HandleGetShortUrl)
 	getRouter.Use(authenticator.AuthenticateHttp)
 }
