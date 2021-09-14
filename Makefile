@@ -7,7 +7,7 @@ swagger : swagger-check
 run : monolith
 	./monolith
 
-monolith : install test
+monolith : clean install test
 	go build
 
 install : go.mod go.sum
@@ -16,3 +16,7 @@ install : go.mod go.sum
 test : 
 	go test ./...
 
+clean :
+	rm -f monolith
+	go clean -cache -modcache
+	

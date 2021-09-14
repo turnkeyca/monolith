@@ -19,7 +19,7 @@ require (
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/lib/pq v1.10.3
 	github.com/mailru/easyjson v0.7.7 // indirect
-	golang.org/x/net v0.0.0-20210903162142-ad29c8ab022f // indirect
+	golang.org/x/net v0.0.0-20210913180222-943fd674d43e // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 )
 
