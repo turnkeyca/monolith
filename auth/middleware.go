@@ -22,16 +22,16 @@ func (h *Handler) GetBody(next http.Handler) http.Handler {
 
 func (a *Authenticator) AuthenticateHttp(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		if r.Header["Token"] == nil {
-			http.Error(rw, "no token", http.StatusUnauthorized)
-			return
-		}
+		// if r.Header["Token"] == nil {
+		// 	http.Error(rw, "no token", http.StatusUnauthorized)
+		// 	return
+		// }
 
-		_, err := ValidateToken(r.Header["Token"][0])
-		if err != nil {
-			http.Error(rw, "invalid token", http.StatusUnauthorized)
-			return
-		}
+		// _, err := ValidateToken(r.Header["Token"][0])
+		// if err != nil {
+		// 	http.Error(rw, "invalid token", http.StatusUnauthorized)
+		// 	return
+		// }
 		next.ServeHTTP(rw, r)
 	})
 }
