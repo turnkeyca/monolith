@@ -30,6 +30,7 @@ import (
 	"github.com/turnkeyca/monolith/bitly"
 	"github.com/turnkeyca/monolith/db"
 	"github.com/turnkeyca/monolith/employment"
+	"github.com/turnkeyca/monolith/permission"
 	"github.com/turnkeyca/monolith/pet"
 	"github.com/turnkeyca/monolith/reference"
 	"github.com/turnkeyca/monolith/roommate"
@@ -61,6 +62,7 @@ func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 	reference.ConfigureReferenceRoutes(router, logger, database, authenticator)
 	pet.ConfigurePetRoutes(router, logger, database, authenticator)
 	employment.ConfigureEmploymentRoutes(router, logger, database, authenticator)
+	permission.ConfigurePermissionRoutes(router, logger, database, authenticator)
 	auth.ConfigureAuthRoutes(router, logger, database)
 
 	return router, nil
