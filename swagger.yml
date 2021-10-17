@@ -224,9 +224,6 @@ definitions:
         $ref: '#/definitions/UserStatusType'
       userType:
         $ref: '#/definitions/UserType'
-      walkthroughComplete:
-        type: boolean
-        x-go-name: WalkthroughComplete
     type: object
     x-go-package: github.com/turnkeyca/monolith/user
   UserStatusType:
