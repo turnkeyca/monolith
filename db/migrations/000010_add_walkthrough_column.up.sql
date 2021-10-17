@@ -1,0 +1,1 @@
+alter table users add column walkthrough_complete boolean;
