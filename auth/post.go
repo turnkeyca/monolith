@@ -95,7 +95,8 @@ func (h *Handler) createUser(dto *RegisterTokenDto) (string, error) {
 			has_prev_eviction,
 			can_credit_check,
 			has_pets,
-			walkthrough_complete
+			walkthrough_complete,
+			terms_accepted
 		) values (
 			$1, 
 			$2, 
@@ -121,7 +122,8 @@ func (h *Handler) createUser(dto *RegisterTokenDto) (string, error) {
 			$22, 
 			$23,
 			$24,
-			$25
+			$25,
+			$26
 		);`,
 		id,
 		dto.LoginId,
@@ -139,6 +141,7 @@ func (h *Handler) createUser(dto *RegisterTokenDto) (string, error) {
 		"",
 		"",
 		"",
+		false,
 		false,
 		false,
 		false,
