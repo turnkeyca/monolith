@@ -51,7 +51,8 @@ func (h *Handler) UpdateUser(dto *UserDto) error {
 			additional_details_general=$18, 
 			move_in_date=$19, 
 			move_out_date=$20, 
-			additional_details_lease=$21
+			additional_details_lease=$21,
+			walkthrough_complete=$22
 		where id=$1;`,
 		dto.Id,
 		dto.FullName,
@@ -74,6 +75,7 @@ func (h *Handler) UpdateUser(dto *UserDto) error {
 		dto.MoveInDate,
 		dto.MoveOutDate,
 		dto.AdditionalDetailsLease,
+		dto.WalkthroughComplete,
 	)
 	return err
 }
