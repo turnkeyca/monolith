@@ -155,5 +155,31 @@ func (h *Handler) createUser(dto *RegisterTokenDto) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	err = h.db.Run(
+		`insert into permission (
+			id,
+			user_id,
+			on_user_id,
+			permission,
+			created_date,
+			last_updated
+		) values (
+			$1,
+			$2,
+			$3,
+			$4,
+			$5,
+			$6
+		)`,
+		uuid.New().String(),
+		id,
+		id,
+		"edit",
+		time.Now().Format(time.RFC3339Nano),
+		time.Now().Format(time.RFC3339Nano),
+	)
+	if err != nil {
+		return "", err
+	}
 	return id, nil
 }
