@@ -11,9 +11,21 @@ import (
 	"github.com/turnkeyca/monolith/util"
 )
 
+type Authorizer struct {
+	logger *log.Logger
+	db     *db.Database
+}
+
 type Handler struct {
 	logger *log.Logger
 	db     *db.Database
+}
+
+func New(logger *log.Logger, db *db.Database) *Authorizer {
+	return &Authorizer{
+		logger: logger,
+		db:     db,
+	}
 }
 
 func NewHandler(logger *log.Logger, db *db.Database) *Handler {

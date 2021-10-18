@@ -60,3 +60,9 @@ func (h *Handler) GetBody(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+
+func (a *Authorizer) AuthorizeHttp(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		next.ServeHTTP(rw, r)
+	})
+}
