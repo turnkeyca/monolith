@@ -54,15 +54,16 @@ func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 		logger.Fatalf("failed to create database %#v\n", err)
 	}
 	authenticator := auth.New(logger, database)
+	authorizer := permission.New(logger, database)
 
 	configureDocRoutes(router)
-	shorturl.ConfigureShortUrlRoutes(router, logger, bitly, authenticator)
-	user.ConfigureUserRoutes(router, logger, database, authenticator)
-	roommate.ConfigureRoommateRoutes(router, logger, database, authenticator)
-	reference.ConfigureReferenceRoutes(router, logger, database, authenticator)
-	pet.ConfigurePetRoutes(router, logger, database, authenticator)
-	employment.ConfigureEmploymentRoutes(router, logger, database, authenticator)
-	permission.ConfigurePermissionRoutes(router, logger, database, authenticator)
+	shorturl.ConfigureShortUrlRoutes(router, logger, bitly, authenticator, authorizer)
+	user.ConfigureUserRoutes(router, logger, database, authenticator, authorizer)
+	roommate.ConfigureRoommateRoutes(router, logger, database, authenticator, authorizer)
+	reference.ConfigureReferenceRoutes(router, logger, database, authenticator, authorizer)
+	pet.ConfigurePetRoutes(router, logger, database, authenticator, authorizer)
+	employment.ConfigureEmploymentRoutes(router, logger, database, authenticator, authorizer)
+	permission.ConfigurePermissionRoutes(router, logger, database, authenticator, authorizer)
 	auth.ConfigureAuthRoutes(router, logger, database)
 
 	return router, nil

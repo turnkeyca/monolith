@@ -43,24 +43,24 @@ type ValidationError struct {
 	Messages []string `json:"messages"`
 }
 
-func ConfigurePermissionRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator) {
+func ConfigurePermissionRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator, authorizer *Authorizer) {
 	permissionHandler := NewHandler(logger, database)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/permission/{id:%s}", util.REGEX_UUID), permissionHandler.HandleGetPermission)
-	getRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetIdFromPath)
+	getRouter.Use(authenticator.AuthenticateHttp, authorizer.AuthorizeHttp, permissionHandler.GetIdFromPath)
 	getRouter.HandleFunc("/v1/permission", permissionHandler.HandleGetPermissionByUserId)
-	getRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetUserIdFromQueryParameters)
+	getRouter.Use(authenticator.AuthenticateHttp, authorizer.AuthorizeHttp, permissionHandler.GetUserIdFromQueryParameters)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/v1/permission", permissionHandler.HandlePostPermission)
-	postRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetBody)
+	postRouter.Use(authenticator.AuthenticateHttp, authorizer.AuthorizeHttp, permissionHandler.GetBody)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc(fmt.Sprintf("/v1/permission/{id:%s}", util.REGEX_UUID), permissionHandler.HandlePutPermission)
-	putRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetBody, permissionHandler.GetIdFromPath)
+	putRouter.Use(authenticator.AuthenticateHttp, authorizer.AuthorizeHttp, permissionHandler.GetBody, permissionHandler.GetIdFromPath)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc(fmt.Sprintf("/v1/permission/{id:%s}", util.REGEX_UUID), permissionHandler.HandleDeletePermission)
-	deleteRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetIdFromPath)
+	deleteRouter.Use(authenticator.AuthenticateHttp, authorizer.AuthorizeHttp, permissionHandler.GetIdFromPath)
 }
