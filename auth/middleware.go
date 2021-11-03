@@ -6,6 +6,7 @@ import (
 )
 
 type KeyBody struct{}
+type KeyLoggedInUserId struct{}
 
 func (h *Handler) GetBody(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -22,16 +23,18 @@ func (h *Handler) GetBody(next http.Handler) http.Handler {
 
 func (a *Authenticator) AuthenticateHttp(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		// if r.Header["Token"] == nil {
-		// 	http.Error(rw, "no token", http.StatusUnauthorized)
-		// 	return
-		// }
+		if r.Header["Token"] == nil {
+			http.Error(rw, "no token", http.StatusUnauthorized)
+			return
+		}
 
-		// _, err := ValidateToken(r.Header["Token"][0])
-		// if err != nil {
-		// 	http.Error(rw, "invalid token", http.StatusUnauthorized)
-		// 	return
-		// }
+		claims, err := ValidateToken(r.Header["Token"][0])
+		if err != nil {
+			http.Error(rw, "invalid token", http.StatusUnauthorized)
+			return
+		}
+		ctx := context.WithValue(r.Context(), KeyLoggedInUserId{}, claims.LoginId)
+		r = r.WithContext(ctx)
 		next.ServeHTTP(rw, r)
 	})
 }

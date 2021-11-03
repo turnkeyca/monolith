@@ -7,6 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
+	"github.com/turnkeyca/monolith/auth"
 )
 
 type KeyId struct{}
@@ -61,8 +62,15 @@ func (h *Handler) GetBody(next http.Handler) http.Handler {
 	})
 }
 
-func (a *Authorizer) AuthorizeHttp(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		next.ServeHTTP(rw, r)
+func (h *Handler) CheckPermissions(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		id := r.Context().Value(KeyId{}).(string)
+		loggedInUserId := r.Context().Value(auth.KeyLoggedInUserId{}).(string)
+		err := CheckUserIdAndToken(id, loggedInUserId)
+		if err != nil {
+			http.Error(w, "User does not have permission", http.StatusForbidden)
+			return
+		}
+		next.ServeHTTP(w, r)
 	})
 }

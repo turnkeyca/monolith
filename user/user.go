@@ -40,13 +40,13 @@ func ConfigureUserRoutes(router *mux.Router, logger *log.Logger, database *db.Da
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/user/{id:%s}", util.REGEX_UUID), userHandler.HandleGetUser)
-	getRouter.Use(authenticator.AuthenticateHttp, authorizer.AuthorizeHttp, userHandler.GetIdFromPath)
+	getRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath, userHandler.CheckPermissions)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc(fmt.Sprintf("/v1/user/{id:%s}", util.REGEX_UUID), userHandler.HandlePutUser)
-	putRouter.Use(authenticator.AuthenticateHttp, authorizer.AuthorizeHttp, userHandler.GetBody, userHandler.GetIdFromPath)
+	putRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody, userHandler.GetIdFromPath, userHandler.CheckPermissions)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc(fmt.Sprintf("/v1/user/{id:%s}", util.REGEX_UUID), userHandler.HandleDeleteUser)
-	deleteRouter.Use(authenticator.AuthenticateHttp, authorizer.AuthorizeHttp, userHandler.GetIdFromPath)
+	deleteRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath, userHandler.CheckPermissions)
 }

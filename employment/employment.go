@@ -37,19 +37,19 @@ func ConfigureEmploymentRoutes(router *mux.Router, logger *log.Logger, database 
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/employment/{id:%s}", util.REGEX_UUID), employmentHandler.HandleGetEmployment)
-	getRouter.Use(authenticator.AuthenticateHttp, authorizer.AuthorizeHttp, employmentHandler.GetIdFromPath)
+	getRouter.Use(authenticator.AuthenticateHttp, employmentHandler.GetIdFromPath, employmentHandler.CheckPermissions)
 	getRouter.HandleFunc("/v1/employment", employmentHandler.HandleGetEmploymentByUserId)
-	getRouter.Use(authenticator.AuthenticateHttp, authorizer.AuthorizeHttp, employmentHandler.GetUserIdFromQueryParameters)
+	getRouter.Use(authenticator.AuthenticateHttp, employmentHandler.GetUserIdFromQueryParameters, employmentHandler.CheckPermissions)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/v1/employment", employmentHandler.HandlePostEmployment)
-	postRouter.Use(authenticator.AuthenticateHttp, employmentHandler.GetBody)
+	postRouter.Use(authenticator.AuthenticateHttp, employmentHandler.GetBody, employmentHandler.CheckPermissions)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc(fmt.Sprintf("/v1/employment/{id:%s}", util.REGEX_UUID), employmentHandler.HandlePutEmployment)
-	putRouter.Use(authenticator.AuthenticateHttp, authorizer.AuthorizeHttp, employmentHandler.GetBody, employmentHandler.GetIdFromPath)
+	putRouter.Use(authenticator.AuthenticateHttp, employmentHandler.GetBody, employmentHandler.GetIdFromPath, employmentHandler.CheckPermissions)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc(fmt.Sprintf("/v1/employment/{id:%s}", util.REGEX_UUID), employmentHandler.HandleDeleteEmployment)
-	deleteRouter.Use(authenticator.AuthenticateHttp, authorizer.AuthorizeHttp, employmentHandler.GetIdFromPath)
+	deleteRouter.Use(authenticator.AuthenticateHttp, employmentHandler.GetIdFromPath, employmentHandler.CheckPermissions)
 }
