@@ -13,8 +13,9 @@ import (
 )
 
 type Handler struct {
-	logger *log.Logger
-	db     *db.Database
+	logger     *log.Logger
+	authorizer *permission.Authorizer
+	db         *db.Database
 }
 
 func NewHandler(logger *log.Logger, db *db.Database) *Handler {
@@ -37,19 +38,19 @@ func ConfigurePetRoutes(router *mux.Router, logger *log.Logger, database *db.Dat
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/pet/{id:%s}", util.REGEX_UUID), petHandler.HandleGetPet)
-	getRouter.Use(authenticator.AuthenticateHttp, petHandler.GetIdFromPath, petHandler.CheckPermissions)
+	getRouter.Use(authenticator.AuthenticateHttp, petHandler.GetIdFromPath, petHandler.CheckPermissionsPetIdView)
 	getRouter.HandleFunc("/v1/pet", petHandler.HandleGetPetByUserId)
-	getRouter.Use(authenticator.AuthenticateHttp, petHandler.GetUserIdFromQueryParameters, petHandler.CheckPermissions)
+	getRouter.Use(authenticator.AuthenticateHttp, petHandler.GetUserIdFromQueryParameters, petHandler.CheckPermissionsView)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/v1/pet", petHandler.HandlePostPet)
-	postRouter.Use(authenticator.AuthenticateHttp, petHandler.GetBody, petHandler.CheckPermissions)
+	postRouter.Use(authenticator.AuthenticateHttp, petHandler.GetBody, petHandler.CheckPermissionsPetIdEdit)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc(fmt.Sprintf("/v1/pet/{id:%s}", util.REGEX_UUID), petHandler.HandlePutPet)
-	putRouter.Use(authenticator.AuthenticateHttp, petHandler.GetBody, petHandler.GetIdFromPath, petHandler.CheckPermissions)
+	putRouter.Use(authenticator.AuthenticateHttp, petHandler.GetBody, petHandler.GetIdFromPath, petHandler.CheckPermissionsPetIdEdit)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc(fmt.Sprintf("/v1/pet/{id:%s}", util.REGEX_UUID), petHandler.HandleDeletePet)
-	deleteRouter.Use(authenticator.AuthenticateHttp, petHandler.GetIdFromPath, petHandler.CheckPermissions)
+	deleteRouter.Use(authenticator.AuthenticateHttp, petHandler.GetIdFromPath, petHandler.CheckPermissionsPetIdEdit)
 }

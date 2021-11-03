@@ -13,8 +13,9 @@ import (
 )
 
 type Handler struct {
-	logger *log.Logger
-	db     *db.Database
+	logger     *log.Logger
+	authorizer *permission.Authorizer
+	db         *db.Database
 }
 
 func NewHandler(logger *log.Logger, db *db.Database) *Handler {
@@ -37,19 +38,19 @@ func ConfigureReferenceRoutes(router *mux.Router, logger *log.Logger, database *
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandleGetReference)
-	getRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetIdFromPath, referenceHandler.CheckPermissions)
+	getRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetIdFromPath, referenceHandler.CheckPermissionsReferenceIdView)
 	getRouter.HandleFunc("/v1/reference", referenceHandler.HandleGetReferenceByUserId)
-	getRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetUserIdFromQueryParameters, referenceHandler.CheckPermissions)
+	getRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetUserIdFromQueryParameters, referenceHandler.CheckPermissionsView)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/v1/reference", referenceHandler.HandlePostReference)
-	postRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetBody, referenceHandler.CheckPermissions)
+	postRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetBody, referenceHandler.CheckPermissionsReferenceIdEdit)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc(fmt.Sprintf("/v1/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandlePutReference)
-	putRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetBody, referenceHandler.GetIdFromPath, referenceHandler.CheckPermissions)
+	putRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetBody, referenceHandler.GetIdFromPath, referenceHandler.CheckPermissionsReferenceIdEdit)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc(fmt.Sprintf("/v1/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandleDeleteReference)
-	deleteRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetIdFromPath, referenceHandler.CheckPermissions)
+	deleteRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetIdFromPath, referenceHandler.CheckPermissionsReferenceIdEdit)
 }

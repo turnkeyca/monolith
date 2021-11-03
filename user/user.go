@@ -13,8 +13,9 @@ import (
 )
 
 type Handler struct {
-	logger *log.Logger
-	db     *db.Database
+	logger     *log.Logger
+	authorizer *permission.Authorizer
+	db         *db.Database
 }
 
 type KeyId struct{}
@@ -40,13 +41,13 @@ func ConfigureUserRoutes(router *mux.Router, logger *log.Logger, database *db.Da
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/user/{id:%s}", util.REGEX_UUID), userHandler.HandleGetUser)
-	getRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath, userHandler.CheckPermissions)
+	getRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath, userHandler.CheckPermissionsView)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc(fmt.Sprintf("/v1/user/{id:%s}", util.REGEX_UUID), userHandler.HandlePutUser)
-	putRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody, userHandler.GetIdFromPath, userHandler.CheckPermissions)
+	putRouter.Use(authenticator.AuthenticateHttp, userHandler.GetBody, userHandler.GetIdFromPath, userHandler.CheckPermissionsEdit)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc(fmt.Sprintf("/v1/user/{id:%s}", util.REGEX_UUID), userHandler.HandleDeleteUser)
-	deleteRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath, userHandler.CheckPermissions)
+	deleteRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath, userHandler.CheckPermissionsEdit)
 }

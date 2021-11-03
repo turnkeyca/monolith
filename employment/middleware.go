@@ -63,11 +63,47 @@ func (h *Handler) GetBody(next http.Handler) http.Handler {
 	})
 }
 
-func (h *Handler) CheckPermissions(next http.Handler) http.Handler {
+func (h *Handler) CheckPermissionsView(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id := r.Context().Value(KeyUserId{}).(string)
 		loggedInUserId := r.Context().Value(auth.KeyLoggedInUserId{}).(string)
-		err := permission.CheckUserIdAndToken(id, loggedInUserId)
+		err := h.authorizer.CheckUserIdAndToken(id, loggedInUserId, permission.VIEW)
+		if err != nil {
+			http.Error(w, "User does not have permission", http.StatusForbidden)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+func (h *Handler) CheckPermissionsEmploymentIdEdit(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var id string
+		err := h.db.Select(&id, `select user_id from employment where id=$1;`, r.Context().Value(KeyId{}).(string))
+		if err != nil {
+			http.Error(w, "User does not have permission", http.StatusForbidden)
+			return
+		}
+		loggedInUserId := r.Context().Value(auth.KeyLoggedInUserId{}).(string)
+		err = h.authorizer.CheckUserIdAndToken(id, loggedInUserId, permission.EDIT)
+		if err != nil {
+			http.Error(w, "User does not have permission", http.StatusForbidden)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+func (h *Handler) CheckPermissionsEmploymentIdView(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var id string
+		err := h.db.Select(&id, `select user_id from employment where id=$1;`, r.Context().Value(KeyId{}).(string))
+		if err != nil {
+			http.Error(w, "User does not have permission", http.StatusForbidden)
+			return
+		}
+		loggedInUserId := r.Context().Value(auth.KeyLoggedInUserId{}).(string)
+		err = h.authorizer.CheckUserIdAndToken(id, loggedInUserId, permission.VIEW)
 		if err != nil {
 			http.Error(w, "User does not have permission", http.StatusForbidden)
 			return
