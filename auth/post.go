@@ -69,117 +69,111 @@ func (h *Handler) createUser(dto *RegisterTokenDto) (string, error) {
 		return "", fmt.Errorf("duplicate users")
 	}
 	id := uuid.New().String()
-	err = h.db.Run(
-		`insert into users (
-			id, 
-			login_id, 
-			user_status, 
-			created_on, 
-			last_updated,
-			full_name,
-			email,
-			phone_number,
-			nickname,
-			bio,
-			user_type,
-			moving_reason,
-			additional_details_general,
-			move_in_date,
-			move_out_date,
-			additional_details_lease,
-			send_notifications,
-			has_roommates,
-			has_security_deposit,
-			is_smoker,
-			has_prev_lawsuit,
-			has_prev_eviction,
-			can_credit_check,
-			has_pets,
-			walkthrough_complete,
-			terms_accepted
-		) values (
-			$1, 
-			$2, 
-			$3, 
-			$4, 
-			$5,
-			$6,
-			$7,
-			$8,
-			$9,
-			$10,
-			$11,
-			$12,
-			$13,
-			$14,
-			$15,
-			$16,
-			$17, 
-			$18, 
-			$19, 
-			$20,
-			$21,
-			$22, 
-			$23,
-			$24,
-			$25,
-			$26
-		);`,
+	tx, err := h.db.Begin()
+	if err != nil {
+		return "", err
+	}
+	stmt, err := tx.Prepare(`insert into users (
+		id, 
+		login_id, 
+		user_status, 
+		created_on, 
+		last_updated,
+		full_name,
+		email,
+		phone_number,
+		nickname,
+		bio,
+		user_type,
+		moving_reason,
+		additional_details_general,
+		move_in_date,
+		move_out_date,
+		additional_details_lease,
+		send_notifications,
+		has_roommates,
+		has_security_deposit,
+		is_smoker,
+		has_prev_lawsuit,
+		has_prev_eviction,
+		can_credit_check,
+		has_pets,
+		walkthrough_complete,
+		terms_accepted
+	) values (
+		$1, $2, $3, $4, $4, $5, $5, $5, $5, $5, $5, $5, $5, $5, $5, $5, $6, $6, $6, $6, $6, $6, $6, $6, $6, $6
+	)`)
+	if err != nil {
+		tx.Rollback()
+		return "", err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(
 		id,
 		dto.LoginId,
 		"active",
 		time.Now().Format(time.RFC3339Nano),
-		time.Now().Format(time.RFC3339Nano),
 		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
 		false,
 	)
 	if err != nil {
+		tx.Rollback()
 		return "", err
 	}
-	err = h.db.Run(
+	stmt2, err := tx.Prepare(
 		`insert into permission (
 			id,
 			user_id,
 			on_user_id,
 			permission,
-			created_date,
+			created_on,
 			last_updated
 		) values (
-			$1,
-			$2,
-			$3,
-			$4,
-			$5,
-			$6
+			$1, $2, $2, $3, $4, $4
 		)`,
+	)
+	if err != nil {
+		tx.Rollback()
+		return "", err
+	}
+	defer stmt2.Close()
+	_, err = stmt2.Exec(
 		uuid.New().String(),
 		id,
-		id,
-		"edit",
-		time.Now().Format(time.RFC3339Nano),
+		"view",
 		time.Now().Format(time.RFC3339Nano),
 	)
 	if err != nil {
+		tx.Rollback()
 		return "", err
 	}
+	stmt3, err := tx.Prepare(
+		`insert into permission (
+			id,
+			user_id,
+			on_user_id,
+			permission,
+			created_on,
+			last_updated
+		) values (
+			$1, $2, $2, $3, $4, $4
+		)`,
+	)
+	if err != nil {
+		tx.Rollback()
+		return "", err
+	}
+	defer stmt3.Close()
+	_, err = stmt3.Exec(
+		uuid.New().String(),
+		id,
+		"edit",
+		time.Now().Format(time.RFC3339Nano),
+	)
+	if err != nil {
+		tx.Rollback()
+		return "", err
+	}
+	tx.Commit()
 	return id, nil
 }

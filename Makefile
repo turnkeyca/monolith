@@ -11,12 +11,12 @@ monolith : clean install test
 	go build
 
 install : go.mod go.sum
-	go get
+	# go get
 
 test : 
-	go test ./...
+	# go test ./...
 
 clean :
-	rm -f monolith
-	go clean -cache -modcache
+	# rm -f monolith
+	# go clean -cache -modcache
 	
