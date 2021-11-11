@@ -3,6 +3,7 @@ package user
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 // swagger:route DELETE /v1/user/{id} user deleteUser
@@ -26,6 +27,6 @@ func (h *Handler) HandleDeleteUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) DeleteUser(id string) error {
-	err := h.db.Run("delete from users where id = $1;", id)
+	err := h.db.Run("update users set user_status='disabled', last_updated=$2 where id = $1;", id, time.Now().Format(time.RFC3339Nano))
 	return err
 }
