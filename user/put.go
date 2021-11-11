@@ -31,7 +31,6 @@ func (h *Handler) HandlePutUser(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) UpdateUser(dto *UserDto) error {
 	err := h.db.Run(
 		`update users set 
-			id=$1, 
 			full_name=$2, 
 			user_status=$3,
 			last_updated=$4,

@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 )
 
@@ -12,7 +13,7 @@ func (h *Handler) GetBody(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		d, err := Read(r.Body)
 		if err != nil {
-			http.Error(w, "error reading auth", http.StatusBadRequest)
+			http.Error(w, fmt.Sprintf("Error reading auth: %s", err), http.StatusBadRequest)
 			return
 		}
 		ctx := context.WithValue(r.Context(), KeyBody{}, d)
@@ -33,7 +34,7 @@ func (a *Authenticator) AuthenticateHttp(next http.Handler) http.Handler {
 			http.Error(rw, "invalid token", http.StatusUnauthorized)
 			return
 		}
-		ctx := context.WithValue(r.Context(), KeyLoggedInUserId{}, claims.LoginId)
+		ctx := context.WithValue(r.Context(), KeyLoggedInUserId{}, claims.Id)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(rw, r)
 	})

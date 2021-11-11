@@ -45,7 +45,7 @@ func (h *Handler) GetBody(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		d, err := Read(r.Body)
 		if err != nil {
-			http.Error(w, "Error reading roommate", http.StatusBadRequest)
+			http.Error(w, fmt.Sprintf("Error reading roommate: %s", err), http.StatusBadRequest)
 			return
 		}
 		err = d.Validate()

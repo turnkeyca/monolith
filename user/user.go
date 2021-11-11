@@ -21,10 +21,11 @@ type Handler struct {
 type KeyId struct{}
 type KeyBody struct{}
 
-func NewHandler(logger *log.Logger, db *db.Database) *Handler {
+func NewHandler(logger *log.Logger, db *db.Database, authorizer *permission.Authorizer) *Handler {
 	return &Handler{
-		logger: logger,
-		db:     db,
+		logger:     logger,
+		db:         db,
+		authorizer: authorizer,
 	}
 }
 
@@ -37,7 +38,7 @@ type ValidationError struct {
 }
 
 func ConfigureUserRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator, authorizer *permission.Authorizer) {
-	userHandler := NewHandler(logger, database)
+	userHandler := NewHandler(logger, database, authorizer)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/user/{id:%s}", util.REGEX_UUID), userHandler.HandleGetUser)

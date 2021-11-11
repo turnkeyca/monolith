@@ -30,7 +30,7 @@ func (h *Handler) HandleRegisterToken(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("error registering token: %#v", err), http.StatusInternalServerError)
 		return
 	}
-	token, err := GenerateToken(dto.LoginId)
+	token, err := GenerateToken(id)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("error registering token: %#v", err), http.StatusInternalServerError)
 		return
