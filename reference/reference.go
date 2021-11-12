@@ -18,10 +18,11 @@ type Handler struct {
 	db         *db.Database
 }
 
-func NewHandler(logger *log.Logger, db *db.Database) *Handler {
+func NewHandler(logger *log.Logger, db *db.Database, authorizer *permission.Authorizer) *Handler {
 	return &Handler{
-		logger: logger,
-		db:     db,
+		logger:     logger,
+		db:         db,
+		authorizer: authorizer,
 	}
 }
 
@@ -34,17 +35,18 @@ type ValidationError struct {
 }
 
 func ConfigureReferenceRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator, authorizer *permission.Authorizer) {
-	referenceHandler := NewHandler(logger, database)
+	referenceHandler := NewHandler(logger, database, authorizer)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandleGetReference)
 	getRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetIdFromPath, referenceHandler.CheckPermissionsReferenceIdView)
-	getRouter.HandleFunc("/v1/reference", referenceHandler.HandleGetReferenceByUserId)
-	getRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetUserIdFromQueryParameters, referenceHandler.CheckPermissionsView)
+	getRouter2 := router.Methods(http.MethodGet).Subrouter()
+	getRouter2.HandleFunc("/v1/reference", referenceHandler.HandleGetReferenceByUserId)
+	getRouter2.Use(authenticator.AuthenticateHttp, referenceHandler.GetUserIdFromQueryParameters, referenceHandler.CheckPermissionsView)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/v1/reference", referenceHandler.HandlePostReference)
-	postRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetBody, referenceHandler.CheckPermissionsReferenceIdEdit)
+	postRouter.Use(authenticator.AuthenticateHttp, referenceHandler.GetBody, referenceHandler.CheckPermissionsBodyEdit)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc(fmt.Sprintf("/v1/reference/{id:%s}", util.REGEX_UUID), referenceHandler.HandlePutReference)
