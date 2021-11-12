@@ -44,6 +44,30 @@ definitions:
         x-go-name: Message
     type: object
     x-go-package: github.com/turnkeyca/monolith/user
+  PermissionDto:
+    properties:
+      createdOn:
+        type: string
+        x-go-name: CreatedOn
+      id:
+        type: string
+        x-go-name: Id
+      lastUpdated:
+        type: string
+        x-go-name: LastUpdated
+      onUserId:
+        type: string
+        x-go-name: OnUserId
+      permission:
+        $ref: '#/definitions/PermissionType'
+      userId:
+        type: string
+        x-go-name: UserId
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/permission
+  PermissionType:
+    type: string
+    x-go-package: github.com/turnkeyca/monolith/permission
   PetDto:
     properties:
       breed:
@@ -154,6 +178,9 @@ definitions:
     x-go-package: github.com/turnkeyca/monolith/auth
   UserDto:
     properties:
+      acceptedTerms:
+        type: boolean
+        x-go-name: AcceptedTerms
       additionalDetailsGeneral:
         type: string
         x-go-name: AdditionalDetailsGeneral
@@ -383,6 +410,136 @@ paths:
           $ref: '#/responses/employmentErrorValidation'
       tags:
       - employment
+  /v1/permission:
+    get:
+      description: return all permissions ofr a user
+      operationId: getPermissionsByUserId
+      parameters:
+      - description: The user id
+        in: query
+        name: userId
+        required: true
+        type: string
+        x-go-name: UserId
+      - in: header
+        name: Token
+        required: true
+        type: string
+      responses:
+        "200":
+          $ref: '#/responses/permissionsResponse'
+        "404":
+          $ref: '#/responses/permissionErrorResponse'
+      tags:
+      - permission
+    post:
+      description: create a new permission
+      operationId: createPermission
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/PermissionDto'
+      - in: header
+        name: Token
+        required: true
+        type: string
+      responses:
+        "204":
+          $ref: '#/responses/noContentResponse'
+        "422":
+          $ref: '#/responses/permissionErrorValidation'
+        "500":
+          $ref: '#/responses/permissionErrorResponse'
+      tags:
+      - permission
+  /v1/permission/{id}:
+    delete:
+      description: delete a permission
+      operationId: deletePermission
+      parameters:
+      - description: The id of the permission for which the operation relates
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      - in: header
+        name: Token
+        required: true
+        type: string
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/permissionErrorResponse'
+        "500":
+          $ref: '#/responses/permissionErrorResponse'
+      tags:
+      - permission
+    get:
+      description: return a permission
+      operationId: getPermission
+      parameters:
+      - description: The id of the permission for which the operation relates
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      - in: header
+        name: Token
+        required: true
+        type: string
+      responses:
+        "200":
+          $ref: '#/responses/permissionResponse'
+        "404":
+          $ref: '#/responses/permissionErrorResponse'
+      tags:
+      - permission
+    put:
+      description: update a permission
+      operationId: updatePermission
+      parameters:
+      - in: header
+        name: Token
+        required: true
+        type: string
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/permissionErrorResponse'
+        "422":
+          $ref: '#/responses/permissionErrorValidation'
+      tags:
+      - permission
+  /v1/permission/{id}/accept:
+    post:
+      description: accept a permission
+      operationId: acceptPermission
+      parameters:
+      - description: The id of the permission for which the operation relates
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      - in: header
+        name: Token
+        required: true
+        type: string
+      responses:
+        "204":
+          $ref: '#/responses/noContentResponse'
+        "422":
+          $ref: '#/responses/permissionErrorValidation'
+        "500":
+          $ref: '#/responses/permissionErrorResponse'
+      tags:
+      - permission
   /v1/pet:
     get:
       description: return all pets ofr a user
@@ -856,6 +1013,24 @@ responses:
       type: array
   noContentResponse:
     description: No content is returned by this API endpoint
+  permissionErrorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  permissionErrorValidation:
+    description: Validation errors defined as an array of strings
+    schema:
+      $ref: '#/definitions/ValidationError'
+  permissionResponse:
+    description: A permission
+    schema:
+      $ref: '#/definitions/PermissionDto'
+  permissionsResponse:
+    description: A list of permissions
+    schema:
+      items:
+        $ref: '#/definitions/PermissionDto'
+      type: array
   petErrorResponse:
     description: Generic error message returned as a string
     schema:
