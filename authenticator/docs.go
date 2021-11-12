@@ -1,4 +1,4 @@
-package auth
+package authenticator
 
 // Generic error message returned as a string
 // swagger:response authErrorResponse

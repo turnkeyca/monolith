@@ -1,5 +1,7 @@
 package reference
 
+import "github.com/turnkeyca/monolith/util"
+
 //
 // NOTE: Types defined here are purely for documentation purposes
 // these types are not used by any of the handlers
@@ -10,16 +12,7 @@ package reference
 type referenceErrorResponseWrapper struct {
 	// Description of the error
 	// in: body
-	Body GenericError
-}
-
-// Validation errors defined as an array of strings
-// swagger:response referenceErrorValidation
-//lint:ignore U1000 for docs
-type referenceErrorValidationWrapper struct {
-	// Collection of the validation errors
-	// in: body
-	Body ValidationError
+	Body util.GenericError
 }
 
 // A reference

@@ -1,5 +1,7 @@
 package permission
 
+import "github.com/turnkeyca/monolith/util"
+
 //
 // NOTE: Types defined here are purely for documentation purposes
 // these types are not used by any of the handlers
@@ -10,16 +12,7 @@ package permission
 type permissionErrorResponseWrapper struct {
 	// Description of the error
 	// in: body
-	Body GenericError
-}
-
-// Validation errors defined as an array of strings
-// swagger:response permissionErrorValidation
-//lint:ignore U1000 for docs
-type permissionErrorValidationWrapper struct {
-	// Collection of the validation errors
-	// in: body
-	Body ValidationError
+	Body util.GenericError
 }
 
 // A permission
@@ -72,7 +65,7 @@ type permissionParamsWrapper struct {
 	Body PermissionDto
 }
 
-// swagger:parameters updatePermission acceptPermission createPermission getPermissionsByUserId getPermission deletePermission
+// swagger:parameters acceptPermission createPermission getPermissionsByUserId getPermission deletePermission
 //lint:ignore U1000 for docs
 type authHeaderWrapper struct {
 	// in: header

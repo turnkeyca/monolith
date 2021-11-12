@@ -7,14 +7,14 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-	"github.com/turnkeyca/monolith/auth"
-	"github.com/turnkeyca/monolith/permission"
+	"github.com/turnkeyca/monolith/authorizer"
+	"github.com/turnkeyca/monolith/key"
 )
 
 func (h *Handler) GetIdFromPath(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id := uuid.MustParse(mux.Vars(r)["id"]).String()
-		ctx := context.WithValue(r.Context(), KeyId{}, id)
+		ctx := context.WithValue(r.Context(), key.KeyId{}, id)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
 	})
@@ -29,14 +29,10 @@ func (h *Handler) GetBody(next http.Handler) http.Handler {
 		}
 		err = d.Validate()
 		if err != nil {
-			http.Error(
-				w,
-				fmt.Sprintf("Error validating user: %s", err),
-				http.StatusUnprocessableEntity,
-			)
+			http.Error(w, fmt.Sprintf("Error validating user: %s", err), http.StatusUnprocessableEntity)
 			return
 		}
-		ctx := context.WithValue(r.Context(), KeyBody{}, d)
+		ctx := context.WithValue(r.Context(), key.KeyBody{}, d)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
 	})
@@ -44,11 +40,13 @@ func (h *Handler) GetBody(next http.Handler) http.Handler {
 
 func (h *Handler) CheckPermissionsView(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		id := r.Context().Value(KeyId{}).(string)
-		loggedInUserId := r.Context().Value(auth.KeyLoggedInUserId{}).(string)
-		err := h.authorizer.CheckUserIdAndToken(id, loggedInUserId, permission.VIEW)
+		err := h.authorizer.CheckUserIdAndToken(
+			r.Context().Value(key.KeyId{}).(string),
+			r.Context().Value(key.KeyLoggedInUserId{}).(string),
+			authorizer.VIEW,
+		)
 		if err != nil {
-			http.Error(w, "User does not have permission", http.StatusForbidden)
+			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
 		}
 		next.ServeHTTP(w, r)
@@ -57,11 +55,13 @@ func (h *Handler) CheckPermissionsView(next http.Handler) http.Handler {
 
 func (h *Handler) CheckPermissionsEdit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		id := r.Context().Value(KeyId{}).(string)
-		loggedInUserId := r.Context().Value(auth.KeyLoggedInUserId{}).(string)
-		err := h.authorizer.CheckUserIdAndToken(id, loggedInUserId, permission.EDIT)
+		err := h.authorizer.CheckUserIdAndToken(
+			r.Context().Value(key.KeyId{}).(string),
+			r.Context().Value(key.KeyLoggedInUserId{}).(string),
+			authorizer.EDIT,
+		)
 		if err != nil {
-			http.Error(w, "User does not have permission", http.StatusForbidden)
+			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
 		}
 		next.ServeHTTP(w, r)

@@ -1,6 +1,23 @@
-package permission
+package authorizer
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+
+	"github.com/turnkeyca/monolith/db"
+)
+
+type Authorizer struct {
+	logger *log.Logger
+	db     *db.Database
+}
+
+func New(logger *log.Logger, db *db.Database) *Authorizer {
+	return &Authorizer{
+		logger: logger,
+		db:     db,
+	}
+}
 
 func (a *Authorizer) CheckUserIdAndToken(userId string, loggedInUserId string, perm PermissionType) error {
 	var count []int

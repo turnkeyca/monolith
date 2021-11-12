@@ -6,30 +6,19 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/turnkeyca/monolith/auth"
+	"github.com/turnkeyca/monolith/authenticator"
+	"github.com/turnkeyca/monolith/authorizer"
 	"github.com/turnkeyca/monolith/db"
 	"github.com/turnkeyca/monolith/util"
 )
 
-type Authorizer struct {
-	logger *log.Logger
-	db     *db.Database
-}
-
 type Handler struct {
 	logger     *log.Logger
-	authorizer *Authorizer
+	authorizer *authorizer.Authorizer
 	db         *db.Database
 }
 
-func New(logger *log.Logger, db *db.Database) *Authorizer {
-	return &Authorizer{
-		logger: logger,
-		db:     db,
-	}
-}
-
-func NewHandler(logger *log.Logger, db *db.Database, authorizer *Authorizer) *Handler {
+func NewHandler(logger *log.Logger, db *db.Database, authorizer *authorizer.Authorizer) *Handler {
 	return &Handler{
 		logger:     logger,
 		db:         db,
@@ -37,20 +26,13 @@ func NewHandler(logger *log.Logger, db *db.Database, authorizer *Authorizer) *Ha
 	}
 }
 
-type GenericError struct {
-	Message string `json:"message"`
-}
-
-type ValidationError struct {
-	Messages []string `json:"messages"`
-}
-
-func ConfigurePermissionRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator, authorizer *Authorizer) {
+func ConfigurePermissionRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *authenticator.Authenticator, authorizer *authorizer.Authorizer) {
 	permissionHandler := NewHandler(logger, database, authorizer)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/permission/{id:%s}", util.REGEX_UUID), permissionHandler.HandleGetPermission)
 	getRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetIdFromPath, permissionHandler.CheckPermissionsWithPermissionIdView)
+
 	getRouter2 := router.Methods(http.MethodGet).Subrouter()
 	getRouter2.HandleFunc("/v1/permission", permissionHandler.HandleGetPermissionByUserId)
 	getRouter2.Use(authenticator.AuthenticateHttp, permissionHandler.GetUserIdFromQueryParameters, permissionHandler.CheckPermissionsView)

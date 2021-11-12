@@ -26,7 +26,8 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/turnkeyca/monolith/auth"
+	"github.com/turnkeyca/monolith/authenticator"
+	"github.com/turnkeyca/monolith/authorizer"
 	"github.com/turnkeyca/monolith/bitly"
 	"github.com/turnkeyca/monolith/db"
 	"github.com/turnkeyca/monolith/employment"
@@ -53,18 +54,18 @@ func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 	if err != nil {
 		logger.Fatalf("failed to create database %#v\n", err)
 	}
-	authenticator := auth.New(logger, database)
-	authorizer := permission.New(logger, database)
+	auth := authenticator.New(logger, database)
+	author := authorizer.New(logger, database)
 
 	configureDocRoutes(router)
-	shorturl.ConfigureShortUrlRoutes(router, logger, bitly, authenticator, authorizer)
-	user.ConfigureUserRoutes(router, logger, database, authenticator, authorizer)
-	roommate.ConfigureRoommateRoutes(router, logger, database, authenticator, authorizer)
-	reference.ConfigureReferenceRoutes(router, logger, database, authenticator, authorizer)
-	pet.ConfigurePetRoutes(router, logger, database, authenticator, authorizer)
-	employment.ConfigureEmploymentRoutes(router, logger, database, authenticator, authorizer)
-	permission.ConfigurePermissionRoutes(router, logger, database, authenticator, authorizer)
-	auth.ConfigureAuthRoutes(router, logger, database)
+	shorturl.ConfigureShortUrlRoutes(router, logger, bitly, auth)
+	user.ConfigureUserRoutes(router, logger, database, auth, author)
+	roommate.ConfigureRoommateRoutes(router, logger, database, auth, author)
+	reference.ConfigureReferenceRoutes(router, logger, database, auth, author)
+	pet.ConfigurePetRoutes(router, logger, database, auth, author)
+	employment.ConfigureEmploymentRoutes(router, logger, database, auth, author)
+	permission.ConfigurePermissionRoutes(router, logger, database, auth, author)
+	authenticator.ConfigureAuthRoutes(router, logger, database)
 
 	return router, nil
 }

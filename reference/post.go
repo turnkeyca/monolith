@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/turnkeyca/monolith/key"
 )
 
 // swagger:route POST /v1/reference reference createReference
@@ -13,15 +14,16 @@ import (
 //
 // responses:
 //	204: noContentResponse
-//  422: referenceErrorValidation
+//  400: referenceErrorResponse
+//  422: referenceErrorResponse
 //  500: referenceErrorResponse
 
-// Create handles POST requests to add new products
+// Create handles POST requests to add new references
 func (h *Handler) HandlePostReference(w http.ResponseWriter, r *http.Request) {
-	dto := r.Context().Value(KeyBody{}).(*ReferenceDto)
+	dto := r.Context().Value(key.KeyBody{}).(*ReferenceDto)
 	err := h.CreateReference(dto)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error creating reference: %#v\n", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error creating reference: %s", err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")

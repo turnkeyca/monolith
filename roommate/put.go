@@ -4,24 +4,28 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/turnkeyca/monolith/key"
 )
 
 // swagger:route PUT /v1/roommate/{id} roommate updateRoommate
 // update a roommate
 //
 // responses:
-//	201: noContentResponse
+//	204: noContentResponse
+//  400: roommateErrorResponse
 //  404: roommateErrorResponse
-//  422: roommateErrorValidation
+//  422: roommateErrorResponse
+//  500: roommateErrorResponse
 
 // Update handles PUT requests to update roommates
 func (h *Handler) HandlePutRoommate(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value(KeyId{}).(string)
-	dto := r.Context().Value(KeyBody{}).(*RoommateDto)
+	id := r.Context().Value(key.KeyId{}).(string)
+	dto := r.Context().Value(key.KeyBody{}).(*RoommateDto)
 	dto.Id = id
 	err := h.UpdateRoommate(dto)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error updating roommate: %#v\n", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error updating roommate: %s", err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")

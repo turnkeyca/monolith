@@ -1,4 +1,4 @@
-package auth
+package authenticator
 
 import (
 	"database/sql"
@@ -27,12 +27,12 @@ func (h *Handler) HandleRegisterToken(w http.ResponseWriter, r *http.Request) {
 	}
 	id, err := h.getOrCreateUserId(dto)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error registering token: %#v", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error registering token: %s", err), http.StatusInternalServerError)
 		return
 	}
 	token, err := GenerateToken(id)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error registering token: %#v", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error registering token: %s", err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")

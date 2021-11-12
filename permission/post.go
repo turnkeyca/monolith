@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/turnkeyca/monolith/authorizer"
+	"github.com/turnkeyca/monolith/key"
 )
 
 // swagger:route POST /v1/permission permission createPermission
@@ -13,16 +15,17 @@ import (
 //
 // responses:
 //	204: noContentResponse
-//  422: permissionErrorValidation
+//  400: permissionErrorResponse
+//  422: permissionErrorResponse
 //  500: permissionErrorResponse
 
 // Create handles POST requests to add new permissions
 func (h *Handler) HandlePostPermission(w http.ResponseWriter, r *http.Request) {
-	dto := r.Context().Value(KeyBody{}).(*PermissionRequestDto)
+	dto := r.Context().Value(key.KeyBody{}).(*PermissionRequestDto)
 	err := h.CreatePermissionRequest(dto)
 	// TODO - RH - notify user somehow
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error creating permission request: %#v\n", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error creating permission request: %s", err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
@@ -34,15 +37,14 @@ func (h *Handler) HandlePostPermission(w http.ResponseWriter, r *http.Request) {
 //
 // responses:
 //	204: noContentResponse
-//  422: permissionErrorValidation
 //  500: permissionErrorResponse
 
 // Accept handles POST requests to accept permission request
 func (h *Handler) HandleAcceptPermission(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value(KeyId{}).(string)
+	id := r.Context().Value(key.KeyId{}).(string)
 	err := h.AcceptPermissionRequest(id)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error accepting permission request: %#v\n", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error accepting permission request: %s", err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
@@ -81,11 +83,11 @@ func (h *Handler) AcceptPermissionRequest(id string) error {
 	if err != nil {
 		return err
 	}
-	var newPerm PermissionType
-	if perm.Permission == EDIT_PENDING {
-		newPerm = EDIT
-	} else if perm.Permission == VIEW_PENDING {
-		newPerm = VIEW
+	var newPerm authorizer.PermissionType
+	if perm.Permission == authorizer.EDIT_PENDING {
+		newPerm = authorizer.EDIT
+	} else if perm.Permission == authorizer.VIEW_PENDING {
+		newPerm = authorizer.VIEW
 	} else {
 		return fmt.Errorf("error accepting permission request: invalid permission type")
 	}

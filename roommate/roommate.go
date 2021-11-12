@@ -6,19 +6,19 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/turnkeyca/monolith/auth"
+	"github.com/turnkeyca/monolith/authenticator"
+	"github.com/turnkeyca/monolith/authorizer"
 	"github.com/turnkeyca/monolith/db"
-	"github.com/turnkeyca/monolith/permission"
 	"github.com/turnkeyca/monolith/util"
 )
 
 type Handler struct {
 	logger     *log.Logger
-	authorizer *permission.Authorizer
+	authorizer *authorizer.Authorizer
 	db         *db.Database
 }
 
-func NewHandler(logger *log.Logger, db *db.Database, authorizer *permission.Authorizer) *Handler {
+func NewHandler(logger *log.Logger, db *db.Database, authorizer *authorizer.Authorizer) *Handler {
 	return &Handler{
 		logger:     logger,
 		db:         db,
@@ -26,20 +26,13 @@ func NewHandler(logger *log.Logger, db *db.Database, authorizer *permission.Auth
 	}
 }
 
-type GenericError struct {
-	Message string `json:"message"`
-}
-
-type ValidationError struct {
-	Messages []string `json:"messages"`
-}
-
-func ConfigureRoommateRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator, authorizer *permission.Authorizer) {
+func ConfigureRoommateRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *authenticator.Authenticator, authorizer *authorizer.Authorizer) {
 	roommateHandler := NewHandler(logger, database, authorizer)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/roommate/{id:%s}", util.REGEX_UUID), roommateHandler.HandleGetRoommate)
 	getRouter.Use(authenticator.AuthenticateHttp, roommateHandler.GetIdFromPath, roommateHandler.CheckPermissionsRoommateIdView)
+
 	getRouter2 := router.Methods(http.MethodGet).Subrouter()
 	getRouter2.HandleFunc("/v1/roommate", roommateHandler.HandleGetRoommateByUserId)
 	getRouter2.Use(authenticator.AuthenticateHttp, roommateHandler.GetUserIdFromQueryParameters, roommateHandler.CheckPermissionsView)

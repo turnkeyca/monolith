@@ -4,24 +4,27 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/turnkeyca/monolith/key"
 )
 
 // swagger:route PUT /v1/user/{id} user updateUser
 // update a user
 //
 // responses:
-//	201: noContentResponse
+//	204: noContentResponse
+//  400: userErrorResponse
 //  404: userErrorResponse
-//  422: userErrorValidation
+//  422: userErrorResponse
+//  500: userErrorResponse
 
 // Update handles PUT requests to update users
 func (h *Handler) HandlePutUser(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value(KeyId{}).(string)
-	dto := r.Context().Value(KeyBody{}).(*UserDto)
-	dto.Id = id
+	dto := r.Context().Value(key.KeyBody{}).(*UserDto)
+	dto.Id = r.Context().Value(key.KeyId{}).(string)
 	err := h.UpdateUser(dto)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error updating user: %#v\n", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error updating user: %s", err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
