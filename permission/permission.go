@@ -60,7 +60,7 @@ func ConfigurePermissionRoutes(router *mux.Router, logger *log.Logger, database 
 	postRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetRequestBody)
 
 	postRouter2 := router.Methods(http.MethodPost).Subrouter()
-	postRouter2.HandleFunc("/v1/permission/{id:%s}/accept", permissionHandler.HandleAcceptPermission)
+	postRouter2.HandleFunc(fmt.Sprintf("/v1/permission/{id:%s}/accept", util.REGEX_UUID), permissionHandler.HandleAcceptPermission)
 	postRouter2.Use(authenticator.AuthenticateHttp, permissionHandler.GetIdFromPath)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
