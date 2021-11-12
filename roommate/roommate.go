@@ -40,8 +40,9 @@ func ConfigureRoommateRoutes(router *mux.Router, logger *log.Logger, database *d
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/roommate/{id:%s}", util.REGEX_UUID), roommateHandler.HandleGetRoommate)
 	getRouter.Use(authenticator.AuthenticateHttp, roommateHandler.GetIdFromPath, roommateHandler.CheckPermissionsRoommateIdView)
-	getRouter.HandleFunc("/v1/roommate", roommateHandler.HandleGetRoommateByUserId)
-	getRouter.Use(authenticator.AuthenticateHttp, roommateHandler.GetUserIdFromQueryParameters, roommateHandler.CheckPermissionsView)
+	getRouter2 := router.Methods(http.MethodGet).Subrouter()
+	getRouter2.HandleFunc("/v1/roommate", roommateHandler.HandleGetRoommateByUserId)
+	getRouter2.Use(authenticator.AuthenticateHttp, roommateHandler.GetUserIdFromQueryParameters, roommateHandler.CheckPermissionsView)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/v1/roommate", roommateHandler.HandlePostRoommate)
