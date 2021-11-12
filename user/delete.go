@@ -28,5 +28,5 @@ func (h *Handler) HandleDeleteUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) DeleteUser(id string) error {
-	return h.db.Run("update users set user_status='disabled', last_updated=$2 where id = $1;", id, time.Now().Format(time.RFC3339Nano))
+	return h.db.Run(`update users set user_status='inactive', last_updated=$2 where id = $1;`, id, time.Now().Format(time.RFC3339Nano))
 }

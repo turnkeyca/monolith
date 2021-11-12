@@ -12,7 +12,6 @@ import (
 //
 // responses:
 //	204: noContentResponse
-//  404: employmentErrorResponse
 //  500: employmentErrorResponse
 
 // Delete handles DELETE requests and removes items from the database
@@ -20,7 +19,7 @@ func (h *Handler) HandleDeleteEmployment(w http.ResponseWriter, r *http.Request)
 	id := r.Context().Value(key.KeyId{}).(string)
 	err := h.DeleteEmployment(id)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error deleting employment by id: %s, %s", id, err), http.StatusNotFound)
+		http.Error(w, fmt.Sprintf("error deleting employment by id: %s, %s", id, err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")

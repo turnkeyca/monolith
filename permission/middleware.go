@@ -13,10 +13,6 @@ import (
 
 func (h *Handler) GetIdFromPath(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if mux.Vars(r)["id"] == "" {
-			next.ServeHTTP(w, r)
-			return
-		}
 		id := uuid.MustParse(mux.Vars(r)["id"]).String()
 		ctx := context.WithValue(r.Context(), key.KeyId{}, id)
 		r = r.WithContext(ctx)
@@ -27,7 +23,7 @@ func (h *Handler) GetIdFromPath(next http.Handler) http.Handler {
 func (h *Handler) GetUserIdFromQueryParameters(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Query().Get("userId") == "" {
-			next.ServeHTTP(w, r)
+			http.Error(w, "Error getting permission: missing query parameter userId", http.StatusBadRequest)
 			return
 		}
 		userId := uuid.MustParse(r.URL.Query().Get("userId")).String()
@@ -55,7 +51,7 @@ func (h *Handler) GetRequestBody(next http.Handler) http.Handler {
 	})
 }
 
-func (h *Handler) CheckPermissionsView(next http.Handler) http.Handler {
+func (h *Handler) CheckPermissionsUserIdView(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id := r.Context().Value(key.KeyUserId{}).(string)
 		loggedInUserId := r.Context().Value(key.KeyLoggedInUserId{}).(string)
@@ -68,9 +64,9 @@ func (h *Handler) CheckPermissionsView(next http.Handler) http.Handler {
 	})
 }
 
-func (h *Handler) CheckPermissionsWithPermissionIdView(next http.Handler) http.Handler {
+func (h *Handler) CheckPermissionsPermissionIdView(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		err := h.checkPermissionsWithPermissionId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.VIEW)
+		err := h.checkPermissionsPermissionId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.VIEW)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
@@ -79,9 +75,9 @@ func (h *Handler) CheckPermissionsWithPermissionIdView(next http.Handler) http.H
 	})
 }
 
-func (h *Handler) CheckPermissionsWithPermissionIdEdit(next http.Handler) http.Handler {
+func (h *Handler) CheckPermissionsPermissionIdEdit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		err := h.checkPermissionsWithPermissionId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.EDIT)
+		err := h.checkPermissionsPermissionId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.EDIT)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
@@ -90,7 +86,7 @@ func (h *Handler) CheckPermissionsWithPermissionIdEdit(next http.Handler) http.H
 	})
 }
 
-func (h *Handler) checkPermissionsWithPermissionId(id string, loggedInUserId string, perm authorizer.PermissionType) error {
+func (h *Handler) checkPermissionsPermissionId(id string, loggedInUserId string, perm authorizer.PermissionType) error {
 	var userId []string
 	err := h.db.Select(&userId, `select user_id from permission where id=$1;`, id)
 	if err != nil {

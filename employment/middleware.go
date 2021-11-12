@@ -13,10 +13,6 @@ import (
 
 func (h *Handler) GetIdFromPath(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if mux.Vars(r)["id"] == "" {
-			next.ServeHTTP(w, r)
-			return
-		}
 		id := uuid.MustParse(mux.Vars(r)["id"]).String()
 		ctx := context.WithValue(r.Context(), key.KeyId{}, id)
 		r = r.WithContext(ctx)
@@ -27,7 +23,7 @@ func (h *Handler) GetIdFromPath(next http.Handler) http.Handler {
 func (h *Handler) GetUserIdFromQueryParameters(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Query().Get("userId") == "" {
-			next.ServeHTTP(w, r)
+			http.Error(w, "Error getting employment: missing query parameter userId", http.StatusBadRequest)
 			return
 		}
 		userId := uuid.MustParse(r.URL.Query().Get("userId")).String()
@@ -59,7 +55,7 @@ func (h *Handler) GetBody(next http.Handler) http.Handler {
 	})
 }
 
-func (h *Handler) CheckPermissionsView(next http.Handler) http.Handler {
+func (h *Handler) CheckPermissionsUserIdView(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id := r.Context().Value(key.KeyUserId{}).(string)
 		loggedInUserId := r.Context().Value(key.KeyLoggedInUserId{}).(string)
@@ -76,7 +72,7 @@ func (h *Handler) CheckPermissionsBodyEdit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		body := r.Context().Value(key.KeyBody{}).(*EmploymentDto)
 		loggedInUserId := r.Context().Value(key.KeyLoggedInUserId{}).(string)
-		err := h.authorizer.CheckUserIdAndToken(body.UserId, loggedInUserId, authorizer.VIEW)
+		err := h.authorizer.CheckUserIdAndToken(body.UserId, loggedInUserId, authorizer.EDIT)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
@@ -87,16 +83,9 @@ func (h *Handler) CheckPermissionsBodyEdit(next http.Handler) http.Handler {
 
 func (h *Handler) CheckPermissionsEmploymentIdEdit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var id []string
-		err := h.db.Select(&id, `select user_id from employment where id=$1;`, r.Context().Value(key.KeyId{}).(string))
+		err := h.CheckPermissionsEmploymentId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.EDIT)
 		if err != nil {
-			http.Error(w, "User does not have permission", http.StatusForbidden)
-			return
-		}
-		loggedInUserId := r.Context().Value(key.KeyLoggedInUserId{}).(string)
-		err = h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, authorizer.EDIT)
-		if err != nil {
-			http.Error(w, "User does not have permission", http.StatusForbidden)
+			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
 		}
 		next.ServeHTTP(w, r)
@@ -105,18 +94,20 @@ func (h *Handler) CheckPermissionsEmploymentIdEdit(next http.Handler) http.Handl
 
 func (h *Handler) CheckPermissionsEmploymentIdView(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var id []string
-		err := h.db.Select(&id, `select user_id from employment where id=$1;`, r.Context().Value(key.KeyId{}).(string))
+		err := h.CheckPermissionsEmploymentId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.VIEW)
 		if err != nil {
-			http.Error(w, "User does not have permission", http.StatusForbidden)
-			return
-		}
-		loggedInUserId := r.Context().Value(key.KeyLoggedInUserId{}).(string)
-		err = h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, authorizer.VIEW)
-		if err != nil {
-			http.Error(w, "User does not have permission", http.StatusForbidden)
+			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
 		}
 		next.ServeHTTP(w, r)
 	})
+}
+
+func (h *Handler) CheckPermissionsEmploymentId(employmentId string, loggedInUserId string, perm authorizer.PermissionType) error {
+	var id []string
+	err := h.db.Select(&id, `select user_id from employment where id=$1;`, employmentId)
+	if err != nil {
+		return err
+	}
+	return h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, perm)
 }

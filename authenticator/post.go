@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/turnkeyca/monolith/key"
 )
 
 // swagger:route POST /v1/auth/registertoken auth registerNewToken
@@ -20,7 +21,7 @@ import (
 
 // Create handles POST requests to add new users
 func (h *Handler) HandleRegisterToken(w http.ResponseWriter, r *http.Request) {
-	dto := r.Context().Value(KeyBody{}).(*RegisterTokenDto)
+	dto := r.Context().Value(key.KeyBody{}).(*RegisterTokenDto)
 	if dto.Secret != os.Getenv("SECRET_KEY") {
 		http.Error(w, "error registering token: invalid secret key", http.StatusInternalServerError)
 		return
@@ -54,11 +55,14 @@ func (h *Handler) getOrCreateUserId(dto *RegisterTokenDto) (string, error) {
 func (h *Handler) getUserIdByLoginId(loginId string) (string, error) {
 	var id []string
 	err := h.db.Select(&id, `select id from users where login_id = $1`, loginId)
-	if len(id) != 1 {
-		return "", fmt.Errorf("duplicate or nonexistent user")
-	}
 	if err != nil {
 		return "", err
+	}
+	if id == nil || len(id) <= 0 {
+		return "", fmt.Errorf("user does not exist")
+	}
+	if len(id) > 1 {
+		return "", fmt.Errorf("duplicate user")
 	}
 	return id[0], nil
 }
@@ -96,7 +100,7 @@ func (h *Handler) checkForExistingUser(loginId string) error {
 		return err
 	}
 	if count[0] > 0 {
-		return fmt.Errorf("duplicate users")
+		return fmt.Errorf("duplicate user")
 	}
 	return nil
 }

@@ -52,7 +52,7 @@ func (h *Handler) CreateReference(dto *ReferenceDto) error {
 			$6, 
 			$7,
 			$8,
-			$9
+			$8
 		);`,
 		dto.Id,
 		dto.UserId,
@@ -61,7 +61,6 @@ func (h *Handler) CreateReference(dto *ReferenceDto) error {
 		dto.PhoneNumber,
 		dto.Relationship,
 		dto.AdditionalDetails,
-		time.Now().Format(time.RFC3339Nano),
 		time.Now().Format(time.RFC3339Nano),
 	)
 	return err

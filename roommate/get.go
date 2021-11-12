@@ -12,6 +12,7 @@ import (
 // responses:
 //	200: roommateResponse
 //	404: roommateErrorResponse
+//	500: roommateErrorResponse
 
 // HandleGetRoommate handles GET requests
 func (h *Handler) HandleGetRoommate(w http.ResponseWriter, r *http.Request) {

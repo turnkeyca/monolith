@@ -13,10 +13,6 @@ import (
 
 func (h *Handler) GetIdFromPath(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if mux.Vars(r)["id"] == "" {
-			next.ServeHTTP(w, r)
-			return
-		}
 		id := uuid.MustParse(mux.Vars(r)["id"]).String()
 		ctx := context.WithValue(r.Context(), key.KeyId{}, id)
 		r = r.WithContext(ctx)
@@ -27,7 +23,7 @@ func (h *Handler) GetIdFromPath(next http.Handler) http.Handler {
 func (h *Handler) GetUserIdFromQueryParameters(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Query().Get("userId") == "" {
-			next.ServeHTTP(w, r)
+			http.Error(w, "Error getting pets: missing query parameter userId", http.StatusBadRequest)
 			return
 		}
 		userId := uuid.MustParse(r.URL.Query().Get("userId")).String()
@@ -87,14 +83,7 @@ func (h *Handler) CheckPermissionsBodyEdit(next http.Handler) http.Handler {
 
 func (h *Handler) CheckPermissionsPetIdEdit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var id []string
-		err := h.db.Select(&id, `select user_id from pet where id=$1;`, r.Context().Value(key.KeyId{}).(string))
-		if err != nil {
-			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
-			return
-		}
-		loggedInUserId := r.Context().Value(key.KeyLoggedInUserId{}).(string)
-		err = h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, authorizer.EDIT)
+		err := h.checkPermissionsPetId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.EDIT)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
@@ -105,18 +94,20 @@ func (h *Handler) CheckPermissionsPetIdEdit(next http.Handler) http.Handler {
 
 func (h *Handler) CheckPermissionsPetIdView(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var id []string
-		err := h.db.Select(&id, `select user_id from pet where id=$1;`, r.Context().Value(key.KeyId{}).(string))
-		if err != nil {
-			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
-			return
-		}
-		loggedInUserId := r.Context().Value(key.KeyLoggedInUserId{}).(string)
-		err = h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, authorizer.VIEW)
+		err := h.checkPermissionsPetId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.VIEW)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
 		}
 		next.ServeHTTP(w, r)
 	})
+}
+
+func (h *Handler) checkPermissionsPetId(petId string, loggedInUserId string, perm authorizer.PermissionType) error {
+	var id []string
+	err := h.db.Select(&id, `select user_id from pet where id=$1;`, petId)
+	if err != nil {
+		return err
+	}
+	return h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, perm)
 }

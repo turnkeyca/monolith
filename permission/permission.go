@@ -31,11 +31,11 @@ func ConfigurePermissionRoutes(router *mux.Router, logger *log.Logger, database 
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/permission/{id:%s}", util.REGEX_UUID), permissionHandler.HandleGetPermission)
-	getRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetIdFromPath, permissionHandler.CheckPermissionsWithPermissionIdView)
+	getRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetIdFromPath, permissionHandler.CheckPermissionsPermissionIdView)
 
 	getRouter2 := router.Methods(http.MethodGet).Subrouter()
 	getRouter2.HandleFunc("/v1/permission", permissionHandler.HandleGetPermissionByUserId)
-	getRouter2.Use(authenticator.AuthenticateHttp, permissionHandler.GetUserIdFromQueryParameters, permissionHandler.CheckPermissionsView)
+	getRouter2.Use(authenticator.AuthenticateHttp, permissionHandler.GetUserIdFromQueryParameters, permissionHandler.CheckPermissionsUserIdView)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/v1/permission", permissionHandler.HandlePostPermission)
@@ -47,5 +47,5 @@ func ConfigurePermissionRoutes(router *mux.Router, logger *log.Logger, database 
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc(fmt.Sprintf("/v1/permission/{id:%s}", util.REGEX_UUID), permissionHandler.HandleDeletePermission)
-	deleteRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetIdFromPath, permissionHandler.CheckPermissionsWithPermissionIdEdit)
+	deleteRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetIdFromPath, permissionHandler.CheckPermissionsPermissionIdEdit)
 }

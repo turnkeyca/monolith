@@ -27,5 +27,5 @@ func (h *Handler) HandleDeletePet(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) DeletePet(id string) error {
-	return h.db.Run("delete from pet where id = $1;", id)
+	return h.db.Run(`delete from pet where id = $1`, id)
 }

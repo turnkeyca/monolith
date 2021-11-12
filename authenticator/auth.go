@@ -8,8 +8,6 @@ import (
 	"github.com/turnkeyca/monolith/db"
 )
 
-type GenericError string
-
 type Authenticator struct {
 	logger *log.Logger
 	db     *db.Database

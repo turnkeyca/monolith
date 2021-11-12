@@ -97,18 +97,21 @@ func (h *Handler) CheckPermissionsRoommateIdEdit(next http.Handler) http.Handler
 
 func (h *Handler) CheckPermissionsRoommateIdView(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var id []string
-		err := h.db.Select(&id, `select user_id from roommate where id=$1;`, r.Context().Value(key.KeyId{}).(string))
-		if err != nil {
-			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
-			return
-		}
-		loggedInUserId := r.Context().Value(key.KeyLoggedInUserId{}).(string)
-		err = h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, authorizer.VIEW)
+		err := h.checkPermissionsRoommateId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.VIEW)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
 		}
 		next.ServeHTTP(w, r)
 	})
+}
+
+func (h *Handler) checkPermissionsRoommateId(roommateId string, loggedInUserId string, perm authorizer.PermissionType) error {
+	var id []string
+	err := h.db.Select(&id, `select user_id from roommate where id=$1;`, roommateId)
+	if err != nil {
+		return err
+	}
+	return h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, authorizer.VIEW)
+
 }

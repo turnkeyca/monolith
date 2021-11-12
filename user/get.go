@@ -32,7 +32,7 @@ func (h *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) GetUser(id string) (*UserDto, error) {
 	var users []UserDto
-	err := h.db.Select(&users, "select * from users where id = $1;", id)
+	err := h.db.Select(&users, `select * from users where id = $1 and user_status <> 'inactive';`, id)
 	if err != nil {
 		return nil, err
 	}
@@ -43,4 +43,16 @@ func (h *Handler) GetUser(id string) (*UserDto, error) {
 		return nil, fmt.Errorf("duplicate results for id: %s", id)
 	}
 	return &users[0], err
+}
+
+func (h *Handler) CheckUserInactive(id string) error {
+	var count []int
+	err := h.db.Select(&count, `select count(*) from users where id = $1 and user_status = 'inactive';`, id)
+	if err != nil {
+		return err
+	}
+	if count[0] > 1 {
+		return fmt.Errorf("user [%s] is inactive", id)
+	}
+	return nil
 }

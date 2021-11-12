@@ -14,7 +14,8 @@ import (
 //
 // responses:
 //	204: noContentResponse
-//  422: petErrorValidation
+//  400: petErrorResponse
+//  422: petErrorResponse
 //  500: petErrorResponse
 
 // Create handles POST requests to add new pets
