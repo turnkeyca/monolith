@@ -38,12 +38,8 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/employment
   GenericError:
-    properties:
-      message:
-        type: string
-        x-go-name: Message
-    type: object
-    x-go-package: github.com/turnkeyca/monolith/user
+    type: string
+    x-go-package: github.com/turnkeyca/monolith/util
   PermissionDto:
     properties:
       createdOn:
@@ -67,7 +63,7 @@ definitions:
     x-go-package: github.com/turnkeyca/monolith/permission
   PermissionType:
     type: string
-    x-go-package: github.com/turnkeyca/monolith/permission
+    x-go-package: github.com/turnkeyca/monolith/authorizer
   PetDto:
     properties:
       breed:
@@ -136,7 +132,7 @@ definitions:
         type: string
         x-go-name: Secret
     type: object
-    x-go-package: github.com/turnkeyca/monolith/auth
+    x-go-package: github.com/turnkeyca/monolith/authenticator
   RoommateDto:
     properties:
       createdOn:
@@ -166,7 +162,7 @@ definitions:
         x-go-name: Url
     type: object
     x-go-package: github.com/turnkeyca/monolith/shorturl
-  Token:
+  TokenDto:
     properties:
       id:
         type: string
@@ -175,7 +171,7 @@ definitions:
         type: string
         x-go-name: Token
     type: object
-    x-go-package: github.com/turnkeyca/monolith/auth
+    x-go-package: github.com/turnkeyca/monolith/authenticator
   UserDto:
     properties:
       acceptedTerms:
@@ -262,15 +258,6 @@ definitions:
   UserType:
     type: string
     x-go-package: github.com/turnkeyca/monolith/user
-  ValidationError:
-    properties:
-      messages:
-        items:
-          type: string
-        type: array
-        x-go-name: Messages
-    type: object
-    x-go-package: github.com/turnkeyca/monolith/user
 info:
   description: Documentation for Turnkey API
   title: of Turnkey API
@@ -311,7 +298,7 @@ paths:
       responses:
         "200":
           $ref: '#/responses/employmentsResponse'
-        "404":
+        "500":
           $ref: '#/responses/employmentErrorResponse'
       tags:
       - employment
@@ -331,8 +318,10 @@ paths:
       responses:
         "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/employmentErrorResponse'
         "422":
-          $ref: '#/responses/employmentErrorValidation'
+          $ref: '#/responses/employmentErrorResponse'
         "500":
           $ref: '#/responses/employmentErrorResponse'
       tags:
@@ -353,7 +342,7 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
         "404":
           $ref: '#/responses/employmentErrorResponse'
@@ -380,6 +369,8 @@ paths:
           $ref: '#/responses/employmentResponse'
         "404":
           $ref: '#/responses/employmentErrorResponse'
+        "500":
+          $ref: '#/responses/employmentErrorResponse'
       tags:
       - employment
     put:
@@ -402,17 +393,21 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/employmentErrorResponse'
         "404":
           $ref: '#/responses/employmentErrorResponse'
         "422":
-          $ref: '#/responses/employmentErrorValidation'
+          $ref: '#/responses/employmentErrorResponse'
+        "500":
+          $ref: '#/responses/employmentErrorResponse'
       tags:
       - employment
   /v1/permission:
     get:
-      description: return all permissions ofr a user
+      description: return all permissions for a user
       operationId: getPermissionsByUserId
       parameters:
       - description: The user id
@@ -428,7 +423,7 @@ paths:
       responses:
         "200":
           $ref: '#/responses/permissionsResponse'
-        "404":
+        "500":
           $ref: '#/responses/permissionErrorResponse'
       tags:
       - permission
@@ -448,8 +443,10 @@ paths:
       responses:
         "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/permissionErrorResponse'
         "422":
-          $ref: '#/responses/permissionErrorValidation'
+          $ref: '#/responses/permissionErrorResponse'
         "500":
           $ref: '#/responses/permissionErrorResponse'
       tags:
@@ -470,9 +467,9 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
-        "404":
+        "409":
           $ref: '#/responses/permissionErrorResponse'
         "500":
           $ref: '#/responses/permissionErrorResponse'
@@ -496,24 +493,9 @@ paths:
         "200":
           $ref: '#/responses/permissionResponse'
         "404":
+          $ref: '#/responses/permissionResponse'
+        "500":
           $ref: '#/responses/permissionErrorResponse'
-      tags:
-      - permission
-    put:
-      description: update a permission
-      operationId: updatePermission
-      parameters:
-      - in: header
-        name: Token
-        required: true
-        type: string
-      responses:
-        "201":
-          $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/permissionErrorResponse'
-        "422":
-          $ref: '#/responses/permissionErrorValidation'
       tags:
       - permission
   /v1/permission/{id}/accept:
@@ -534,15 +516,13 @@ paths:
       responses:
         "204":
           $ref: '#/responses/noContentResponse'
-        "422":
-          $ref: '#/responses/permissionErrorValidation'
         "500":
           $ref: '#/responses/permissionErrorResponse'
       tags:
       - permission
   /v1/pet:
     get:
-      description: return all pets ofr a user
+      description: return all pets for a user
       operationId: getPetsByUserId
       parameters:
       - description: The user id
@@ -558,7 +538,7 @@ paths:
       responses:
         "200":
           $ref: '#/responses/petsResponse'
-        "404":
+        "500":
           $ref: '#/responses/petErrorResponse'
       tags:
       - pet
@@ -600,10 +580,8 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/petErrorResponse'
         "500":
           $ref: '#/responses/petErrorResponse'
       tags:
@@ -627,6 +605,8 @@ paths:
           $ref: '#/responses/petResponse'
         "404":
           $ref: '#/responses/petErrorResponse'
+        "500":
+          $ref: '#/responses/petErrorResponse'
       tags:
       - pet
     put:
@@ -649,17 +629,21 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/petErrorResponse'
         "404":
           $ref: '#/responses/petErrorResponse'
         "422":
-          $ref: '#/responses/petErrorValidation'
+          $ref: '#/responses/petErrorResponse'
+        "500":
+          $ref: '#/responses/petErrorResponse'
       tags:
       - pet
   /v1/reference:
     get:
-      description: return all references ofr a user
+      description: return all references for a user
       operationId: getReferencesByUserId
       parameters:
       - description: The user id
@@ -675,7 +659,7 @@ paths:
       responses:
         "200":
           $ref: '#/responses/referencesResponse'
-        "404":
+        "500":
           $ref: '#/responses/referenceErrorResponse'
       tags:
       - reference
@@ -695,8 +679,10 @@ paths:
       responses:
         "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/referenceErrorResponse'
         "422":
-          $ref: '#/responses/referenceErrorValidation'
+          $ref: '#/responses/referenceErrorResponse'
         "500":
           $ref: '#/responses/referenceErrorResponse'
       tags:
@@ -717,10 +703,8 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/referenceErrorResponse'
         "500":
           $ref: '#/responses/referenceErrorResponse'
       tags:
@@ -744,6 +728,8 @@ paths:
           $ref: '#/responses/referenceResponse'
         "404":
           $ref: '#/responses/referenceErrorResponse'
+        "500":
+          $ref: '#/responses/referenceErrorResponse'
       tags:
       - reference
     put:
@@ -766,12 +752,16 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/referenceErrorResponse'
         "404":
           $ref: '#/responses/referenceErrorResponse'
         "422":
-          $ref: '#/responses/referenceErrorValidation'
+          $ref: '#/responses/referenceErrorResponse'
+        "500":
+          $ref: '#/responses/referenceErrorResponse'
       tags:
       - reference
   /v1/roommate:
@@ -792,7 +782,7 @@ paths:
       responses:
         "200":
           $ref: '#/responses/roommatesResponse'
-        "404":
+        "500":
           $ref: '#/responses/roommateErrorResponse'
       tags:
       - roommate
@@ -812,8 +802,10 @@ paths:
       responses:
         "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/roommateErrorResponse'
         "422":
-          $ref: '#/responses/roommateErrorValidation'
+          $ref: '#/responses/roommateErrorResponse'
         "500":
           $ref: '#/responses/roommateErrorResponse'
       tags:
@@ -834,10 +826,8 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/roommateErrorResponse'
         "500":
           $ref: '#/responses/roommateErrorResponse'
       tags:
@@ -883,12 +873,16 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/roommateErrorResponse'
         "404":
           $ref: '#/responses/roommateErrorResponse'
         "422":
-          $ref: '#/responses/roommateErrorValidation'
+          $ref: '#/responses/roommateErrorResponse'
+        "500":
+          $ref: '#/responses/roommateErrorResponse'
       tags:
       - roommate
   /v1/shorturl:
@@ -929,10 +923,8 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/userErrorResponse'
         "500":
           $ref: '#/responses/userErrorResponse'
       tags:
@@ -956,6 +948,8 @@ paths:
           $ref: '#/responses/userResponse'
         "404":
           $ref: '#/responses/userErrorResponse'
+        "500":
+          $ref: '#/responses/userErrorResponse'
       tags:
       - user
     put:
@@ -978,12 +972,16 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/userErrorResponse'
         "404":
           $ref: '#/responses/userErrorResponse'
         "422":
-          $ref: '#/responses/userErrorValidation'
+          $ref: '#/responses/userErrorResponse'
+        "500":
+          $ref: '#/responses/userErrorResponse'
       tags:
       - user
 produces:
@@ -997,10 +995,6 @@ responses:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
-  employmentErrorValidation:
-    description: Validation errors defined as an array of strings
-    schema:
-      $ref: '#/definitions/ValidationError'
   employmentResponse:
     description: A employment
     schema:
@@ -1017,10 +1011,6 @@ responses:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
-  permissionErrorValidation:
-    description: Validation errors defined as an array of strings
-    schema:
-      $ref: '#/definitions/ValidationError'
   permissionResponse:
     description: A permission
     schema:
@@ -1035,10 +1025,6 @@ responses:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
-  petErrorValidation:
-    description: Validation errors defined as an array of strings
-    schema:
-      $ref: '#/definitions/ValidationError'
   petResponse:
     description: A pet
     schema:
@@ -1053,10 +1039,6 @@ responses:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
-  referenceErrorValidation:
-    description: Validation errors defined as an array of strings
-    schema:
-      $ref: '#/definitions/ValidationError'
   referenceResponse:
     description: A reference
     schema:
@@ -1071,10 +1053,6 @@ responses:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
-  roommateErrorValidation:
-    description: Validation errors defined as an array of strings
-    schema:
-      $ref: '#/definitions/ValidationError'
   roommateResponse:
     description: A roommate
     schema:
@@ -1096,15 +1074,11 @@ responses:
   tokenResponse:
     description: new user id
     schema:
-      $ref: '#/definitions/Token'
+      $ref: '#/definitions/TokenDto'
   userErrorResponse:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
-  userErrorValidation:
-    description: Validation errors defined as an array of strings
-    schema:
-      $ref: '#/definitions/ValidationError'
   userResponse:
     description: A user
     schema:
