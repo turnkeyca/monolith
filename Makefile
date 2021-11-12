@@ -4,6 +4,11 @@ swagger-check :
 swagger : swagger-check
 	swagger generate spec -o ./swagger.yml --scan-models
 
+swagger-client : swagger-check
+	rm -r integration
+	mkdir integration
+	swagger generate client -f ./swagger.yml --default-scheme=http -t integration
+
 run : monolith
 	./monolith
 

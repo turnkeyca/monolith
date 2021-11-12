@@ -344,8 +344,6 @@ paths:
       responses:
         "204":
           $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/employmentErrorResponse'
         "500":
           $ref: '#/responses/employmentErrorResponse'
       tags:
@@ -558,8 +556,10 @@ paths:
       responses:
         "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/petErrorResponse'
         "422":
-          $ref: '#/responses/petErrorValidation'
+          $ref: '#/responses/petErrorResponse'
         "500":
           $ref: '#/responses/petErrorResponse'
       tags:
@@ -851,6 +851,8 @@ paths:
           $ref: '#/responses/roommateResponse'
         "404":
           $ref: '#/responses/roommateErrorResponse'
+        "500":
+          $ref: '#/responses/roommateErrorResponse'
       tags:
       - roommate
     put:
@@ -1084,5 +1086,5 @@ responses:
     schema:
       $ref: '#/definitions/UserDto'
 schemes:
-- http,https
+- http
 swagger: "2.0"
