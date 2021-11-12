@@ -3,6 +3,7 @@ package permission
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 // swagger:route DELETE /v1/permission/{id} permission deletePermission
@@ -26,6 +27,5 @@ func (h *Handler) HandleDeletePermission(w http.ResponseWriter, r *http.Request)
 }
 
 func (h *Handler) DeletePermission(id string) error {
-	err := h.db.Run("delete from permission where id = $1;", id)
-	return err
+	return h.db.Run(`update "permission" set "permission"=$2, last_updated=$3 where id=$1;`, id, DECLINED, time.Now().Format(time.RFC3339Nano))
 }

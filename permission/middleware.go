@@ -40,9 +40,9 @@ func (h *Handler) GetUserIdFromQueryParameters(next http.Handler) http.Handler {
 	})
 }
 
-func (h *Handler) GetBody(next http.Handler) http.Handler {
+func (h *Handler) GetRequestBody(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		d, err := Read(r.Body)
+		d, err := ReadPermissionRequestDto(r.Body)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("Error reading permission: %s", err), http.StatusBadRequest)
 			return
@@ -77,27 +77,14 @@ func (h *Handler) CheckPermissionsView(next http.Handler) http.Handler {
 
 func (h *Handler) CheckPermissionsWithPermissionIdView(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var id string
+		var id []string
 		err := h.db.Select(&id, `select user_id from permission where id=$1;`, r.Context().Value(KeyId{}).(string))
 		if err != nil {
 			http.Error(w, "User does not have permission", http.StatusForbidden)
 			return
 		}
 		loggedInUserId := r.Context().Value(auth.KeyLoggedInUserId{}).(string)
-		err = h.authorizer.CheckUserIdAndToken(id, loggedInUserId, VIEW)
-		if err != nil {
-			http.Error(w, "User does not have permission", http.StatusForbidden)
-			return
-		}
-		next.ServeHTTP(w, r)
-	})
-}
-
-func (h *Handler) CheckPermissionsEdit(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		id := r.Context().Value(KeyId{}).(string)
-		loggedInUserId := r.Context().Value(auth.KeyLoggedInUserId{}).(string)
-		err := h.authorizer.CheckUserIdAndToken(id, loggedInUserId, EDIT)
+		err = h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, VIEW)
 		if err != nil {
 			http.Error(w, "User does not have permission", http.StatusForbidden)
 			return
@@ -108,27 +95,14 @@ func (h *Handler) CheckPermissionsEdit(next http.Handler) http.Handler {
 
 func (h *Handler) CheckPermissionsWithPermissionIdEdit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		id := r.Context().Value(KeyBody{}).(string)
-		loggedInUserId := r.Context().Value(auth.KeyLoggedInUserId{}).(string)
-		err := h.authorizer.CheckUserIdAndToken(id, loggedInUserId, EDIT)
-		if err != nil {
-			http.Error(w, "User does not have permission", http.StatusForbidden)
-			return
-		}
-		next.ServeHTTP(w, r)
-	})
-}
-
-func (h *Handler) CheckPermissionsPost(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var id string
+		var id []string
 		err := h.db.Select(&id, `select user_id from permission where id=$1;`, r.Context().Value(KeyId{}).(string))
 		if err != nil {
 			http.Error(w, "User does not have permission", http.StatusForbidden)
 			return
 		}
 		loggedInUserId := r.Context().Value(auth.KeyLoggedInUserId{}).(string)
-		err = h.authorizer.CheckUserIdAndToken(id, loggedInUserId, EDIT)
+		err = h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, EDIT)
 		if err != nil {
 			http.Error(w, "User does not have permission", http.StatusForbidden)
 			return

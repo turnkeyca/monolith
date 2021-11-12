@@ -19,7 +19,7 @@ type Authorizer struct {
 type Handler struct {
 	logger     *log.Logger
 	authorizer *Authorizer
-	db         *db.Database
+	db         *PermissionDatabase
 }
 
 func New(logger *log.Logger, db *db.Database) *Authorizer {
@@ -29,10 +29,11 @@ func New(logger *log.Logger, db *db.Database) *Authorizer {
 	}
 }
 
-func NewHandler(logger *log.Logger, db *db.Database) *Handler {
+func NewHandler(logger *log.Logger, db *PermissionDatabase, authorizer *Authorizer) *Handler {
 	return &Handler{
-		logger: logger,
-		db:     db,
+		logger:     logger,
+		db:         db,
+		authorizer: authorizer,
 	}
 }
 
@@ -45,21 +46,22 @@ type ValidationError struct {
 }
 
 func ConfigurePermissionRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator, authorizer *Authorizer) {
-	permissionHandler := NewHandler(logger, database)
+	permissionHandler := NewHandler(logger, NewPermissionDatabase(database), authorizer)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/permission/{id:%s}", util.REGEX_UUID), permissionHandler.HandleGetPermission)
 	getRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetIdFromPath, permissionHandler.CheckPermissionsWithPermissionIdView)
-	getRouter.HandleFunc("/v1/permission", permissionHandler.HandleGetPermissionByUserId)
-	getRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetUserIdFromQueryParameters, permissionHandler.CheckPermissionsView)
+	getRouter2 := router.Methods(http.MethodGet).Subrouter()
+	getRouter2.HandleFunc("/v1/permission", permissionHandler.HandleGetPermissionByUserId)
+	getRouter2.Use(authenticator.AuthenticateHttp, permissionHandler.GetUserIdFromQueryParameters, permissionHandler.CheckPermissionsView)
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/v1/permission", permissionHandler.HandlePostPermission)
-	postRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetBody, permissionHandler.CheckPermissionsPost)
+	postRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetRequestBody)
 
-	putRouter := router.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc(fmt.Sprintf("/v1/permission/{id:%s}", util.REGEX_UUID), permissionHandler.HandlePutPermission)
-	putRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetBody, permissionHandler.GetIdFromPath, permissionHandler.CheckPermissionsWithPermissionIdEdit)
+	postRouter2 := router.Methods(http.MethodPost).Subrouter()
+	postRouter2.HandleFunc("/v1/permission/{id:%s}/accept", permissionHandler.HandleAcceptPermission)
+	postRouter2.Use(authenticator.AuthenticateHttp, permissionHandler.GetIdFromPath)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc(fmt.Sprintf("/v1/permission/{id:%s}", util.REGEX_UUID), permissionHandler.HandleDeletePermission)

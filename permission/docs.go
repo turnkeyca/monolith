@@ -46,7 +46,7 @@ type permissionsResponseWrapper struct {
 type noContentResponseWrapper struct {
 }
 
-// swagger:parameters updatePermission getPermission deletePermission
+// swagger:parameters acceptPermission getPermission deletePermission
 //lint:ignore U1000 for docs
 type permissionIdParamsWrapper struct {
 	// The id of the permission for which the operation relates
@@ -64,7 +64,7 @@ type permissionsUserIdParamsWrapper struct {
 	UserId string `json:"userId"`
 }
 
-// swagger:parameters updatePermission createPermission
+// swagger:parameters  createPermission
 //lint:ignore U1000 for docs
 type permissionParamsWrapper struct {
 	// in: body
@@ -72,7 +72,7 @@ type permissionParamsWrapper struct {
 	Body PermissionDto
 }
 
-// swagger:parameters updatePermission createPermission getPermissionsByUserId getPermission deletePermission
+// swagger:parameters updatePermission acceptPermission createPermission getPermissionsByUserId getPermission deletePermission
 //lint:ignore U1000 for docs
 type authHeaderWrapper struct {
 	// in: header

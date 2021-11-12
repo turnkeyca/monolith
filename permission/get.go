@@ -50,7 +50,7 @@ func (h *Handler) HandleGetPermissionByUserId(w http.ResponseWriter, r *http.Req
 }
 
 func (h *Handler) GetPermission(id string) (*PermissionDto, error) {
-	result, err := NewPermissionDatabase(h.db).SelectPermission(id)
+	result, err := h.db.SelectPermission(id)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func (h *Handler) GetPermission(id string) (*PermissionDto, error) {
 }
 
 func (h *Handler) GetPermissionByUserId(userId string) (*[]PermissionDto, error) {
-	result, err := NewPermissionDatabase(h.db).SelectPermissionsByUserId(userId)
+	result, err := h.db.SelectPermissionsByUserId(userId)
 	if err != nil {
 		return nil, err
 	}
