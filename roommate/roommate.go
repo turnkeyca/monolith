@@ -18,10 +18,11 @@ type Handler struct {
 	db         *db.Database
 }
 
-func NewHandler(logger *log.Logger, db *db.Database) *Handler {
+func NewHandler(logger *log.Logger, db *db.Database, authorizer *permission.Authorizer) *Handler {
 	return &Handler{
-		logger: logger,
-		db:     db,
+		logger:     logger,
+		db:         db,
+		authorizer: authorizer,
 	}
 }
 
@@ -34,7 +35,7 @@ type ValidationError struct {
 }
 
 func ConfigureRoommateRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator, authorizer *permission.Authorizer) {
-	roommateHandler := NewHandler(logger, database)
+	roommateHandler := NewHandler(logger, database, authorizer)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/roommate/{id:%s}", util.REGEX_UUID), roommateHandler.HandleGetRoommate)
@@ -44,7 +45,7 @@ func ConfigureRoommateRoutes(router *mux.Router, logger *log.Logger, database *d
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/v1/roommate", roommateHandler.HandlePostRoommate)
-	postRouter.Use(authenticator.AuthenticateHttp, roommateHandler.GetBody, roommateHandler.CheckPermissionsRoommateIdEdit)
+	postRouter.Use(authenticator.AuthenticateHttp, roommateHandler.GetBody, roommateHandler.CheckPermissionsBodyEdit)
 
 	putRouter := router.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc(fmt.Sprintf("/v1/roommate/{id:%s}", util.REGEX_UUID), roommateHandler.HandlePutRoommate)

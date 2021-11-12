@@ -52,11 +52,12 @@ func (h *Handler) UpdateUser(dto *UserDto) error {
 			move_out_date=$20, 
 			additional_details_lease=$21,
 			walkthrough_complete=$22,
-			terms_accepted=$23
+			terms_accepted=$23,
+			email=$24
 		where id=$1;`,
 		dto.Id,
 		dto.FullName,
-		dto.UserStatus,
+		"active",
 		time.Now().Format(time.RFC3339Nano),
 		dto.PhoneNumber,
 		dto.Nickname,
@@ -77,6 +78,7 @@ func (h *Handler) UpdateUser(dto *UserDto) error {
 		dto.AdditionalDetailsLease,
 		dto.WalkthroughComplete,
 		dto.AcceptedTerms,
+		dto.Email,
 	)
 	return err
 }
