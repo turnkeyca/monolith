@@ -13,3 +13,14 @@ func (a *Authorizer) CheckUserIdAndToken(userId string, loggedInUserId string, p
 	}
 	return nil
 }
+
+func (a *Authorizer) CheckUserIdsAndTokenAny(userIds []string, loggedInUserId string, perm PermissionType) error {
+	var err error
+	for _, userId := range userIds {
+		err = a.CheckUserIdAndToken(userId, loggedInUserId, perm)
+		if err == nil {
+			return nil
+		}
+	}
+	return err
+}

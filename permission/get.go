@@ -66,7 +66,7 @@ func (h *Handler) GetPermission(id string) (*PermissionDto, error) {
 
 func (h *Handler) GetPermissionByUserId(userId string) (*[]PermissionDto, error) {
 	var permissions []PermissionDto
-	err := h.db.Select(&permissions, "select * from permission where user_id = $1;", userId)
+	err := h.db.Select(&permissions, "select * from permission where user_id = $1 or on_user_id = $1;", userId)
 	if err != nil {
 		return nil, err
 	}

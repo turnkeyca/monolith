@@ -27,5 +27,12 @@ func (h *Handler) HandleDeletePermission(w http.ResponseWriter, r *http.Request)
 }
 
 func (h *Handler) DeletePermission(id string) error {
+	perm, err := h.GetPermission(id)
+	if err != nil {
+		return err
+	}
+	if perm.OnUserId == perm.UserId {
+		return fmt.Errorf("cannot delete base permission")
+	}
 	return h.db.Run(`update "permission" set "permission"=$2, last_updated=$3 where id=$1;`, id, DECLINED, time.Now().Format(time.RFC3339Nano))
 }
