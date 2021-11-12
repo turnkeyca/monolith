@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -20,7 +21,6 @@ import (
 // Create handles POST requests to add new users
 func (h *Handler) HandleRegisterToken(w http.ResponseWriter, r *http.Request) {
 	dto := r.Context().Value(KeyBody{}).(*RegisterTokenDto)
-
 	if dto.Secret != os.Getenv("SECRET_KEY") {
 		http.Error(w, "error registering token: invalid secret key", http.StatusInternalServerError)
 		return
@@ -37,7 +37,7 @@ func (h *Handler) HandleRegisterToken(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(Token{Id: id, Token: token})
+	json.NewEncoder(w).Encode(TokenDto{Id: id, Token: token})
 }
 
 func (h *Handler) getOrCreateUserId(dto *RegisterTokenDto) (string, error) {
@@ -48,8 +48,12 @@ func (h *Handler) getOrCreateUserId(dto *RegisterTokenDto) (string, error) {
 		}
 		return id, nil
 	}
+	return h.getUserIdByLoginId(dto.LoginId)
+}
+
+func (h *Handler) getUserIdByLoginId(loginId string) (string, error) {
 	var id []string
-	err := h.db.Select(&id, `select id from users where login_id = $1`, dto.LoginId)
+	err := h.db.Select(&id, `select id from users where login_id = $1`, loginId)
 	if len(id) != 1 {
 		return "", fmt.Errorf("duplicate or nonexistent user")
 	}
@@ -60,19 +64,44 @@ func (h *Handler) getOrCreateUserId(dto *RegisterTokenDto) (string, error) {
 }
 
 func (h *Handler) createUser(dto *RegisterTokenDto) (string, error) {
-	var count []int
-	err := h.db.Select(&count, `select count(*) from users where login_id = $1`, dto.LoginId)
+	err := h.checkForExistingUser(dto.LoginId)
 	if err != nil {
 		return "", err
-	}
-	if count[0] > 0 {
-		return "", fmt.Errorf("duplicate users")
 	}
 	id := uuid.New().String()
 	tx, err := h.db.Begin()
 	if err != nil {
 		return "", err
 	}
+	err = h.insertUser(tx, dto, id)
+	if err != nil {
+		return "", err
+	}
+	err = h.insertBasicPermission(tx, dto, id, "view")
+	if err != nil {
+		return "", err
+	}
+	err = h.insertBasicPermission(tx, dto, id, "edit")
+	if err != nil {
+		return "", err
+	}
+	tx.Commit()
+	return id, nil
+}
+
+func (h *Handler) checkForExistingUser(loginId string) error {
+	var count []int
+	err := h.db.Select(&count, `select count(*) from users where login_id = $1`, loginId)
+	if err != nil {
+		return err
+	}
+	if count[0] > 0 {
+		return fmt.Errorf("duplicate users")
+	}
+	return nil
+}
+
+func (h *Handler) insertUser(tx *sql.Tx, dto *RegisterTokenDto, id string) error {
 	stmt, err := tx.Prepare(`insert into users (
 		id, 
 		login_id, 
@@ -105,7 +134,7 @@ func (h *Handler) createUser(dto *RegisterTokenDto) (string, error) {
 	)`)
 	if err != nil {
 		tx.Rollback()
-		return "", err
+		return err
 	}
 	defer stmt.Close()
 	_, err = stmt.Exec(
@@ -118,8 +147,12 @@ func (h *Handler) createUser(dto *RegisterTokenDto) (string, error) {
 	)
 	if err != nil {
 		tx.Rollback()
-		return "", err
+		return err
 	}
+	return nil
+}
+
+func (h *Handler) insertBasicPermission(tx *sql.Tx, dto *RegisterTokenDto, id string, perm string) error {
 	stmt2, err := tx.Prepare(
 		`insert into permission (
 			id,
@@ -134,46 +167,18 @@ func (h *Handler) createUser(dto *RegisterTokenDto) (string, error) {
 	)
 	if err != nil {
 		tx.Rollback()
-		return "", err
+		return err
 	}
 	defer stmt2.Close()
 	_, err = stmt2.Exec(
 		uuid.New().String(),
 		id,
-		"view",
+		perm,
 		time.Now().Format(time.RFC3339Nano),
 	)
 	if err != nil {
 		tx.Rollback()
-		return "", err
+		return err
 	}
-	stmt3, err := tx.Prepare(
-		`insert into permission (
-			id,
-			user_id,
-			on_user_id,
-			permission,
-			created_on,
-			last_updated
-		) values (
-			$1, $2, $2, $3, $4, $4
-		)`,
-	)
-	if err != nil {
-		tx.Rollback()
-		return "", err
-	}
-	defer stmt3.Close()
-	_, err = stmt3.Exec(
-		uuid.New().String(),
-		id,
-		"edit",
-		time.Now().Format(time.RFC3339Nano),
-	)
-	if err != nil {
-		tx.Rollback()
-		return "", err
-	}
-	tx.Commit()
-	return id, nil
+	return nil
 }

@@ -15,7 +15,7 @@ type authErrorResponseWrapper struct {
 type tokenResponseWrapper struct {
 	// user id
 	// in: body
-	Body Token
+	Body TokenDto
 }
 
 // swagger:parameters registerNewToken

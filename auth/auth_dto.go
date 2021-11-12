@@ -11,7 +11,7 @@ type RegisterTokenDto struct {
 	IsNewUser bool   `json:"newUser"`
 }
 
-type Token struct {
+type TokenDto struct {
 	Id    string `json:"id"`
 	Token string `json:"token"`
 }
