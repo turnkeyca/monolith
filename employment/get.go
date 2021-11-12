@@ -50,26 +50,28 @@ func (h *Handler) HandleGetEmploymentByUserId(w http.ResponseWriter, r *http.Req
 }
 
 func (h *Handler) GetEmployment(id string) (*EmploymentDto, error) {
-	result, err := NewEmploymentDatabase(h.db).SelectEmployment(id)
+	var employments []EmploymentDto
+	err := h.db.Select(&employments, "select * from employment where id = $1;", id)
 	if err != nil {
 		return nil, err
 	}
-	if result == nil {
+	if employments == nil {
 		return nil, fmt.Errorf("no results for id: %s", id)
 	}
-	if len(result) != 1 {
+	if len(employments) != 1 {
 		return nil, fmt.Errorf("duplicate results for id: %s", id)
 	}
-	return &result[0], err
+	return &employments[0], err
 }
 
 func (h *Handler) GetEmploymentByUserId(userId string) (*[]EmploymentDto, error) {
-	result, err := NewEmploymentDatabase(h.db).SelectEmploymentByUserId(userId)
+	var employments []EmploymentDto
+	err := h.db.Select(&employments, "select * from employment where user_id = $1;", userId)
 	if err != nil {
 		return nil, err
 	}
-	if result == nil {
+	if employments == nil {
 		return nil, fmt.Errorf("no results for user id: %s", userId)
 	}
-	return &result, err
+	return &employments, err
 }

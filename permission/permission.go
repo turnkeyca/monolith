@@ -19,7 +19,7 @@ type Authorizer struct {
 type Handler struct {
 	logger     *log.Logger
 	authorizer *Authorizer
-	db         *PermissionDatabase
+	db         *db.Database
 }
 
 func New(logger *log.Logger, db *db.Database) *Authorizer {
@@ -29,7 +29,7 @@ func New(logger *log.Logger, db *db.Database) *Authorizer {
 	}
 }
 
-func NewHandler(logger *log.Logger, db *PermissionDatabase, authorizer *Authorizer) *Handler {
+func NewHandler(logger *log.Logger, db *db.Database, authorizer *Authorizer) *Handler {
 	return &Handler{
 		logger:     logger,
 		db:         db,
@@ -46,7 +46,7 @@ type ValidationError struct {
 }
 
 func ConfigurePermissionRoutes(router *mux.Router, logger *log.Logger, database *db.Database, authenticator *auth.Authenticator, authorizer *Authorizer) {
-	permissionHandler := NewHandler(logger, NewPermissionDatabase(database), authorizer)
+	permissionHandler := NewHandler(logger, database, authorizer)
 
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc(fmt.Sprintf("/v1/permission/{id:%s}", util.REGEX_UUID), permissionHandler.HandleGetPermission)

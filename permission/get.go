@@ -50,26 +50,28 @@ func (h *Handler) HandleGetPermissionByUserId(w http.ResponseWriter, r *http.Req
 }
 
 func (h *Handler) GetPermission(id string) (*PermissionDto, error) {
-	result, err := h.db.SelectPermission(id)
+	var permissions []PermissionDto
+	err := h.db.Select(&permissions, "select * from permission where id = $1;", id)
 	if err != nil {
 		return nil, err
 	}
-	if result == nil {
+	if permissions == nil {
 		return nil, fmt.Errorf("no results for id: %s", id)
 	}
-	if len(result) != 1 {
+	if len(permissions) != 1 {
 		return nil, fmt.Errorf("duplicate results for id: %s", id)
 	}
-	return &result[0], err
+	return &permissions[0], err
 }
 
 func (h *Handler) GetPermissionByUserId(userId string) (*[]PermissionDto, error) {
-	result, err := h.db.SelectPermissionsByUserId(userId)
+	var permissions []PermissionDto
+	err := h.db.Select(&permissions, "select * from permission where user_id = $1;", userId)
 	if err != nil {
 		return nil, err
 	}
-	if result == nil {
+	if permissions == nil {
 		return nil, fmt.Errorf("no results for user id: %s", userId)
 	}
-	return &result, err
+	return &permissions, err
 }

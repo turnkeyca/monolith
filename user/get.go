@@ -28,15 +28,16 @@ func (h *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetUser(id string) (*UserDto, error) {
-	result, err := NewUserDatabase(h.db).SelectUser(id)
+	var users []UserDto
+	err := h.db.Select(&users, "select * from users where id = $1;", id)
 	if err != nil {
 		return nil, err
 	}
-	if result == nil {
+	if users == nil {
 		return nil, fmt.Errorf("no results for id: %s", id)
 	}
-	if len(result) != 1 {
+	if len(users) != 1 {
 		return nil, fmt.Errorf("duplicate results for id: %s", id)
 	}
-	return &result[0], err
+	return &users[0], err
 }

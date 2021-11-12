@@ -50,26 +50,28 @@ func (h *Handler) HandleGetPetByUserId(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetPet(id string) (*PetDto, error) {
-	result, err := NewPetDatabase(h.db).SelectPet(id)
+	var pets []PetDto
+	err := h.db.Select(&pets, "select * from pet where id = $1;", id)
 	if err != nil {
 		return nil, err
 	}
-	if result == nil {
+	if pets == nil {
 		return nil, fmt.Errorf("no results for id: %s", id)
 	}
-	if len(result) != 1 {
+	if len(pets) != 1 {
 		return nil, fmt.Errorf("duplicate results for id: %s", id)
 	}
-	return &result[0], err
+	return &pets[0], err
 }
 
 func (h *Handler) GetPetByUserId(userId string) (*[]PetDto, error) {
-	result, err := NewPetDatabase(h.db).SelectPetsByUserId(userId)
+	var pets []PetDto
+	err := h.db.Select(&pets, "select * from pet where user_id = $1;", userId)
 	if err != nil {
 		return nil, err
 	}
-	if result == nil {
+	if pets == nil {
 		return nil, fmt.Errorf("no results for user id: %s", userId)
 	}
-	return &result, err
+	return &pets, err
 }

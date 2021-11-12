@@ -50,26 +50,28 @@ func (h *Handler) HandleGetReferenceByUserId(w http.ResponseWriter, r *http.Requ
 }
 
 func (h *Handler) GetReference(id string) (*ReferenceDto, error) {
-	result, err := NewReferenceDatabase(h.db).SelectReference(id)
+	var references []ReferenceDto
+	err := h.db.Select(&references, "select * from reference where id = $1;", id)
 	if err != nil {
 		return nil, err
 	}
-	if result == nil {
+	if references == nil {
 		return nil, fmt.Errorf("no results for id: %s", id)
 	}
-	if len(result) != 1 {
+	if len(references) != 1 {
 		return nil, fmt.Errorf("duplicate results for id: %s", id)
 	}
-	return &result[0], err
+	return &references[0], err
 }
 
 func (h *Handler) GetReferenceByUserId(userId string) (*[]ReferenceDto, error) {
-	result, err := NewReferenceDatabase(h.db).SelectReferencesByUserId(userId)
+	var references []ReferenceDto
+	err := h.db.Select(&references, "select * from reference where user_id = $1;", userId)
 	if err != nil {
 		return nil, err
 	}
-	if result == nil {
+	if references == nil {
 		return nil, fmt.Errorf("no results for user id: %s", userId)
 	}
-	return &result, err
+	return &references, err
 }
