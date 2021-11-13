@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -79,15 +80,12 @@ func (h *Handler) CheckPermissionsBodyEdit(next http.Handler) http.Handler {
 
 func (h *Handler) CheckPermissionsRoommateIdEdit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var id []string
-		err := h.db.Select(&id, `select user_id from roommate where id=$1;`, r.Context().Value(key.KeyId{}).(string))
+		err := h.checkPermissionsRoommateId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.EDIT)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
-			return
-		}
-		loggedInUserId := r.Context().Value(key.KeyLoggedInUserId{}).(string)
-		err = h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, authorizer.EDIT)
-		if err != nil {
+			if strings.Contains(err.Error(), "not found") {
+				http.Error(w, err.Error(), http.StatusNotFound)
+				return
+			}
 			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
 		}
@@ -99,6 +97,10 @@ func (h *Handler) CheckPermissionsRoommateIdView(next http.Handler) http.Handler
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		err := h.checkPermissionsRoommateId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.VIEW)
 		if err != nil {
+			if strings.Contains(err.Error(), "not found") {
+				http.Error(w, err.Error(), http.StatusNotFound)
+				return
+			}
 			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
 		}
@@ -111,6 +113,9 @@ func (h *Handler) checkPermissionsRoommateId(roommateId string, loggedInUserId s
 	err := h.db.Select(&id, `select user_id from roommate where id=$1;`, roommateId)
 	if err != nil {
 		return err
+	}
+	if id == nil {
+		return fmt.Errorf("roommate [%s] not found", roommateId)
 	}
 	return h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, authorizer.VIEW)
 

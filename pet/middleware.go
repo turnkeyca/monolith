@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -85,6 +86,10 @@ func (h *Handler) CheckPermissionsPetIdEdit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		err := h.checkPermissionsPetId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.EDIT)
 		if err != nil {
+			if strings.Contains(err.Error(), "not found") {
+				http.Error(w, err.Error(), http.StatusNotFound)
+				return
+			}
 			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
 		}
@@ -96,6 +101,10 @@ func (h *Handler) CheckPermissionsPetIdView(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		err := h.checkPermissionsPetId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.VIEW)
 		if err != nil {
+			if strings.Contains(err.Error(), "not found") {
+				http.Error(w, err.Error(), http.StatusNotFound)
+				return
+			}
 			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
 		}
@@ -108,6 +117,9 @@ func (h *Handler) checkPermissionsPetId(petId string, loggedInUserId string, per
 	err := h.db.Select(&id, `select user_id from pet where id=$1;`, petId)
 	if err != nil {
 		return err
+	}
+	if id == nil {
+		return fmt.Errorf("pet [%s] not found", petId)
 	}
 	return h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, perm)
 }

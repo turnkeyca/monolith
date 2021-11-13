@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -81,6 +82,10 @@ func (h *Handler) CheckPermissionsReferenceIdEdit(next http.Handler) http.Handle
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		err := h.checkPermissionsReferenceId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.EDIT)
 		if err != nil {
+			if strings.Contains(err.Error(), "not found") {
+				http.Error(w, err.Error(), http.StatusNotFound)
+				return
+			}
 			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
 		}
@@ -92,6 +97,10 @@ func (h *Handler) CheckPermissionsReferenceIdView(next http.Handler) http.Handle
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		err := h.checkPermissionsReferenceId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.VIEW)
 		if err != nil {
+			if strings.Contains(err.Error(), "not found") {
+				http.Error(w, err.Error(), http.StatusNotFound)
+				return
+			}
 			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
 		}
@@ -104,6 +113,9 @@ func (h *Handler) checkPermissionsReferenceId(referenceId string, loggedInUserId
 	err := h.db.Select(&id, `select user_id from reference where id=$1;`, referenceId)
 	if err != nil {
 		return err
+	}
+	if id == nil {
+		return fmt.Errorf("reference [%s] not found", referenceId)
 	}
 	return h.authorizer.CheckUserIdAndToken(id[0], loggedInUserId, perm)
 }
