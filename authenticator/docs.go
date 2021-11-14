@@ -1,4 +1,6 @@
-package auth
+package authenticator
+
+import "github.com/turnkeyca/monolith/util"
 
 // Generic error message returned as a string
 // swagger:response authErrorResponse
@@ -6,7 +8,7 @@ package auth
 type authErrorResponseWrapper struct {
 	// Description of the error
 	// in: body
-	Body GenericError
+	Body util.GenericError
 }
 
 // new user id
@@ -15,7 +17,7 @@ type authErrorResponseWrapper struct {
 type tokenResponseWrapper struct {
 	// user id
 	// in: body
-	Body Token
+	Body TokenDto
 }
 
 // swagger:parameters registerNewToken

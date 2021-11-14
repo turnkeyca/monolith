@@ -1,4 +1,4 @@
-package auth
+package authenticator
 
 import (
 	"log"
@@ -7,10 +7,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/turnkeyca/monolith/db"
 )
-
-type GenericError struct {
-	Message string `json:"message"`
-}
 
 type Authenticator struct {
 	logger *log.Logger

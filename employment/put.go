@@ -4,24 +4,28 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/turnkeyca/monolith/key"
 )
 
 // swagger:route PUT /v1/employment/{id} employment updateEmployment
 // update a employment
 //
 // responses:
-//	201: noContentResponse
+//	204: noContentResponse
+//  400: employmentErrorResponse
 //  404: employmentErrorResponse
-//  422: employmentErrorValidation
+//  422: employmentErrorResponse
+//  500: employmentErrorResponse
 
 // Update handles PUT requests to update employments
 func (h *Handler) HandlePutEmployment(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value(KeyId{}).(string)
-	dto := r.Context().Value(KeyBody{}).(*EmploymentDto)
+	id := r.Context().Value(key.KeyId{}).(string)
+	dto := r.Context().Value(key.KeyBody{}).(*EmploymentDto)
 	dto.Id = id
 	err := h.UpdateEmployment(dto)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error updating employment: %#v\n", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error updating employment: %s", err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")

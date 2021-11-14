@@ -33,7 +33,7 @@ func (c *Client) GetShortUrl(longUrl string) string {
 		"long_url":   longUrl,
 	})
 	if err != nil {
-		c.logger.Printf("json marshalling error occurred: %#v", err)
+		c.logger.Printf("json marshalling error occurred: %s", err)
 	}
 	client := &http.Client{
 		Timeout: time.Second * 10,

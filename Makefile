@@ -4,6 +4,11 @@ swagger-check :
 swagger : swagger-check
 	swagger generate spec -o ./swagger.yml --scan-models
 
+swagger-client : swagger-check
+	rm -r integration
+	mkdir integration
+	swagger generate client -f ./swagger.yml --default-scheme=http -t integration
+
 run : monolith
 	./monolith
 
@@ -11,12 +16,12 @@ monolith : clean install test
 	go build
 
 install : go.mod go.sum
-	go get
+	# go get
 
 test : 
-	go test ./...
+	# go test ./...
 
 clean :
-	rm -f monolith
-	go clean -cache -modcache
+	# rm -f monolith
+	# go clean -cache -modcache
 	

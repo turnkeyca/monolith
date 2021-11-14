@@ -16,7 +16,7 @@ func (h *Handler) HandleGetShortUrl(w http.ResponseWriter, r *http.Request) {
 	shortUrl := h.GetShortUrl(r.URL.Query().Get("url"))
 	err := shortUrl.Write(w)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error creating short url: %#v\n", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error creating short url: %s", err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")

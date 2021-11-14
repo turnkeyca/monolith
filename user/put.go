@@ -4,24 +4,27 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/turnkeyca/monolith/key"
 )
 
 // swagger:route PUT /v1/user/{id} user updateUser
 // update a user
 //
 // responses:
-//	201: noContentResponse
+//	204: noContentResponse
+//  400: userErrorResponse
 //  404: userErrorResponse
-//  422: userErrorValidation
+//  422: userErrorResponse
+//  500: userErrorResponse
 
 // Update handles PUT requests to update users
 func (h *Handler) HandlePutUser(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value(KeyId{}).(string)
-	dto := r.Context().Value(KeyBody{}).(*UserDto)
-	dto.Id = id
+	dto := r.Context().Value(key.KeyBody{}).(*UserDto)
+	dto.Id = r.Context().Value(key.KeyId{}).(string)
 	err := h.UpdateUser(dto)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error updating user: %#v\n", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error updating user: %s", err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
@@ -31,7 +34,6 @@ func (h *Handler) HandlePutUser(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) UpdateUser(dto *UserDto) error {
 	err := h.db.Run(
 		`update users set 
-			id=$1, 
 			full_name=$2, 
 			user_status=$3,
 			last_updated=$4,
@@ -53,11 +55,12 @@ func (h *Handler) UpdateUser(dto *UserDto) error {
 			move_out_date=$20, 
 			additional_details_lease=$21,
 			walkthrough_complete=$22,
-			terms_accepted=$23
+			terms_accepted=$23,
+			email=$24
 		where id=$1;`,
 		dto.Id,
 		dto.FullName,
-		dto.UserStatus,
+		"active",
 		time.Now().Format(time.RFC3339Nano),
 		dto.PhoneNumber,
 		dto.Nickname,
@@ -78,6 +81,7 @@ func (h *Handler) UpdateUser(dto *UserDto) error {
 		dto.AdditionalDetailsLease,
 		dto.WalkthroughComplete,
 		dto.AcceptedTerms,
+		dto.Email,
 	)
 	return err
 }

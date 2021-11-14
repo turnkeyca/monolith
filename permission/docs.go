@@ -1,4 +1,4 @@
-package reference
+package permission
 
 import "github.com/turnkeyca/monolith/util"
 
@@ -7,30 +7,30 @@ import "github.com/turnkeyca/monolith/util"
 // these types are not used by any of the handlers
 
 // Generic error message returned as a string
-// swagger:response referenceErrorResponse
+// swagger:response permissionErrorResponse
 //lint:ignore U1000 for docs
-type referenceErrorResponseWrapper struct {
+type permissionErrorResponseWrapper struct {
 	// Description of the error
 	// in: body
 	Body util.GenericError
 }
 
-// A reference
-// swagger:response referenceResponse
+// A permission
+// swagger:response permissionResponse
 //lint:ignore U1000 for docs
-type referenceResponseWrapper struct {
-	// A reference
+type permissionResponseWrapper struct {
+	// A permission
 	// in: body
-	Body ReferenceDto
+	Body PermissionDto
 }
 
-// A list of references
-// swagger:response referencesResponse
+// A list of permissions
+// swagger:response permissionsResponse
 //lint:ignore U1000 for docs
-type referencesResponseWrapper struct {
-	// A list of references
+type permissionsResponseWrapper struct {
+	// A list of permissions
 	// in: body
-	Body []ReferenceDto
+	Body []PermissionDto
 }
 
 // No content is returned by this API endpoint
@@ -39,33 +39,33 @@ type referencesResponseWrapper struct {
 type noContentResponseWrapper struct {
 }
 
-// swagger:parameters updateReference getReference deleteReference
+// swagger:parameters acceptPermission getPermission deletePermission
 //lint:ignore U1000 for docs
-type referenceIdParamsWrapper struct {
-	// The id of the reference for which the operation relates
+type permissionIdParamsWrapper struct {
+	// The id of the permission for which the operation relates
 	// in: path
 	// required: true
 	Id string `json:"id"`
 }
 
-// swagger:parameters getReferencesByUserId
+// swagger:parameters getPermissionsByUserId
 //lint:ignore U1000 for docs
-type referencesUserIdParamsWrapper struct {
+type permissionsUserIdParamsWrapper struct {
 	// The user id
 	// in: query
 	// required: true
 	UserId string `json:"userId"`
 }
 
-// swagger:parameters updateReference createReference
+// swagger:parameters  createPermission
 //lint:ignore U1000 for docs
-type referenceParamsWrapper struct {
+type permissionParamsWrapper struct {
 	// in: body
 	// required: true
-	Body ReferenceDto
+	Body PermissionDto
 }
 
-// swagger:parameters updateReference createReference getReferencesByUserId getReference deleteReference
+// swagger:parameters acceptPermission createPermission getPermissionsByUserId getPermission deletePermission
 //lint:ignore U1000 for docs
 type authHeaderWrapper struct {
 	// in: header

@@ -1,4 +1,4 @@
-package auth
+package authenticator
 
 import (
 	"fmt"
@@ -10,17 +10,17 @@ import (
 )
 
 type JwtClaim struct {
-	LoginId string
+	Id string
 	jwt.StandardClaims
 }
 
-func GenerateToken(loginId string) (string, error) {
+func GenerateToken(id string) (string, error) {
 	expiration, err := strconv.Atoi(os.Getenv("TOKEN_EXPIRATION"))
 	if err != nil {
 		return "", err
 	}
 	claims := &JwtClaim{
-		LoginId: loginId,
+		Id: id,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(expiration)).Unix(),
 			Issuer:    os.Getenv("ISSUER"),

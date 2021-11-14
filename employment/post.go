@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/turnkeyca/monolith/key"
 )
 
 // swagger:route POST /v1/employment employment createEmployment
@@ -13,15 +14,16 @@ import (
 //
 // responses:
 //	204: noContentResponse
-//  422: employmentErrorValidation
+//  400: employmentErrorResponse
+//  422: employmentErrorResponse
 //  500: employmentErrorResponse
 
-// Create handles POST requests to add new products
+// Create handles POST requests to add new employments
 func (h *Handler) HandlePostEmployment(w http.ResponseWriter, r *http.Request) {
-	dto := r.Context().Value(KeyBody{}).(*EmploymentDto)
+	dto := r.Context().Value(key.KeyBody{}).(*EmploymentDto)
 	err := h.CreateEmployment(dto)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error creating employment: %#v\n", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error creating employment: %s", err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
@@ -52,7 +54,7 @@ func (h *Handler) CreateEmployment(dto *EmploymentDto) error {
 			$7,
 			$8,
 			$9,
-			$10
+			$9
 		);`,
 		dto.Id,
 		dto.UserId,
@@ -62,7 +64,6 @@ func (h *Handler) CreateEmployment(dto *EmploymentDto) error {
 		dto.AdditionalDetails,
 		dto.RentAffordability,
 		dto.AnnualSalary,
-		time.Now().Format(time.RFC3339Nano),
 		time.Now().Format(time.RFC3339Nano),
 	)
 	return err

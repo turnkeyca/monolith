@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/turnkeyca/monolith/key"
 )
 
 // swagger:route POST /v1/roommate roommate createRoommate
@@ -13,15 +14,16 @@ import (
 //
 // responses:
 //	204: noContentResponse
-//  422: roommateErrorValidation
+//  400: roommateErrorResponse
+//  422: roommateErrorResponse
 //  500: roommateErrorResponse
 
-// Create handles POST requests to add new products
+// Create handles POST requests to add new roommates
 func (h *Handler) HandlePostRoommate(w http.ResponseWriter, r *http.Request) {
-	dto := r.Context().Value(KeyBody{}).(*RoommateDto)
+	dto := r.Context().Value(key.KeyBody{}).(*RoommateDto)
 	err := h.CreateRoommate(dto)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error creating roommate: %#v\n", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error creating roommate: %s", err), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
@@ -44,13 +46,12 @@ func (h *Handler) CreateRoommate(dto *RoommateDto) error {
 			$3, 
 			$4, 
 			$5,
-			$6
+			$5
 		);`,
 		dto.Id,
 		dto.UserId,
 		dto.FullName,
 		dto.Email,
-		time.Now().Format(time.RFC3339Nano),
 		time.Now().Format(time.RFC3339Nano),
 	)
 	return err
