@@ -45,7 +45,7 @@ type employmentIdParamsWrapper struct {
 	// The id of the employment for which the operation relates
 	// in: path
 	// required: true
-	Id string `json:"id"`
+	Id string `json:"ID"`
 }
 
 // swagger:parameters getEmploymentsByUserId
@@ -54,7 +54,7 @@ type employmentUserIdParamsWrapper struct {
 	// The user id
 	// in: query
 	// required: true
-	UserId string `json:"userId"`
+	UserId string `json:"userID"`
 }
 
 // swagger:parameters updateEmployment createEmployment
