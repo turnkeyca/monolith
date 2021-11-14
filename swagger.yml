@@ -3,322 +3,244 @@ consumes:
 - application/json
 definitions:
   EmploymentDto:
-    description: EmploymentDto employment dto
     properties:
       additionalDetails:
-        description: additional details
         type: string
         x-go-name: AdditionalDetails
       annualSalary:
-        description: annual salary
         format: double
         type: number
         x-go-name: AnnualSalary
       createdOn:
-        description: created on
         type: string
         x-go-name: CreatedOn
       duration:
-        description: duration
         type: string
         x-go-name: Duration
       employer:
-        description: employer
         type: string
         x-go-name: Employer
       id:
-        description: Id
         type: string
-        x-go-name: ID
+        x-go-name: Id
       lastUpdated:
-        description: last updated
         type: string
         x-go-name: LastUpdated
       occupation:
-        description: occupation
         type: string
         x-go-name: Occupation
       rentAffordability:
-        description: rent affordability
         type: string
         x-go-name: RentAffordability
       userId:
-        description: user Id
         type: string
-        x-go-name: UserID
+        x-go-name: UserId
     type: object
-    x-go-package: github.com/turnkeyca/monolith/integration/models
+    x-go-package: github.com/turnkeyca/monolith/employment
   GenericError:
-    description: GenericError generic error
     type: string
-    x-go-package: github.com/turnkeyca/monolith/integration/models
+    x-go-package: github.com/turnkeyca/monolith/util
   PermissionDto:
-    description: PermissionDto permission dto
     properties:
       createdOn:
-        description: created on
         type: string
         x-go-name: CreatedOn
       id:
-        description: Id
         type: string
-        x-go-name: ID
+        x-go-name: Id
       lastUpdated:
-        description: last updated
         type: string
         x-go-name: LastUpdated
       onUserId:
-        description: on user Id
         type: string
-        x-go-name: OnUserID
+        x-go-name: OnUserId
       permission:
         $ref: '#/definitions/PermissionType'
       userId:
-        description: user Id
         type: string
-        x-go-name: UserID
+        x-go-name: UserId
     type: object
-    x-go-package: github.com/turnkeyca/monolith/integration/models
+    x-go-package: github.com/turnkeyca/monolith/permission
   PermissionType:
-    description: PermissionType permission type
     type: string
-    x-go-package: github.com/turnkeyca/monolith/integration/models
+    x-go-package: github.com/turnkeyca/monolith/authorizer
   PetDto:
-    description: PetDto pet dto
     properties:
       breed:
-        description: breed
         type: string
         x-go-name: Breed
       createdOn:
-        description: created on
         type: string
         x-go-name: CreatedOn
       id:
-        description: Id
         type: string
-        x-go-name: ID
+        x-go-name: Id
       lastUpdated:
-        description: last updated
         type: string
         x-go-name: LastUpdated
       petType:
-        description: pet type
         type: string
         x-go-name: PetType
       sizeType:
-        description: size type
         type: string
         x-go-name: SizeType
       userId:
-        description: user Id
         type: string
-        x-go-name: UserID
+        x-go-name: UserId
     type: object
-    x-go-package: github.com/turnkeyca/monolith/integration/models
+    x-go-package: github.com/turnkeyca/monolith/pet
   ReferenceDto:
-    description: ReferenceDto reference dto
     properties:
       additionalDetails:
-        description: additional details
         type: string
         x-go-name: AdditionalDetails
       createdOn:
-        description: created on
         type: string
         x-go-name: CreatedOn
       email:
-        description: email
         type: string
         x-go-name: Email
       fullName:
-        description: full name
         type: string
         x-go-name: FullName
       id:
-        description: Id
         type: string
-        x-go-name: ID
+        x-go-name: Id
       lastUpdated:
-        description: last updated
         type: string
         x-go-name: LastUpdated
       phoneNumber:
-        description: phone number
         type: string
         x-go-name: PhoneNumber
       relationship:
-        description: relationship
         type: string
         x-go-name: Relationship
       userId:
-        description: user Id
         type: string
-        x-go-name: UserID
+        x-go-name: UserId
     type: object
-    x-go-package: github.com/turnkeyca/monolith/integration/models
+    x-go-package: github.com/turnkeyca/monolith/reference
   RegisterTokenDto:
-    description: RegisterTokenDto register token dto
     properties:
       id:
-        description: login Id
         type: string
-        x-go-name: LoginID
+        x-go-name: LoginId
       newUser:
-        description: is new user
         type: boolean
         x-go-name: IsNewUser
       secret:
-        description: secret
         type: string
         x-go-name: Secret
     type: object
-    x-go-package: github.com/turnkeyca/monolith/integration/models
+    x-go-package: github.com/turnkeyca/monolith/authenticator
   RoommateDto:
-    description: RoommateDto roommate dto
     properties:
       createdOn:
-        description: created on
         type: string
         x-go-name: CreatedOn
       email:
-        description: email
         type: string
         x-go-name: Email
       fullName:
-        description: full name
         type: string
         x-go-name: FullName
       id:
-        description: Id
         type: string
-        x-go-name: ID
+        x-go-name: Id
       lastUpdated:
-        description: last updated
         type: string
         x-go-name: LastUpdated
       userId:
-        description: user Id
         type: string
-        x-go-name: UserID
+        x-go-name: UserId
     type: object
-    x-go-package: github.com/turnkeyca/monolith/integration/models
+    x-go-package: github.com/turnkeyca/monolith/roommate
   ShortUrlDto:
-    description: ShortURLDto short Url dto
     properties:
       url:
-        description: Url
         type: string
-        x-go-name: URL
+        x-go-name: Url
     type: object
-    x-go-name: ShortURLDto
-    x-go-package: github.com/turnkeyca/monolith/integration/models
+    x-go-package: github.com/turnkeyca/monolith/shorturl
   TokenDto:
-    description: TokenDto token dto
     properties:
       id:
-        description: Id
         type: string
-        x-go-name: ID
+        x-go-name: Id
       token:
-        description: token
         type: string
         x-go-name: Token
     type: object
-    x-go-package: github.com/turnkeyca/monolith/integration/models
+    x-go-package: github.com/turnkeyca/monolith/authenticator
   UserDto:
-    description: UserDto user dto
     properties:
       acceptedTerms:
-        description: accepted terms
         type: boolean
         x-go-name: AcceptedTerms
       additionalDetailsGeneral:
-        description: additional details general
         type: string
         x-go-name: AdditionalDetailsGeneral
       additionalDetailsLease:
-        description: additional details lease
         type: string
         x-go-name: AdditionalDetailsLease
       bio:
-        description: bio
         type: string
         x-go-name: Bio
       createdOn:
-        description: created on
         type: string
         x-go-name: CreatedOn
       creditCheck:
-        description: can credit check
         type: boolean
         x-go-name: CanCreditCheck
       email:
-        description: email
         type: string
         x-go-name: Email
       evicted:
-        description: has previous eviction
         type: boolean
         x-go-name: HasPreviousEviction
       fullName:
-        description: full name
         type: string
         x-go-name: FullName
       id:
-        description: Id
         type: string
-        x-go-name: ID
+        x-go-name: Id
       lastUpdated:
-        description: last updated
         type: string
         x-go-name: LastUpdated
       lawsuit:
-        description: has previous lawsuit
         type: boolean
         x-go-name: HasPreviousLawsuit
       loginId:
-        description: login Id
         type: string
-        x-go-name: LoginID
+        x-go-name: LoginId
       moveInDate:
-        description: move in date
         type: string
         x-go-name: MoveInDate
       moveOutDate:
-        description: move out date
         type: string
         x-go-name: MoveOutDate
       movingReason:
-        description: moving reason
         type: string
         x-go-name: MovingReason
       nickname:
-        description: nickname
         type: string
         x-go-name: Nickname
       pets:
-        description: has pets
         type: boolean
         x-go-name: HasPets
       phoneNumber:
-        description: phone number
         type: string
         x-go-name: PhoneNumber
       roommates:
-        description: has roommates
         type: boolean
         x-go-name: HasRoommates
       securityDeposit:
-        description: has security deposit
         type: boolean
         x-go-name: HasSecurityDeposit
       sendNotifications:
-        description: send notifications
         type: boolean
         x-go-name: SendNotifications
       smoker:
-        description: is smoker
         type: boolean
         x-go-name: IsSmoker
       userStatusType:
@@ -326,19 +248,16 @@ definitions:
       userType:
         $ref: '#/definitions/UserType'
       walkthroughComplete:
-        description: walkthrough complete
         type: boolean
         x-go-name: WalkthroughComplete
     type: object
-    x-go-package: github.com/turnkeyca/monolith/integration/models
+    x-go-package: github.com/turnkeyca/monolith/user
   UserStatusType:
-    description: UserStatusType user status type
     type: string
-    x-go-package: github.com/turnkeyca/monolith/integration/models
+    x-go-package: github.com/turnkeyca/monolith/user
   UserType:
-    description: UserType user type
     type: string
-    x-go-package: github.com/turnkeyca/monolith/integration/models
+    x-go-package: github.com/turnkeyca/monolith/user
 info:
   description: Documentation for Turnkey API
   title: of Turnkey API
@@ -368,7 +287,7 @@ paths:
       parameters:
       - description: The user id
         in: query
-        name: userID
+        name: userId
         required: true
         type: string
         x-go-name: UserId
@@ -414,7 +333,7 @@ paths:
       parameters:
       - description: The id of the employment for which the operation relates
         in: path
-        name: ID
+        name: id
         required: true
         type: string
         x-go-name: Id
@@ -435,7 +354,7 @@ paths:
       parameters:
       - description: The id of the employment for which the operation relates
         in: path
-        name: ID
+        name: id
         required: true
         type: string
         x-go-name: Id
@@ -458,7 +377,7 @@ paths:
       parameters:
       - description: The id of the employment for which the operation relates
         in: path
-        name: ID
+        name: id
         required: true
         type: string
         x-go-name: Id
