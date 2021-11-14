@@ -7,6 +7,7 @@ import (
 
 	httptransport "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	"github.com/turnkeyca/monolith/integration/client"
 	"github.com/turnkeyca/monolith/integration/client/authentication"
@@ -22,9 +23,11 @@ func TestLogin(t *testing.T) {
 	transport := httptransport.New(fmt.Sprintf(`localhost:%s`, os.Getenv("PORT")), "", nil)
 	cl := client.New(transport, strfmt.Default)
 	dto := authentication.NewRegisterNewTokenParams()
+	newUserLoginId := uuid.New().String()
+	t.Logf(`new user login id: %s`, newUserLoginId)
 	dto.Body = &models.RegisterTokenDto{
 		IsNewUser: true,
-		LoginID:   "grandpariley",
+		LoginID:   newUserLoginId,
 		Secret:    os.Getenv("SECRET_KEY"),
 	}
 	t.Logf(`body: %#v`, dto)
@@ -33,7 +36,6 @@ func TestLogin(t *testing.T) {
 		t.Logf(`error: %s`, err)
 		t.Fail()
 	}
-	t.Logf(`ok: %#v`, ok)
 	userId := ok.GetPayload().ID
 	t.Logf(`user id: %s`, userId)
 	token := ok.GetPayload().Token
