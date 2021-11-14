@@ -14,14 +14,28 @@ import (
 	"github.com/turnkeyca/monolith/integration/models"
 )
 
-func TestLogin(t *testing.T) {
+//RH - this function is too long on purpose.
+func Test(t *testing.T) {
 	err := godotenv.Load(".env")
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()
 	}
 	transport := httptransport.New(fmt.Sprintf(`localhost:%s`, os.Getenv("PORT")), "", nil)
+	// LOG IN
 	cl := client.New(transport, strfmt.Default)
+	userId, token, err := login(t, cl)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	t.Logf(`user id: %s`, userId)
+	t.Logf(`token: %s`, token)
+
+	
+}
+
+func login(t *testing.T, cl *client.OfTurnkeyAPI) (string, string, error) {
 	dto := authentication.NewRegisterNewTokenParams()
 	newUserLoginId := uuid.New().String()
 	t.Logf(`new user login id: %s`, newUserLoginId)
@@ -33,11 +47,7 @@ func TestLogin(t *testing.T) {
 	t.Logf(`body: %#v`, dto)
 	ok, err := cl.Authentication.RegisterNewToken(dto)
 	if err != nil {
-		t.Logf(`error: %s`, err)
-		t.Fail()
+		return "", "", err
 	}
-	userId := ok.GetPayload().ID
-	t.Logf(`user id: %s`, userId)
-	token := ok.GetPayload().Token
-	t.Logf(`token: %s`, token)
+	return ok.GetPayload().ID, ok.GetPayload().Token, nil
 }
