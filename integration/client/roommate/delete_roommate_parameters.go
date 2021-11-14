@@ -157,7 +157,7 @@ func (o *DeleteRoommateParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 	}
 
 	// path param id
-	if err := r.SetPathParam("id", o.Id); err != nil {
+	if err := r.SetPathParam("id", o.ID); err != nil {
 		return err
 	}
 

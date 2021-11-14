@@ -157,7 +157,7 @@ func (o *GetShortURLParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 	}
 
 	// query param url
-	qrURL := o.Url
+	qrURL := o.URL
 	qURL := qrURL
 	if qURL != "" {
 

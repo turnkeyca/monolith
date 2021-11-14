@@ -178,7 +178,7 @@ func (o *UpdateReferenceParams) WriteToRequest(r runtime.ClientRequest, reg strf
 	}
 
 	// path param id
-	if err := r.SetPathParam("id", o.Id); err != nil {
+	if err := r.SetPathParam("id", o.ID); err != nil {
 		return err
 	}
 

@@ -157,7 +157,7 @@ func (o *GetReferencesByUserIDParams) WriteToRequest(r runtime.ClientRequest, re
 	}
 
 	// query param userId
-	qrUserID := o.UserId
+	qrUserID := o.UserID
 	qUserID := qrUserID
 	if qUserID != "" {
 

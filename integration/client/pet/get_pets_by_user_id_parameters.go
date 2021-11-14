@@ -157,7 +157,7 @@ func (o *GetPetsByUserIDParams) WriteToRequest(r runtime.ClientRequest, reg strf
 	}
 
 	// query param userId
-	qrUserID := o.UserId
+	qrUserID := o.UserID
 	qUserID := qrUserID
 	if qUserID != "" {
 

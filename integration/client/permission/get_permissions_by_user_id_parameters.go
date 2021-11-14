@@ -157,7 +157,7 @@ func (o *GetPermissionsByUserIDParams) WriteToRequest(r runtime.ClientRequest, r
 	}
 
 	// query param userId
-	qrUserID := o.UserId
+	qrUserID := o.UserID
 	qUserID := qrUserID
 	if qUserID != "" {
 
