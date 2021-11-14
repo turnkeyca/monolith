@@ -1,28 +1,39 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
+	httptransport "github.com/go-openapi/runtime/client"
+	"github.com/go-openapi/strfmt"
+	"github.com/joho/godotenv"
 	"github.com/turnkeyca/monolith/integration/client"
 	"github.com/turnkeyca/monolith/integration/client/auth"
 	"github.com/turnkeyca/monolith/integration/models"
 )
 
 func TestLogin(t *testing.T) {
-	dto := &auth.RegisterNewTokenParams{
-		Body: &models.RegisterTokenDto{
-			IsNewUser: true,
-			LoginID:   "grandpariley",
-			Secret:    os.Getenv("SECRET"),
-		},
+	err := godotenv.Load(".env")
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
 	}
-	cl := client.NewHTTPClient(nil)
+	transport := httptransport.New(fmt.Sprintf(`localhost:%s`, os.Getenv("PORT")), "", nil)
+	cl := client.New(transport, strfmt.Default)
+	dto := auth.NewRegisterNewTokenParams()
+	dto.Body = &models.RegisterTokenDto{
+		IsNewUser: true,
+		LoginID:   "grandpariley",
+		Secret:    os.Getenv("SECRET_KEY"),
+	}
+	t.Logf(`body: %#v`, dto)
 	ok, err := cl.Auth.RegisterNewToken(dto)
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()
 	}
+	t.Logf(`ok: %#v`, ok)
 	userId := ok.GetPayload().ID
 	t.Logf(`user id: %s`, userId)
 	token := ok.GetPayload().Token

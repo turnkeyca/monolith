@@ -12,12 +12,12 @@ import (
 	"github.com/turnkeyca/monolith/key"
 )
 
-// swagger:route POST /v1/auth/registertoken auth registerNewToken
+// swagger:route POST /v1/auth/registertoken authentication registerNewToken
 // register token
 //
 // responses:
 //	200: tokenResponse
-//  500: authErrorResponse
+//  500: authenticationErrorResponse
 
 // Create handles POST requests to add new users
 func (h *Handler) HandleRegisterToken(w http.ResponseWriter, r *http.Request) {
