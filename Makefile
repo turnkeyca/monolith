@@ -5,14 +5,14 @@ swagger : swagger-check
 	swagger generate spec -o ./swagger.yml --scan-models
 
 swagger-client : swagger-check
-	rm -r integration
+	rm -rf integration
 	mkdir integration
 	swagger generate client -f ./swagger.yml --default-scheme=http -t integration
 
 run : monolith
 	./monolith
 
-monolith : clean install test
+monolith : clean install
 	go build
 
 install : go.mod go.sum
