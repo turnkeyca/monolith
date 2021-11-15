@@ -12,7 +12,6 @@ import (
 // responses:
 //	200: employmentResponse
 //  403: employmentErrorResponse
-//	404: employmentErrorResponse
 //  500: employmentErrorResponse
 
 // HandleGetEmployment handles GET requests
@@ -35,6 +34,7 @@ func (h *Handler) HandleGetEmployment(w http.ResponseWriter, r *http.Request) {
 // return employments for a user
 // responses:
 //	200: employmentsResponse
+//  403: employmentErrorResponse
 //	500: employmentErrorResponse
 
 // HandleGetEmploymentByUserId handles GET requests
