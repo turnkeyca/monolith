@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// RoommateDto RoommateDto roommate dto
+// RoommateDto RoommateDto RoommateDto roommate dto
 //
 // swagger:model RoommateDto
 type RoommateDto struct {

@@ -13,7 +13,7 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// UserDto UserDto user dto
+// UserDto UserDto UserDto user dto
 //
 // swagger:model UserDto
 type UserDto struct {

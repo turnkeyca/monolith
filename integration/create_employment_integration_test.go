@@ -16,7 +16,7 @@ func createEmployment(t *testing.T, cl *client.OfTurnkeyAPI, userId string, toke
 	dto.Body = &models.EmploymentDto{
 		UserID:            userId,
 		AdditionalDetails: "integration test AdditionalDetails",
-		Duration:          "integration test Duration",
+		Duration:          "Duration",
 		Employer:          "integration test Employer",
 		Occupation:        "integration test Occupation",
 		RentAffordability: "integration test RentAffordability",

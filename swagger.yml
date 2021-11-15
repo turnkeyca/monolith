@@ -3,7 +3,7 @@ consumes:
 - application/json
 definitions:
   EmploymentDto:
-    description: EmploymentDto employment dto
+    description: EmploymentDto EmploymentDto employment dto
     properties:
       additionalDetails:
         description: additional details
@@ -49,11 +49,11 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   GenericError:
-    description: GenericError generic error
+    description: GenericError GenericError generic error
     type: string
     x-go-package: github.com/turnkeyca/monolith/integration/models
   PermissionDto:
-    description: PermissionDto permission dto
+    description: PermissionDto PermissionDto permission dto
     properties:
       createdOn:
         description: created on
@@ -80,11 +80,11 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   PermissionType:
-    description: PermissionType permission type
+    description: PermissionType PermissionType permission type
     type: string
     x-go-package: github.com/turnkeyca/monolith/integration/models
   PetDto:
-    description: PetDto pet dto
+    description: PetDto PetDto pet dto
     properties:
       breed:
         description: breed
@@ -117,7 +117,7 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   ReferenceDto:
-    description: ReferenceDto reference dto
+    description: ReferenceDto ReferenceDto reference dto
     properties:
       additionalDetails:
         description: additional details
@@ -158,7 +158,7 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   RegisterTokenDto:
-    description: RegisterTokenDto register token dto
+    description: RegisterTokenDto RegisterTokenDto register token dto
     properties:
       id:
         description: login Id
@@ -175,7 +175,7 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   RoommateDto:
-    description: RoommateDto roommate dto
+    description: RoommateDto RoommateDto roommate dto
     properties:
       createdOn:
         description: created on
@@ -203,18 +203,24 @@ definitions:
         x-go-name: UserID
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
-  ShortUrlDto:
-    description: ShortURLDto short Url dto
+  ShortURLDto:
+    description: ShortURLDto ShortURLDto short Url dto
     properties:
       url:
         description: Url
         type: string
         x-go-name: URL
     type: object
-    x-go-name: ShortURLDto
     x-go-package: github.com/turnkeyca/monolith/integration/models
+  ShortUrlDto:
+    properties:
+      url:
+        type: string
+        x-go-name: Url
+    type: object
+    x-go-package: github.com/turnkeyca/monolith/shorturl
   TokenDto:
-    description: TokenDto token dto
+    description: TokenDto TokenDto token dto
     properties:
       id:
         description: Id
@@ -227,7 +233,7 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   UserDto:
-    description: UserDto user dto
+    description: UserDto UserDto user dto
     properties:
       acceptedTerms:
         description: accepted terms
@@ -332,11 +338,11 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   UserStatusType:
-    description: UserStatusType user status type
+    description: UserStatusType UserStatusType user status type
     type: string
     x-go-package: github.com/turnkeyca/monolith/integration/models
   UserType:
-    description: UserType user type
+    description: UserType UserType user type
     type: string
     x-go-package: github.com/turnkeyca/monolith/integration/models
 info:
@@ -379,6 +385,8 @@ paths:
       responses:
         "200":
           $ref: '#/responses/employmentsResponse'
+        "403":
+          $ref: '#/responses/employmentErrorResponse'
         "500":
           $ref: '#/responses/employmentErrorResponse'
       tags:
@@ -451,8 +459,6 @@ paths:
         "200":
           $ref: '#/responses/employmentResponse'
         "403":
-          $ref: '#/responses/employmentErrorResponse'
-        "404":
           $ref: '#/responses/employmentErrorResponse'
         "500":
           $ref: '#/responses/employmentErrorResponse'

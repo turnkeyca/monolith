@@ -22,7 +22,7 @@ func deleteEmploymentNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token strin
 	dto.ID = uuid.New().String()
 	dto.Token = token
 	_, err := cl.Employment.DeleteEmployment(dto)
-	if err != nil && !(strings.Contains(err.Error(), "deleteEmploymentForbidden") && strings.Contains(err.Error(), "Employment does not have permission")) {
+	if err != nil && !(strings.Contains(err.Error(), "deleteEmploymentForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
 		return err
 	}
 	return nil

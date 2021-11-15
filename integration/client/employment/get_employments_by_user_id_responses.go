@@ -29,6 +29,12 @@ func (o *GetEmploymentsByUserIDReader) ReadResponse(response runtime.ClientRespo
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewGetEmploymentsByUserIDForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 500:
 		result := NewGetEmploymentsByUserIDInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -61,6 +67,36 @@ func (o *GetEmploymentsByUserIDOK) GetPayload() []*models.EmploymentDto {
 }
 
 func (o *GetEmploymentsByUserIDOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetEmploymentsByUserIDForbidden creates a GetEmploymentsByUserIDForbidden with default headers values
+func NewGetEmploymentsByUserIDForbidden() *GetEmploymentsByUserIDForbidden {
+	return &GetEmploymentsByUserIDForbidden{}
+}
+
+/* GetEmploymentsByUserIDForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type GetEmploymentsByUserIDForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *GetEmploymentsByUserIDForbidden) Error() string {
+	return fmt.Sprintf("[GET /v1/employment][%d] getEmploymentsByUserIdForbidden  %+v", 403, o.Payload)
+}
+func (o *GetEmploymentsByUserIDForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *GetEmploymentsByUserIDForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
