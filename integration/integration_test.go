@@ -147,9 +147,74 @@ func Test(t *testing.T) {
 	}
 
 	//CREATE PERMISSION
-	//ACCEPT PERMISSION
+	userId2, _, err := login(t, cl)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = createPermission(t, cl, userId, userId2, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = createPermissionIncorrectUserId(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = createPermissionValidationError(t, cl, userId, userId2, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = createPermissionUserIdIsOnUserId(t, cl, userId, userId2, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
 	//GET PERMISSION
+	permissionId, err := getPermissionByUserId(t, cl, userId, userId2, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getPermission(t, cl, permissionId, userId, userId2, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getPermissionNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getPermissionByUserIdNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	//ACCEPT PERMISSION
+	err = acceptPermission(t, cl, permissionId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = acceptPermissionNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
 	//DELETE PERMISSION
+	err = deletePermission(t, cl, permissionId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = deletePermissionNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
 
 	//CREATE PET
 	err = createPet(t, cl, userId, token)
