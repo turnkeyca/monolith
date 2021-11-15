@@ -157,8 +157,7 @@ func deleteUserNotFoundShouldNotError(t *testing.T, cl *client.OfTurnkeyAPI, tok
 	dto.ID = uuid.New().String()
 	dto.Token = token
 	_, err := cl.User.DeleteUser(dto)
-	t.Logf(err.Error())
-	if err != nil && !(strings.Contains(err.Error(), "registerNewTokenInternalServerError") && strings.Contains(err.Error(), "duplicate user")) {
+	if err != nil && !(strings.Contains(err.Error(), "deleteUserForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
 		return err
 	}
 	return nil
@@ -345,7 +344,7 @@ func getUserNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token string) error 
 	dto.ID = uuid.New().String()
 	dto.Token = token
 	_, err := cl.User.GetUser(dto)
-	if err != nil && err.Error() != fmt.Sprintf("error getting user by id: %s, no results", dto.ID) {
+	if err != nil && !(strings.Contains(err.Error(), "getUserForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
 		return err
 	}
 	return nil
