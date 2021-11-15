@@ -13,7 +13,7 @@ import (
 
 //RH - this function is too long on purpose.
 func Test(t *testing.T) {
-	err := godotenv.Load(".env")
+	err := godotenv.Load("../.env")
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()
@@ -76,6 +76,74 @@ func Test(t *testing.T) {
 		t.Fail()
 	}
 	err = getUserNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+
+	//CREATE EMPLOYMENT
+	err = createEmployment(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = createEmploymentIncorrectUserId(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = createEmploymentValidationError(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+
+	//GET EMPLOYMENT
+	employmentId, err := getEmploymentByUserId(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getEmployment(t, cl, employmentId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getEmploymentNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getEmploymentByUserIdNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+
+	//UPDATE EMPLOYMENT
+	err = updateEmployment(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = updateEmploymentNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = updateEmploymentValidationError(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+
+	//DELETE EMPLOYMENT
+	err = deleteEmployment(t, cl, employmentId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = deleteEmploymentNotFound(t, cl, token)
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()
