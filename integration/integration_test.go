@@ -97,7 +97,6 @@ func Test(t *testing.T) {
 		t.Logf(`error: %s`, err)
 		t.Fail()
 	}
-
 	//GET EMPLOYMENT
 	employmentId, err := getEmploymentByUserId(t, cl, userId, token)
 	if err != nil {
@@ -119,7 +118,6 @@ func Test(t *testing.T) {
 		t.Logf(`error: %s`, err)
 		t.Fail()
 	}
-
 	//UPDATE EMPLOYMENT
 	err = updateEmployment(t, cl, userId, token)
 	if err != nil {
@@ -136,7 +134,6 @@ func Test(t *testing.T) {
 		t.Logf(`error: %s`, err)
 		t.Fail()
 	}
-
 	//DELETE EMPLOYMENT
 	err = deleteEmployment(t, cl, employmentId, token)
 	if err != nil {
@@ -144,6 +141,206 @@ func Test(t *testing.T) {
 		t.Fail()
 	}
 	err = deleteEmploymentNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+
+	//CREATE PERMISSION
+	//ACCEPT PERMISSION
+	//GET PERMISSION
+	//DELETE PERMISSION
+
+	//CREATE PET
+	err = createPet(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = createPetIncorrectUserId(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = createPetValidationError(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	//GET PET
+	petId, err := getPetByUserId(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getPet(t, cl, petId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getPetNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getPetByUserIdNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	//UPDATE PET
+	err = updatePet(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = updatePetNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = updatePetValidationError(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	//DELETE PET
+	err = deletePet(t, cl, petId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = deletePetNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+
+	//CREATE REFERENCE
+	err = createReference(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = createReferenceIncorrectUserId(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = createReferenceValidationError(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	//GET REFERENCE
+	referenceId, err := getReferenceByUserId(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getReference(t, cl, petId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getReferenceNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getReferenceByUserIdNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	//UPDATE REFERENCE
+	err = updateReference(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = updateReferenceNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = updateReferenceValidationError(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	//DELETE REFERENCE
+	err = deleteReference(t, cl, referenceId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = deleteReferenceNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+
+	//CREATE ROOMMATE
+	err = createRoommate(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = createRoommateIncorrectUserId(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = createRoommateValidationError(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	//GET ROOMMATE
+	roommateId, err := getRoommateByUserId(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getRoommate(t, cl, petId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getRoommateNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = getRoommateByUserIdNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	//UPDATE ROOMMATE
+	err = updateRoommate(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = updateRoommateNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = updateRoommateValidationError(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	//DELETE ROOMMATE
+	err = deleteRoommate(t, cl, roommateId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = deleteRoommateNotFound(t, cl, token)
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()
