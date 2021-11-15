@@ -35,8 +35,8 @@ func (o *UpdateReferenceReader) ReadResponse(response runtime.ClientResponse, co
 			return nil, err
 		}
 		return nil, result
-	case 404:
-		result := NewUpdateReferenceNotFound()
+	case 403:
+		result := NewUpdateReferenceForbidden()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -109,27 +109,27 @@ func (o *UpdateReferenceBadRequest) readResponse(response runtime.ClientResponse
 	return nil
 }
 
-// NewUpdateReferenceNotFound creates a UpdateReferenceNotFound with default headers values
-func NewUpdateReferenceNotFound() *UpdateReferenceNotFound {
-	return &UpdateReferenceNotFound{}
+// NewUpdateReferenceForbidden creates a UpdateReferenceForbidden with default headers values
+func NewUpdateReferenceForbidden() *UpdateReferenceForbidden {
+	return &UpdateReferenceForbidden{}
 }
 
-/* UpdateReferenceNotFound describes a response with status code 404, with default header values.
+/* UpdateReferenceForbidden describes a response with status code 403, with default header values.
 
 Generic error message returned as a string
 */
-type UpdateReferenceNotFound struct {
+type UpdateReferenceForbidden struct {
 	Payload models.GenericError
 }
 
-func (o *UpdateReferenceNotFound) Error() string {
-	return fmt.Sprintf("[PUT /v1/reference/{id}][%d] updateReferenceNotFound  %+v", 404, o.Payload)
+func (o *UpdateReferenceForbidden) Error() string {
+	return fmt.Sprintf("[PUT /v1/reference/{id}][%d] updateReferenceForbidden  %+v", 403, o.Payload)
 }
-func (o *UpdateReferenceNotFound) GetPayload() models.GenericError {
+func (o *UpdateReferenceForbidden) GetPayload() models.GenericError {
 	return o.Payload
 }
 
-func (o *UpdateReferenceNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+func (o *UpdateReferenceForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

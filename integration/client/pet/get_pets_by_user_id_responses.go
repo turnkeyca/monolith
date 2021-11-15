@@ -29,6 +29,12 @@ func (o *GetPetsByUserIDReader) ReadResponse(response runtime.ClientResponse, co
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewGetPetsByUserIDForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 500:
 		result := NewGetPetsByUserIDInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -61,6 +67,36 @@ func (o *GetPetsByUserIDOK) GetPayload() []*models.PetDto {
 }
 
 func (o *GetPetsByUserIDOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetPetsByUserIDForbidden creates a GetPetsByUserIDForbidden with default headers values
+func NewGetPetsByUserIDForbidden() *GetPetsByUserIDForbidden {
+	return &GetPetsByUserIDForbidden{}
+}
+
+/* GetPetsByUserIDForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type GetPetsByUserIDForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *GetPetsByUserIDForbidden) Error() string {
+	return fmt.Sprintf("[GET /v1/pet][%d] getPetsByUserIdForbidden  %+v", 403, o.Payload)
+}
+func (o *GetPetsByUserIDForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *GetPetsByUserIDForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

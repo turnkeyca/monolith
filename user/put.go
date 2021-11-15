@@ -14,7 +14,7 @@ import (
 // responses:
 //	204: noContentResponse
 //  400: userErrorResponse
-//  404: userErrorResponse
+//  403: userErrorResponse
 //  422: userErrorResponse
 //  500: userErrorResponse
 

@@ -29,6 +29,12 @@ func (o *GetEmploymentReader) ReadResponse(response runtime.ClientResponse, cons
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewGetEmploymentForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 404:
 		result := NewGetEmploymentNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -72,6 +78,36 @@ func (o *GetEmploymentOK) readResponse(response runtime.ClientResponse, consumer
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetEmploymentForbidden creates a GetEmploymentForbidden with default headers values
+func NewGetEmploymentForbidden() *GetEmploymentForbidden {
+	return &GetEmploymentForbidden{}
+}
+
+/* GetEmploymentForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type GetEmploymentForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *GetEmploymentForbidden) Error() string {
+	return fmt.Sprintf("[GET /v1/employment/{id}][%d] getEmploymentForbidden  %+v", 403, o.Payload)
+}
+func (o *GetEmploymentForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *GetEmploymentForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
 		return err
 	}
 

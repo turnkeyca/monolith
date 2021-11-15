@@ -29,6 +29,12 @@ func (o *AcceptPermissionReader) ReadResponse(response runtime.ClientResponse, c
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewAcceptPermissionForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 500:
 		result := NewAcceptPermissionInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -57,6 +63,36 @@ func (o *AcceptPermissionNoContent) Error() string {
 }
 
 func (o *AcceptPermissionNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	return nil
+}
+
+// NewAcceptPermissionForbidden creates a AcceptPermissionForbidden with default headers values
+func NewAcceptPermissionForbidden() *AcceptPermissionForbidden {
+	return &AcceptPermissionForbidden{}
+}
+
+/* AcceptPermissionForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type AcceptPermissionForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *AcceptPermissionForbidden) Error() string {
+	return fmt.Sprintf("[POST /v1/permission/{id}/accept][%d] acceptPermissionForbidden  %+v", 403, o.Payload)
+}
+func (o *AcceptPermissionForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *AcceptPermissionForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
 
 	return nil
 }

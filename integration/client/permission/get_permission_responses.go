@@ -29,6 +29,12 @@ func (o *GetPermissionReader) ReadResponse(response runtime.ClientResponse, cons
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewGetPermissionForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 404:
 		result := NewGetPermissionNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -78,6 +84,36 @@ func (o *GetPermissionOK) readResponse(response runtime.ClientResponse, consumer
 	return nil
 }
 
+// NewGetPermissionForbidden creates a GetPermissionForbidden with default headers values
+func NewGetPermissionForbidden() *GetPermissionForbidden {
+	return &GetPermissionForbidden{}
+}
+
+/* GetPermissionForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type GetPermissionForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *GetPermissionForbidden) Error() string {
+	return fmt.Sprintf("[GET /v1/permission/{id}][%d] getPermissionForbidden  %+v", 403, o.Payload)
+}
+func (o *GetPermissionForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *GetPermissionForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewGetPermissionNotFound creates a GetPermissionNotFound with default headers values
 func NewGetPermissionNotFound() *GetPermissionNotFound {
 	return &GetPermissionNotFound{}
@@ -85,25 +121,23 @@ func NewGetPermissionNotFound() *GetPermissionNotFound {
 
 /* GetPermissionNotFound describes a response with status code 404, with default header values.
 
-A permission
+Generic error message returned as a string
 */
 type GetPermissionNotFound struct {
-	Payload *models.PermissionDto
+	Payload models.GenericError
 }
 
 func (o *GetPermissionNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/permission/{id}][%d] getPermissionNotFound  %+v", 404, o.Payload)
 }
-func (o *GetPermissionNotFound) GetPayload() *models.PermissionDto {
+func (o *GetPermissionNotFound) GetPayload() models.GenericError {
 	return o.Payload
 }
 
 func (o *GetPermissionNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.PermissionDto)
-
 	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
 		return err
 	}
 

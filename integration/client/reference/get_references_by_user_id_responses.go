@@ -29,6 +29,12 @@ func (o *GetReferencesByUserIDReader) ReadResponse(response runtime.ClientRespon
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewGetReferencesByUserIDForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 500:
 		result := NewGetReferencesByUserIDInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -61,6 +67,36 @@ func (o *GetReferencesByUserIDOK) GetPayload() []*models.ReferenceDto {
 }
 
 func (o *GetReferencesByUserIDOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetReferencesByUserIDForbidden creates a GetReferencesByUserIDForbidden with default headers values
+func NewGetReferencesByUserIDForbidden() *GetReferencesByUserIDForbidden {
+	return &GetReferencesByUserIDForbidden{}
+}
+
+/* GetReferencesByUserIDForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type GetReferencesByUserIDForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *GetReferencesByUserIDForbidden) Error() string {
+	return fmt.Sprintf("[GET /v1/reference][%d] getReferencesByUserIdForbidden  %+v", 403, o.Payload)
+}
+func (o *GetReferencesByUserIDForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *GetReferencesByUserIDForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

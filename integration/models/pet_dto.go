@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// PetDto pet dto
+// PetDto PetDto pet dto
 //
 // swagger:model PetDto
 type PetDto struct {

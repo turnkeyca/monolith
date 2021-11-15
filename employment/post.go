@@ -15,6 +15,7 @@ import (
 // responses:
 //	204: noContentResponse
 //  400: employmentErrorResponse
+//  403: employmentErrorResponse
 //  422: employmentErrorResponse
 //  500: employmentErrorResponse
 

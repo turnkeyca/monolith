@@ -35,6 +35,12 @@ func (o *UpdateRoommateReader) ReadResponse(response runtime.ClientResponse, con
 			return nil, err
 		}
 		return nil, result
+	case 403:
+		result := NewUpdateRoommateForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 404:
 		result := NewUpdateRoommateNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -100,6 +106,36 @@ func (o *UpdateRoommateBadRequest) GetPayload() models.GenericError {
 }
 
 func (o *UpdateRoommateBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewUpdateRoommateForbidden creates a UpdateRoommateForbidden with default headers values
+func NewUpdateRoommateForbidden() *UpdateRoommateForbidden {
+	return &UpdateRoommateForbidden{}
+}
+
+/* UpdateRoommateForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type UpdateRoommateForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *UpdateRoommateForbidden) Error() string {
+	return fmt.Sprintf("[PUT /v1/roommate/{id}][%d] updateRoommateForbidden  %+v", 403, o.Payload)
+}
+func (o *UpdateRoommateForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *UpdateRoommateForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

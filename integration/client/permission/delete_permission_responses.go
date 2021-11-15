@@ -29,6 +29,12 @@ func (o *DeletePermissionReader) ReadResponse(response runtime.ClientResponse, c
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewDeletePermissionForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 409:
 		result := NewDeletePermissionConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -63,6 +69,36 @@ func (o *DeletePermissionNoContent) Error() string {
 }
 
 func (o *DeletePermissionNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	return nil
+}
+
+// NewDeletePermissionForbidden creates a DeletePermissionForbidden with default headers values
+func NewDeletePermissionForbidden() *DeletePermissionForbidden {
+	return &DeletePermissionForbidden{}
+}
+
+/* DeletePermissionForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type DeletePermissionForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *DeletePermissionForbidden) Error() string {
+	return fmt.Sprintf("[DELETE /v1/permission/{id}][%d] deletePermissionForbidden  %+v", 403, o.Payload)
+}
+func (o *DeletePermissionForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *DeletePermissionForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
 
 	return nil
 }

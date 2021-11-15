@@ -35,8 +35,8 @@ func (o *UpdatePetReader) ReadResponse(response runtime.ClientResponse, consumer
 			return nil, err
 		}
 		return nil, result
-	case 404:
-		result := NewUpdatePetNotFound()
+	case 403:
+		result := NewUpdatePetForbidden()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -109,27 +109,27 @@ func (o *UpdatePetBadRequest) readResponse(response runtime.ClientResponse, cons
 	return nil
 }
 
-// NewUpdatePetNotFound creates a UpdatePetNotFound with default headers values
-func NewUpdatePetNotFound() *UpdatePetNotFound {
-	return &UpdatePetNotFound{}
+// NewUpdatePetForbidden creates a UpdatePetForbidden with default headers values
+func NewUpdatePetForbidden() *UpdatePetForbidden {
+	return &UpdatePetForbidden{}
 }
 
-/* UpdatePetNotFound describes a response with status code 404, with default header values.
+/* UpdatePetForbidden describes a response with status code 403, with default header values.
 
 Generic error message returned as a string
 */
-type UpdatePetNotFound struct {
+type UpdatePetForbidden struct {
 	Payload models.GenericError
 }
 
-func (o *UpdatePetNotFound) Error() string {
-	return fmt.Sprintf("[PUT /v1/pet/{id}][%d] updatePetNotFound  %+v", 404, o.Payload)
+func (o *UpdatePetForbidden) Error() string {
+	return fmt.Sprintf("[PUT /v1/pet/{id}][%d] updatePetForbidden  %+v", 403, o.Payload)
 }
-func (o *UpdatePetNotFound) GetPayload() models.GenericError {
+func (o *UpdatePetForbidden) GetPayload() models.GenericError {
 	return o.Payload
 }
 
-func (o *UpdatePetNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+func (o *UpdatePetForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

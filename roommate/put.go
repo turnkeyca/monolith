@@ -14,6 +14,7 @@ import (
 // responses:
 //	204: noContentResponse
 //  400: roommateErrorResponse
+//  403: roommateErrorResponse
 //  404: roommateErrorResponse
 //  422: roommateErrorResponse
 //  500: roommateErrorResponse

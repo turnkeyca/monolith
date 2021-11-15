@@ -11,6 +11,7 @@ import (
 // return an employment
 // responses:
 //	200: employmentResponse
+//  403: employmentErrorResponse
 //	404: employmentErrorResponse
 //  500: employmentErrorResponse
 

@@ -14,6 +14,7 @@ import (
 //
 // responses:
 //	204: noContentResponse
+//  403: permissionErrorResponse
 //  409: permissionErrorResponse
 //  500: permissionErrorResponse
 

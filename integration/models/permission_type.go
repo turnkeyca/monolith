@@ -11,7 +11,7 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// PermissionType permission type
+// PermissionType PermissionType permission type
 //
 // swagger:model PermissionType
 type PermissionType string

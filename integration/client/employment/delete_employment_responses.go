@@ -29,6 +29,12 @@ func (o *DeleteEmploymentReader) ReadResponse(response runtime.ClientResponse, c
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewDeleteEmploymentForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 500:
 		result := NewDeleteEmploymentInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -57,6 +63,36 @@ func (o *DeleteEmploymentNoContent) Error() string {
 }
 
 func (o *DeleteEmploymentNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	return nil
+}
+
+// NewDeleteEmploymentForbidden creates a DeleteEmploymentForbidden with default headers values
+func NewDeleteEmploymentForbidden() *DeleteEmploymentForbidden {
+	return &DeleteEmploymentForbidden{}
+}
+
+/* DeleteEmploymentForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type DeleteEmploymentForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *DeleteEmploymentForbidden) Error() string {
+	return fmt.Sprintf("[DELETE /v1/employment/{id}][%d] deleteEmploymentForbidden  %+v", 403, o.Payload)
+}
+func (o *DeleteEmploymentForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *DeleteEmploymentForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
 
 	return nil
 }

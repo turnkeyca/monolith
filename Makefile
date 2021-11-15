@@ -1,4 +1,4 @@
-swagger-check :
+swagger-check : monolith
 	which swagger || (echo "need to install swagger!" && exit 1)
 
 swagger : swagger-check

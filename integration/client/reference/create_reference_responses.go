@@ -35,6 +35,12 @@ func (o *CreateReferenceReader) ReadResponse(response runtime.ClientResponse, co
 			return nil, err
 		}
 		return nil, result
+	case 403:
+		result := NewCreateReferenceForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 422:
 		result := NewCreateReferenceUnprocessableEntity()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -94,6 +100,36 @@ func (o *CreateReferenceBadRequest) GetPayload() models.GenericError {
 }
 
 func (o *CreateReferenceBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewCreateReferenceForbidden creates a CreateReferenceForbidden with default headers values
+func NewCreateReferenceForbidden() *CreateReferenceForbidden {
+	return &CreateReferenceForbidden{}
+}
+
+/* CreateReferenceForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type CreateReferenceForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *CreateReferenceForbidden) Error() string {
+	return fmt.Sprintf("[POST /v1/reference][%d] createReferenceForbidden  %+v", 403, o.Payload)
+}
+func (o *CreateReferenceForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *CreateReferenceForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

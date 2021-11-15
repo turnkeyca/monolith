@@ -35,8 +35,8 @@ func (o *UpdateUserReader) ReadResponse(response runtime.ClientResponse, consume
 			return nil, err
 		}
 		return nil, result
-	case 404:
-		result := NewUpdateUserNotFound()
+	case 403:
+		result := NewUpdateUserForbidden()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -109,27 +109,27 @@ func (o *UpdateUserBadRequest) readResponse(response runtime.ClientResponse, con
 	return nil
 }
 
-// NewUpdateUserNotFound creates a UpdateUserNotFound with default headers values
-func NewUpdateUserNotFound() *UpdateUserNotFound {
-	return &UpdateUserNotFound{}
+// NewUpdateUserForbidden creates a UpdateUserForbidden with default headers values
+func NewUpdateUserForbidden() *UpdateUserForbidden {
+	return &UpdateUserForbidden{}
 }
 
-/* UpdateUserNotFound describes a response with status code 404, with default header values.
+/* UpdateUserForbidden describes a response with status code 403, with default header values.
 
 Generic error message returned as a string
 */
-type UpdateUserNotFound struct {
+type UpdateUserForbidden struct {
 	Payload models.GenericError
 }
 
-func (o *UpdateUserNotFound) Error() string {
-	return fmt.Sprintf("[PUT /v1/user/{id}][%d] updateUserNotFound  %+v", 404, o.Payload)
+func (o *UpdateUserForbidden) Error() string {
+	return fmt.Sprintf("[PUT /v1/user/{id}][%d] updateUserForbidden  %+v", 403, o.Payload)
 }
-func (o *UpdateUserNotFound) GetPayload() models.GenericError {
+func (o *UpdateUserForbidden) GetPayload() models.GenericError {
 	return o.Payload
 }
 
-func (o *UpdateUserNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+func (o *UpdateUserForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

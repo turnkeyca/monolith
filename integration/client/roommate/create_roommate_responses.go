@@ -35,6 +35,12 @@ func (o *CreateRoommateReader) ReadResponse(response runtime.ClientResponse, con
 			return nil, err
 		}
 		return nil, result
+	case 403:
+		result := NewCreateRoommateForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 422:
 		result := NewCreateRoommateUnprocessableEntity()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -94,6 +100,36 @@ func (o *CreateRoommateBadRequest) GetPayload() models.GenericError {
 }
 
 func (o *CreateRoommateBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewCreateRoommateForbidden creates a CreateRoommateForbidden with default headers values
+func NewCreateRoommateForbidden() *CreateRoommateForbidden {
+	return &CreateRoommateForbidden{}
+}
+
+/* CreateRoommateForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type CreateRoommateForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *CreateRoommateForbidden) Error() string {
+	return fmt.Sprintf("[POST /v1/roommate][%d] createRoommateForbidden  %+v", 403, o.Payload)
+}
+func (o *CreateRoommateForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *CreateRoommateForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// RegisterTokenDto register token dto
+// RegisterTokenDto RegisterTokenDto register token dto
 //
 // swagger:model RegisterTokenDto
 type RegisterTokenDto struct {

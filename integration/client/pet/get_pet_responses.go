@@ -29,6 +29,12 @@ func (o *GetPetReader) ReadResponse(response runtime.ClientResponse, consumer ru
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewGetPetForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 404:
 		result := NewGetPetNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -72,6 +78,36 @@ func (o *GetPetOK) readResponse(response runtime.ClientResponse, consumer runtim
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetPetForbidden creates a GetPetForbidden with default headers values
+func NewGetPetForbidden() *GetPetForbidden {
+	return &GetPetForbidden{}
+}
+
+/* GetPetForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type GetPetForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *GetPetForbidden) Error() string {
+	return fmt.Sprintf("[GET /v1/pet/{id}][%d] getPetForbidden  %+v", 403, o.Payload)
+}
+func (o *GetPetForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *GetPetForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
 		return err
 	}
 

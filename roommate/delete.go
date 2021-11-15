@@ -12,6 +12,7 @@ import (
 //
 // responses:
 //	204: noContentResponse
+//  403: roommateErrorResponse
 //  500: roommateErrorResponse
 
 // Delete handles DELETE requests and removes items from the database

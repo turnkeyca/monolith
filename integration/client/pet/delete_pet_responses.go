@@ -29,6 +29,12 @@ func (o *DeletePetReader) ReadResponse(response runtime.ClientResponse, consumer
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewDeletePetForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 500:
 		result := NewDeletePetInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -57,6 +63,36 @@ func (o *DeletePetNoContent) Error() string {
 }
 
 func (o *DeletePetNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	return nil
+}
+
+// NewDeletePetForbidden creates a DeletePetForbidden with default headers values
+func NewDeletePetForbidden() *DeletePetForbidden {
+	return &DeletePetForbidden{}
+}
+
+/* DeletePetForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type DeletePetForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *DeletePetForbidden) Error() string {
+	return fmt.Sprintf("[DELETE /v1/pet/{id}][%d] deletePetForbidden  %+v", 403, o.Payload)
+}
+func (o *DeletePetForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *DeletePetForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
 
 	return nil
 }

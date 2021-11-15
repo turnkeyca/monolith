@@ -35,6 +35,12 @@ func (o *CreatePetReader) ReadResponse(response runtime.ClientResponse, consumer
 			return nil, err
 		}
 		return nil, result
+	case 403:
+		result := NewCreatePetForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 422:
 		result := NewCreatePetUnprocessableEntity()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -94,6 +100,36 @@ func (o *CreatePetBadRequest) GetPayload() models.GenericError {
 }
 
 func (o *CreatePetBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewCreatePetForbidden creates a CreatePetForbidden with default headers values
+func NewCreatePetForbidden() *CreatePetForbidden {
+	return &CreatePetForbidden{}
+}
+
+/* CreatePetForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type CreatePetForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *CreatePetForbidden) Error() string {
+	return fmt.Sprintf("[POST /v1/pet][%d] createPetForbidden  %+v", 403, o.Payload)
+}
+func (o *CreatePetForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *CreatePetForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

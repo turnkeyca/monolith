@@ -29,6 +29,12 @@ func (o *GetPermissionsByUserIDReader) ReadResponse(response runtime.ClientRespo
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewGetPermissionsByUserIDForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 500:
 		result := NewGetPermissionsByUserIDInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -61,6 +67,36 @@ func (o *GetPermissionsByUserIDOK) GetPayload() []*models.PermissionDto {
 }
 
 func (o *GetPermissionsByUserIDOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetPermissionsByUserIDForbidden creates a GetPermissionsByUserIDForbidden with default headers values
+func NewGetPermissionsByUserIDForbidden() *GetPermissionsByUserIDForbidden {
+	return &GetPermissionsByUserIDForbidden{}
+}
+
+/* GetPermissionsByUserIDForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type GetPermissionsByUserIDForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *GetPermissionsByUserIDForbidden) Error() string {
+	return fmt.Sprintf("[GET /v1/permission][%d] getPermissionsByUserIdForbidden  %+v", 403, o.Payload)
+}
+func (o *GetPermissionsByUserIDForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *GetPermissionsByUserIDForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

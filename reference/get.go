@@ -11,6 +11,7 @@ import (
 // return a reference
 // responses:
 //	200: referenceResponse
+//  403: referenceErrorResponse
 //	404: referenceErrorResponse
 //  500: referenceErrorResponse
 
@@ -34,6 +35,7 @@ func (h *Handler) HandleGetReference(w http.ResponseWriter, r *http.Request) {
 // return all references for a user
 // responses:
 //	200: referencesResponse
+//  403: referenceErrorResponse
 //	500: referenceErrorResponse
 
 // HandleGetReferenceByUserId handles GET requests

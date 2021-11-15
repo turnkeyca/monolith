@@ -29,6 +29,12 @@ func (o *GetReferenceReader) ReadResponse(response runtime.ClientResponse, consu
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewGetReferenceForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 404:
 		result := NewGetReferenceNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -72,6 +78,36 @@ func (o *GetReferenceOK) readResponse(response runtime.ClientResponse, consumer 
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetReferenceForbidden creates a GetReferenceForbidden with default headers values
+func NewGetReferenceForbidden() *GetReferenceForbidden {
+	return &GetReferenceForbidden{}
+}
+
+/* GetReferenceForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type GetReferenceForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *GetReferenceForbidden) Error() string {
+	return fmt.Sprintf("[GET /v1/reference/{id}][%d] getReferenceForbidden  %+v", 403, o.Payload)
+}
+func (o *GetReferenceForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *GetReferenceForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
 		return err
 	}
 

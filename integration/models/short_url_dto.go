@@ -12,21 +12,21 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// ShortURLDto short Url dto
+// ShortURLDto ShortURLDto short Url dto
 //
-// swagger:model ShortUrlDto
+// swagger:model ShortURLDto
 type ShortURLDto struct {
 
 	// Url
 	URL string `json:"url,omitempty"`
 }
 
-// Validate validates this short Url dto
+// Validate validates this short URL dto
 func (m *ShortURLDto) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this short Url dto based on context it is used
+// ContextValidate validates this short URL dto based on context it is used
 func (m *ShortURLDto) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }

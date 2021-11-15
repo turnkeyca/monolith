@@ -29,6 +29,12 @@ func (o *GetRoommatesByUserIDReader) ReadResponse(response runtime.ClientRespons
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewGetRoommatesByUserIDForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 500:
 		result := NewGetRoommatesByUserIDInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -61,6 +67,36 @@ func (o *GetRoommatesByUserIDOK) GetPayload() []*models.RoommateDto {
 }
 
 func (o *GetRoommatesByUserIDOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetRoommatesByUserIDForbidden creates a GetRoommatesByUserIDForbidden with default headers values
+func NewGetRoommatesByUserIDForbidden() *GetRoommatesByUserIDForbidden {
+	return &GetRoommatesByUserIDForbidden{}
+}
+
+/* GetRoommatesByUserIDForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type GetRoommatesByUserIDForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *GetRoommatesByUserIDForbidden) Error() string {
+	return fmt.Sprintf("[GET /v1/roommate][%d] getRoommatesByUserIdForbidden  %+v", 403, o.Payload)
+}
+func (o *GetRoommatesByUserIDForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *GetRoommatesByUserIDForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

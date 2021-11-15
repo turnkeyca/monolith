@@ -11,7 +11,7 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// UserType user type
+// UserType UserType user type
 //
 // swagger:model UserType
 type UserType string

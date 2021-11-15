@@ -29,6 +29,12 @@ func (o *DeleteReferenceReader) ReadResponse(response runtime.ClientResponse, co
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewDeleteReferenceForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 500:
 		result := NewDeleteReferenceInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -57,6 +63,36 @@ func (o *DeleteReferenceNoContent) Error() string {
 }
 
 func (o *DeleteReferenceNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	return nil
+}
+
+// NewDeleteReferenceForbidden creates a DeleteReferenceForbidden with default headers values
+func NewDeleteReferenceForbidden() *DeleteReferenceForbidden {
+	return &DeleteReferenceForbidden{}
+}
+
+/* DeleteReferenceForbidden describes a response with status code 403, with default header values.
+
+Generic error message returned as a string
+*/
+type DeleteReferenceForbidden struct {
+	Payload models.GenericError
+}
+
+func (o *DeleteReferenceForbidden) Error() string {
+	return fmt.Sprintf("[DELETE /v1/reference/{id}][%d] deleteReferenceForbidden  %+v", 403, o.Payload)
+}
+func (o *DeleteReferenceForbidden) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *DeleteReferenceForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
 
 	return nil
 }

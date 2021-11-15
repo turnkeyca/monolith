@@ -13,7 +13,7 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// PermissionDto permission dto
+// PermissionDto PermissionDto permission dto
 //
 // swagger:model PermissionDto
 type PermissionDto struct {

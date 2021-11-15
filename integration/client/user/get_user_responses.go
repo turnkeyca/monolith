@@ -29,8 +29,8 @@ func (o *GetUserReader) ReadResponse(response runtime.ClientResponse, consumer r
 			return nil, err
 		}
 		return result, nil
-	case 404:
-		result := NewGetUserNotFound()
+	case 403:
+		result := NewGetUserForbidden()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -78,27 +78,27 @@ func (o *GetUserOK) readResponse(response runtime.ClientResponse, consumer runti
 	return nil
 }
 
-// NewGetUserNotFound creates a GetUserNotFound with default headers values
-func NewGetUserNotFound() *GetUserNotFound {
-	return &GetUserNotFound{}
+// NewGetUserForbidden creates a GetUserForbidden with default headers values
+func NewGetUserForbidden() *GetUserForbidden {
+	return &GetUserForbidden{}
 }
 
-/* GetUserNotFound describes a response with status code 404, with default header values.
+/* GetUserForbidden describes a response with status code 403, with default header values.
 
 Generic error message returned as a string
 */
-type GetUserNotFound struct {
+type GetUserForbidden struct {
 	Payload models.GenericError
 }
 
-func (o *GetUserNotFound) Error() string {
-	return fmt.Sprintf("[GET /v1/user/{id}][%d] getUserNotFound  %+v", 404, o.Payload)
+func (o *GetUserForbidden) Error() string {
+	return fmt.Sprintf("[GET /v1/user/{id}][%d] getUserForbidden  %+v", 403, o.Payload)
 }
-func (o *GetUserNotFound) GetPayload() models.GenericError {
+func (o *GetUserForbidden) GetPayload() models.GenericError {
 	return o.Payload
 }
 
-func (o *GetUserNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+func (o *GetUserForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
