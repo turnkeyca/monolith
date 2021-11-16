@@ -64,6 +64,19 @@ func (h *Handler) CheckPermissionsUserIdView(next http.Handler) http.Handler {
 	})
 }
 
+func (h *Handler) CheckPermissionsBodyEdit(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body := r.Context().Value(key.KeyBody{}).(*PermissionRequestDto)
+		loggedInUserId := r.Context().Value(key.KeyLoggedInUserId{}).(string)
+		err := h.authorizer.CheckUserIdAndToken(body.UserId, loggedInUserId, authorizer.EDIT)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
 func (h *Handler) CheckPermissionsPermissionIdView(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		err := h.checkPermissionsPermissionId(r.Context().Value(key.KeyId{}).(string), r.Context().Value(key.KeyLoggedInUserId{}).(string), authorizer.VIEW)
@@ -97,7 +110,13 @@ func (h *Handler) checkPermissionsPermissionId(id string, loggedInUserId string,
 	if err != nil {
 		return fmt.Errorf("user does not have permission: %s", err)
 	}
-	err = h.authorizer.CheckUserIdsAndTokenAny([]string{userId[0], onUserId[0]}, loggedInUserId, perm)
+	if len(userId) <= 0 && len(onUserId) > 0 {
+		err = h.authorizer.CheckUserIdAndToken(onUserId[0], loggedInUserId, perm)
+	} else if len(userId) > 0 && len(onUserId) <= 0 {
+		err = h.authorizer.CheckUserIdAndToken(userId[0], loggedInUserId, perm)
+	} else {
+		err = h.authorizer.CheckUserIdsAndTokenAny([]string{userId[0], onUserId[0]}, loggedInUserId, perm)
+	}
 	if err != nil {
 		return fmt.Errorf("user does not have permission: %s", err)
 	}

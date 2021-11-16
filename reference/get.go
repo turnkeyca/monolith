@@ -76,7 +76,7 @@ func (h *Handler) GetReferenceByUserId(userId string) (*[]ReferenceDto, error) {
 		return nil, err
 	}
 	if references == nil {
-		return nil, fmt.Errorf("no results for user id: %s", userId)
+		return &[]ReferenceDto{}, nil
 	}
 	return &references, err
 }

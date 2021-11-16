@@ -76,7 +76,7 @@ func (h *Handler) GetPetByUserId(userId string) (*[]PetDto, error) {
 		return nil, err
 	}
 	if pets == nil {
-		return nil, fmt.Errorf("no results for user id: %s", userId)
+		return &[]PetDto{}, nil
 	}
 	return &pets, err
 }

@@ -15,9 +15,9 @@ func createPet(t *testing.T, cl *client.OfTurnkeyAPI, userId string, token strin
 	dto.Token = token
 	dto.Body = &models.PetDto{
 		UserID:   userId,
-		Breed:    "integration test Breed",
-		PetType:  "integratioon test PetType",
-		SizeType: "integration test SizeType",
+		Breed:    "Breed",
+		PetType:  "PetType",
+		SizeType: "SizeType",
 	}
 	_, err := cl.Pet.CreatePet(dto)
 	return err
@@ -28,9 +28,9 @@ func createPetIncorrectUserId(t *testing.T, cl *client.OfTurnkeyAPI, token strin
 	dto.Token = token
 	dto.Body = &models.PetDto{
 		UserID:   uuid.New().String(),
-		Breed:    "integration test Breed",
-		PetType:  "integratioon test PetType",
-		SizeType: "integration test SizeType",
+		Breed:    "Breed",
+		PetType:  "PetType",
+		SizeType: "SizeType",
 	}
 	_, err := cl.Pet.CreatePet(dto)
 	if err != nil && !(strings.Contains(err.Error(), "createPetForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
@@ -44,9 +44,9 @@ func createPetValidationError(t *testing.T, cl *client.OfTurnkeyAPI, token strin
 	dto.Token = token
 	dto.Body = &models.PetDto{
 		UserID:   "farts",
-		Breed:    "integration test Breed",
-		PetType:  "integratioon test PetType",
-		SizeType: "integration test SizeType",
+		Breed:    "Breed",
+		PetType:  "PetType",
+		SizeType: "SizeType",
 	}
 	_, err := cl.Pet.CreatePet(dto)
 	if err != nil && !(strings.Contains(err.Error(), "createPetUnprocessableEntity") && strings.Contains(err.Error(), "Error validating pet")) {

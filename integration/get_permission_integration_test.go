@@ -1,6 +1,7 @@
 package integration
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -35,22 +36,22 @@ func getPermissionByUserId(t *testing.T, cl *client.OfTurnkeyAPI, userId string,
 	dto.UserID = userId
 	dto.Token = token
 	ok, err := cl.Permission.GetPermissionsByUserID(dto)
-	var perm *models.PermissionDto
-	for _, payload := range ok.GetPayload() {
-		if payload.OnUserID != payload.UserID {
-			perm = payload
-		}
-	}
 	if err != nil {
 		return "", err
 	}
-	if err = assert(perm.UserID, userId, "UserID"); err != nil {
-		return "", err
+	var perm *models.PermissionDto
+	for _, payload := range ok.GetPayload() {
+		if payload.UserID == userId && payload.OnUserID == onUserId {
+			perm = payload
+		}
+		if payload.UserID != userId && payload.OnUserID != userId {
+			return "", fmt.Errorf("result included not expected")
+		}
 	}
-	if err = assert(perm.OnUserID, onUserId, "OnUserID"); err != nil {
-		return "", err
+	if perm != nil {
+		return "", fmt.Errorf("could not find created permission")
 	}
-	if err = assert(string(perm.Permission), "view", "Permission"); err != nil {
+	if err = assert(string(perm.Permission), "viewpending", "Permission"); err != nil {
 		return "", err
 	}
 	return perm.ID, nil

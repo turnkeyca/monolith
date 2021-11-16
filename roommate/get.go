@@ -76,7 +76,7 @@ func (h *Handler) GetRoommateByUserId(userId string) (*[]RoommateDto, error) {
 		return nil, err
 	}
 	if roommates == nil {
-		return nil, fmt.Errorf("no results for user id: %s", userId)
+		return &[]RoommateDto{}, nil
 	}
 	return &roommates, err
 }
