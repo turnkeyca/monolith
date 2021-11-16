@@ -414,7 +414,7 @@ func Test(t *testing.T) {
 
 func assert(obj1 string, obj2 string, name string) error {
 	if obj1 != obj2 {
-		return fmt.Errorf(`assert failed: expected %s to be %s but was %s`, name, obj1, obj2)
+		return fmt.Errorf(`assert failed: expected %s to be %s but was %s`, name, obj2, obj1)
 	}
 	return nil
 }

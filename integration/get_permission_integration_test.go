@@ -25,7 +25,7 @@ func getPermission(t *testing.T, cl *client.OfTurnkeyAPI, permissionId string, u
 	if err = assert(ok.GetPayload().OnUserID, onUserId, "OnUserID"); err != nil {
 		return err
 	}
-	if err = assert(string(ok.GetPayload().Permission), "view", "Permission"); err != nil {
+	if err = assert(string(ok.GetPayload().Permission), "viewpending", "Permission"); err != nil {
 		return err
 	}
 	return nil
@@ -48,7 +48,7 @@ func getPermissionByUserId(t *testing.T, cl *client.OfTurnkeyAPI, userId string,
 			return "", fmt.Errorf("result included not expected")
 		}
 	}
-	if perm != nil {
+	if perm == nil {
 		return "", fmt.Errorf("could not find created permission")
 	}
 	if err = assert(string(perm.Permission), "viewpending", "Permission"); err != nil {

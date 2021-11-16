@@ -110,7 +110,9 @@ func (h *Handler) checkPermissionsPermissionId(id string, loggedInUserId string,
 	if err != nil {
 		return fmt.Errorf("user does not have permission: %s", err)
 	}
-	if len(userId) <= 0 && len(onUserId) > 0 {
+	if len(userId) <= 0 && len(onUserId) <= 0 {
+		err = fmt.Errorf("permission not found")
+	} else if len(userId) <= 0 && len(onUserId) > 0 {
 		err = h.authorizer.CheckUserIdAndToken(onUserId[0], loggedInUserId, perm)
 	} else if len(userId) > 0 && len(onUserId) <= 0 {
 		err = h.authorizer.CheckUserIdAndToken(userId[0], loggedInUserId, perm)

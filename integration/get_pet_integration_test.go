@@ -17,13 +17,13 @@ func getPet(t *testing.T, cl *client.OfTurnkeyAPI, petId string, token string) e
 	if err != nil {
 		return err
 	}
-	if err = assert(ok.GetPayload().Breed, "integration test Breed", "Breed"); err != nil {
+	if err = assert(ok.GetPayload().Breed, "Breed", "Breed"); err != nil {
 		return err
 	}
-	if err = assert(ok.GetPayload().PetType, "integration test PetType", "PetType"); err != nil {
+	if err = assert(ok.GetPayload().PetType, "PetType", "PetType"); err != nil {
 		return err
 	}
-	if err = assert(ok.GetPayload().SizeType, "integration test SizeType", "SizeType"); err != nil {
+	if err = assert(ok.GetPayload().SizeType, "SizeType", "SizeType"); err != nil {
 		return err
 	}
 	return nil
@@ -37,13 +37,13 @@ func getPetByUserId(t *testing.T, cl *client.OfTurnkeyAPI, userId string, token 
 	if err != nil {
 		return "", err
 	}
-	if err = assert(ok.GetPayload()[0].Breed, "integration test Breed", "Breed"); err != nil {
+	if err = assert(ok.GetPayload()[0].Breed, "Breed", "Breed"); err != nil {
 		return "", err
 	}
-	if err = assert(ok.GetPayload()[0].PetType, "integration test PetType", "PetType"); err != nil {
+	if err = assert(ok.GetPayload()[0].PetType, "PetType", "PetType"); err != nil {
 		return "", err
 	}
-	if err = assert(ok.GetPayload()[0].SizeType, "integration test SizeType", "SizeType"); err != nil {
+	if err = assert(ok.GetPayload()[0].SizeType, "SizeType", "SizeType"); err != nil {
 		return "", err
 	}
 	return ok.GetPayload()[0].ID, nil
