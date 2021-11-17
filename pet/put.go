@@ -14,6 +14,7 @@ import (
 // responses:
 //	204: noContentResponse
 //  400: petErrorResponse
+//  403: petErrorResponse
 //  404: petErrorResponse
 //  422: petErrorResponse
 //  500: petErrorResponse
@@ -34,15 +35,12 @@ func (h *Handler) HandlePutPet(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) UpdatePet(dto *PetDto) error {
 	err := h.db.Run(
 		`update pet set 
-			id=$1, 
-			user_id=$2, 
-			pet_type=$3,
-			breed=$4, 
-			size_type=$5,
-			last_updated=$6
+			pet_type=$2,
+			breed=$3, 
+			size_type=$4,
+			last_updated=$5
 		where id=$1;`,
 		dto.Id,
-		dto.UserId,
 		dto.PetType,
 		dto.Breed,
 		dto.SizeType,

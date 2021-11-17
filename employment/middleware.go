@@ -62,7 +62,7 @@ func (h *Handler) CheckPermissionsUserIdView(next http.Handler) http.Handler {
 		loggedInUserId := r.Context().Value(key.KeyLoggedInUserId{}).(string)
 		err := h.authorizer.CheckUserIdAndToken(id, loggedInUserId, authorizer.VIEW)
 		if err != nil {
-			http.Error(w, "User does not have permission", http.StatusForbidden)
+			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
 			return
 		}
 		next.ServeHTTP(w, r)

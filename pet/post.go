@@ -15,6 +15,7 @@ import (
 // responses:
 //	204: noContentResponse
 //  400: petErrorResponse
+//  403: petErrorResponse
 //  422: petErrorResponse
 //  500: petErrorResponse
 

@@ -11,7 +11,8 @@ import (
 // return an employment
 // responses:
 //	200: employmentResponse
-//	404: employmentErrorResponse
+//  403: employmentErrorResponse
+//  404: employmentErrorResponse
 //  500: employmentErrorResponse
 
 // HandleGetEmployment handles GET requests
@@ -34,6 +35,7 @@ func (h *Handler) HandleGetEmployment(w http.ResponseWriter, r *http.Request) {
 // return employments for a user
 // responses:
 //	200: employmentsResponse
+//  403: employmentErrorResponse
 //	500: employmentErrorResponse
 
 // HandleGetEmploymentByUserId handles GET requests
@@ -74,7 +76,7 @@ func (h *Handler) GetEmploymentByUserId(userId string) (*[]EmploymentDto, error)
 		return nil, err
 	}
 	if employments == nil {
-		return nil, fmt.Errorf("no results for user id: %s", userId)
+		return &[]EmploymentDto{}, nil
 	}
-	return &employments, err
+	return &employments, nil
 }

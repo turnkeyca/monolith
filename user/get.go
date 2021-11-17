@@ -11,7 +11,7 @@ import (
 // return a user
 // responses:
 //	200: userResponse
-//	404: userErrorResponse
+//	403: userErrorResponse
 //  500: userErrorResponse
 
 // HandleGetUser handles GET requests
@@ -37,10 +37,10 @@ func (h *Handler) GetUser(id string) (*UserDto, error) {
 		return nil, err
 	}
 	if users == nil {
-		return nil, fmt.Errorf("no results for id: %s", id)
+		return nil, fmt.Errorf("no results")
 	}
 	if len(users) != 1 {
-		return nil, fmt.Errorf("duplicate results for id: %s", id)
+		return nil, fmt.Errorf("duplicate results")
 	}
 	return &users[0], err
 }

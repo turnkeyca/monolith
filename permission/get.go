@@ -11,7 +11,8 @@ import (
 // return a permission
 // responses:
 //	200: permissionResponse
-//	404: permissionResponse
+//  403: permissionErrorResponse
+//  404: permissionErrorResponse
 //	500: permissionErrorResponse
 
 // HandleGetPermission handles GET requests
@@ -34,6 +35,7 @@ func (h *Handler) HandleGetPermission(w http.ResponseWriter, r *http.Request) {
 // return all permissions for a user
 // responses:
 //	200: permissionsResponse
+//  403: permissionErrorResponse
 //	500: permissionErrorResponse
 
 // HandleGetPermissionByUserId handles GET requests

@@ -11,6 +11,7 @@ import (
 // return a roommate
 // responses:
 //	200: roommateResponse
+//  403: roommateErrorResponse
 //	404: roommateErrorResponse
 //	500: roommateErrorResponse
 
@@ -34,6 +35,7 @@ func (h *Handler) HandleGetRoommate(w http.ResponseWriter, r *http.Request) {
 // return all roommates for a user
 // responses:
 //	200: roommatesResponse
+//  403: roommateErrorResponse
 //  500: roommateErrorResponse
 
 // HandleGetRoommateByUserId handles GET requests
@@ -74,7 +76,7 @@ func (h *Handler) GetRoommateByUserId(userId string) (*[]RoommateDto, error) {
 		return nil, err
 	}
 	if roommates == nil {
-		return nil, fmt.Errorf("no results for user id: %s", userId)
+		return &[]RoommateDto{}, nil
 	}
 	return &roommates, err
 }

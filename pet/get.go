@@ -11,6 +11,7 @@ import (
 // return a pet
 // responses:
 //	200: petResponse
+//  403: petErrorResponse
 //	404: petErrorResponse
 //  500: petErrorResponse
 
@@ -34,6 +35,7 @@ func (h *Handler) HandleGetPet(w http.ResponseWriter, r *http.Request) {
 // return all pets for a user
 // responses:
 //	200: petsResponse
+//  403: petErrorResponse
 //	500: petErrorResponse
 
 // HandleGetPetByUserId handles GET requests
@@ -74,7 +76,7 @@ func (h *Handler) GetPetByUserId(userId string) (*[]PetDto, error) {
 		return nil, err
 	}
 	if pets == nil {
-		return nil, fmt.Errorf("no results for user id: %s", userId)
+		return &[]PetDto{}, nil
 	}
 	return &pets, err
 }

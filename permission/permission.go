@@ -39,11 +39,11 @@ func ConfigurePermissionRoutes(router *mux.Router, logger *log.Logger, database 
 
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/v1/permission", permissionHandler.HandlePostPermission)
-	postRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetRequestBody)
+	postRouter.Use(authenticator.AuthenticateHttp, permissionHandler.GetRequestBody, permissionHandler.CheckPermissionsBodyEdit)
 
 	postRouter2 := router.Methods(http.MethodPost).Subrouter()
 	postRouter2.HandleFunc(fmt.Sprintf("/v1/permission/{id:%s}/accept", util.REGEX_UUID), permissionHandler.HandleAcceptPermission)
-	postRouter2.Use(authenticator.AuthenticateHttp, permissionHandler.GetIdFromPath)
+	postRouter2.Use(authenticator.AuthenticateHttp, permissionHandler.GetIdFromPath, permissionHandler.CheckPermissionsPermissionIdEdit)
 
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc(fmt.Sprintf("/v1/permission/{id:%s}", util.REGEX_UUID), permissionHandler.HandleDeletePermission)

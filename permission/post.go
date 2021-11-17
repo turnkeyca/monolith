@@ -16,6 +16,7 @@ import (
 // responses:
 //	204: noContentResponse
 //  400: permissionErrorResponse
+//  403: permissionErrorResponse
 //  422: permissionErrorResponse
 //  500: permissionErrorResponse
 
@@ -37,6 +38,7 @@ func (h *Handler) HandlePostPermission(w http.ResponseWriter, r *http.Request) {
 //
 // responses:
 //	204: noContentResponse
+//  403: permissionErrorResponse
 //  500: permissionErrorResponse
 
 // Accept handles POST requests to accept permission request

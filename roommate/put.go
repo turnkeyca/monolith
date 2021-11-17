@@ -14,6 +14,7 @@ import (
 // responses:
 //	204: noContentResponse
 //  400: roommateErrorResponse
+//  403: roommateErrorResponse
 //  404: roommateErrorResponse
 //  422: roommateErrorResponse
 //  500: roommateErrorResponse
@@ -35,14 +36,11 @@ func (h *Handler) HandlePutRoommate(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) UpdateRoommate(dto *RoommateDto) error {
 	err := h.db.Run(
 		`update roommate set 
-			id=$1, 
-			user_id=$2, 
-			full_name=$3, 
-			email=$4, 
-			last_updated=$5
+			full_name=$2, 
+			email=$3, 
+			last_updated=$4
 		where id=$1;`,
 		dto.Id,
-		dto.UserId,
 		dto.FullName,
 		dto.Email,
 		time.Now().Format(time.RFC3339Nano),
