@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// EmploymentDto EmploymentDto EmploymentDto employment dto
+// EmploymentDto EmploymentDto EmploymentDto EmploymentDto EmploymentDto employment dto
 //
 // swagger:model EmploymentDto
 type EmploymentDto struct {

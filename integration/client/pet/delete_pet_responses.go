@@ -35,6 +35,12 @@ func (o *DeletePetReader) ReadResponse(response runtime.ClientResponse, consumer
 			return nil, err
 		}
 		return nil, result
+	case 404:
+		result := NewDeletePetNotFound()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 500:
 		result := NewDeletePetInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -88,6 +94,36 @@ func (o *DeletePetForbidden) GetPayload() models.GenericError {
 }
 
 func (o *DeletePetForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewDeletePetNotFound creates a DeletePetNotFound with default headers values
+func NewDeletePetNotFound() *DeletePetNotFound {
+	return &DeletePetNotFound{}
+}
+
+/* DeletePetNotFound describes a response with status code 404, with default header values.
+
+Generic error message returned as a string
+*/
+type DeletePetNotFound struct {
+	Payload models.GenericError
+}
+
+func (o *DeletePetNotFound) Error() string {
+	return fmt.Sprintf("[DELETE /v1/pet/{id}][%d] deletePetNotFound  %+v", 404, o.Payload)
+}
+func (o *DeletePetNotFound) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *DeletePetNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

@@ -22,7 +22,7 @@ func deleteReferenceNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token string
 	dto.ID = uuid.New().String()
 	dto.Token = token
 	_, err := cl.Reference.DeleteReference(dto)
-	if err != nil && !(strings.Contains(err.Error(), "deleteReferenceForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
+	if err != nil && !(strings.Contains(err.Error(), "deleteReferenceNotFound") && strings.Contains(err.Error(), "not found")) {
 		return err
 	}
 	return nil

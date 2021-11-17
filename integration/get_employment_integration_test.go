@@ -73,7 +73,7 @@ func getEmploymentNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token string) 
 	dto.ID = uuid.New().String()
 	dto.Token = token
 	_, err := cl.Employment.GetEmployment(dto)
-	if err != nil && !(strings.Contains(err.Error(), "getEmploymentForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
+	if err != nil && !(strings.Contains(err.Error(), "getEmploymentNotFound") && strings.Contains(err.Error(), "not found")) {
 		return err
 	}
 	return nil

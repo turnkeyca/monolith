@@ -13,6 +13,7 @@ import (
 // responses:
 //	204: noContentResponse
 //  403: petErrorResponse
+//  404: petErrorResponse
 //  500: petErrorResponse
 
 // Delete handles DELETE requests and removes items from the database

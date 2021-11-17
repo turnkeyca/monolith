@@ -22,7 +22,7 @@ func deleteRoommateNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token string)
 	dto.ID = uuid.New().String()
 	dto.Token = token
 	_, err := cl.Roommate.DeleteRoommate(dto)
-	if err != nil && !(strings.Contains(err.Error(), "deleteRoommateForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
+	if err != nil && !(strings.Contains(err.Error(), "deleteRoommateNotFound") && strings.Contains(err.Error(), "not found")) {
 		return err
 	}
 	return nil

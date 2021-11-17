@@ -13,6 +13,7 @@ import (
 // responses:
 //	204: noContentResponse
 //  403: referenceErrorResponse
+//  404: referenceErrorResponse
 //  500: referenceErrorResponse
 
 // Delete handles DELETE requests and removes items from the database

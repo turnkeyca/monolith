@@ -15,6 +15,7 @@ import (
 //	204: noContentResponse
 //  400: referenceErrorResponse
 //  403: referenceErrorResponse
+//  404: referenceErrorResponse
 //  422: referenceErrorResponse
 //  500: referenceErrorResponse
 

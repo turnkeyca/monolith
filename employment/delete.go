@@ -13,6 +13,7 @@ import (
 // responses:
 //	204: noContentResponse
 //  403: employmentErrorResponse
+//  404: employmentErrorResponse
 //  500: employmentErrorResponse
 
 // Delete handles DELETE requests and removes items from the database

@@ -3,7 +3,8 @@ consumes:
 - application/json
 definitions:
   EmploymentDto:
-    description: EmploymentDto EmploymentDto employment dto
+    description: EmploymentDto EmploymentDto EmploymentDto EmploymentDto employment
+      dto
     properties:
       additionalDetails:
         description: additional details
@@ -49,11 +50,12 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   GenericError:
-    description: GenericError GenericError generic error
+    description: GenericError GenericError GenericError GenericError generic error
     type: string
     x-go-package: github.com/turnkeyca/monolith/integration/models
   PermissionDto:
-    description: PermissionDto PermissionDto permission dto
+    description: PermissionDto PermissionDto PermissionDto PermissionDto permission
+      dto
     properties:
       createdOn:
         description: created on
@@ -80,11 +82,12 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   PermissionType:
-    description: PermissionType PermissionType permission type
+    description: PermissionType PermissionType PermissionType PermissionType permission
+      type
     type: string
     x-go-package: github.com/turnkeyca/monolith/integration/models
   PetDto:
-    description: PetDto PetDto pet dto
+    description: PetDto PetDto PetDto PetDto pet dto
     properties:
       breed:
         description: breed
@@ -117,7 +120,7 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   ReferenceDto:
-    description: ReferenceDto ReferenceDto reference dto
+    description: ReferenceDto ReferenceDto ReferenceDto ReferenceDto reference dto
     properties:
       additionalDetails:
         description: additional details
@@ -158,7 +161,8 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   RegisterTokenDto:
-    description: RegisterTokenDto RegisterTokenDto register token dto
+    description: RegisterTokenDto RegisterTokenDto RegisterTokenDto RegisterTokenDto
+      register token dto
     properties:
       id:
         description: login Id
@@ -175,7 +179,7 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   RoommateDto:
-    description: RoommateDto RoommateDto roommate dto
+    description: RoommateDto RoommateDto RoommateDto RoommateDto roommate dto
     properties:
       createdOn:
         description: created on
@@ -220,7 +224,7 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/shorturl
   TokenDto:
-    description: TokenDto TokenDto token dto
+    description: TokenDto TokenDto TokenDto TokenDto token dto
     properties:
       id:
         description: Id
@@ -233,7 +237,7 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   UserDto:
-    description: UserDto UserDto user dto
+    description: UserDto UserDto UserDto UserDto user dto
     properties:
       acceptedTerms:
         description: accepted terms
@@ -338,11 +342,12 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   UserStatusType:
-    description: UserStatusType UserStatusType user status type
+    description: UserStatusType UserStatusType UserStatusType UserStatusType user
+      status type
     type: string
     x-go-package: github.com/turnkeyca/monolith/integration/models
   UserType:
-    description: UserType UserType user type
+    description: UserType UserType UserType UserType user type
     type: string
     x-go-package: github.com/turnkeyca/monolith/integration/models
 info:
@@ -437,6 +442,8 @@ paths:
           $ref: '#/responses/noContentResponse'
         "403":
           $ref: '#/responses/employmentErrorResponse'
+        "404":
+          $ref: '#/responses/employmentErrorResponse'
         "500":
           $ref: '#/responses/employmentErrorResponse'
       tags:
@@ -459,6 +466,8 @@ paths:
         "200":
           $ref: '#/responses/employmentResponse'
         "403":
+          $ref: '#/responses/employmentErrorResponse'
+        "404":
           $ref: '#/responses/employmentErrorResponse'
         "500":
           $ref: '#/responses/employmentErrorResponse'
@@ -489,6 +498,8 @@ paths:
         "400":
           $ref: '#/responses/employmentErrorResponse'
         "403":
+          $ref: '#/responses/employmentErrorResponse'
+        "404":
           $ref: '#/responses/employmentErrorResponse'
         "422":
           $ref: '#/responses/employmentErrorResponse'
@@ -691,6 +702,8 @@ paths:
           $ref: '#/responses/noContentResponse'
         "403":
           $ref: '#/responses/petErrorResponse'
+        "404":
+          $ref: '#/responses/petErrorResponse'
         "500":
           $ref: '#/responses/petErrorResponse'
       tags:
@@ -745,6 +758,8 @@ paths:
         "400":
           $ref: '#/responses/petErrorResponse'
         "403":
+          $ref: '#/responses/petErrorResponse'
+        "404":
           $ref: '#/responses/petErrorResponse'
         "422":
           $ref: '#/responses/petErrorResponse'
@@ -822,6 +837,8 @@ paths:
           $ref: '#/responses/noContentResponse'
         "403":
           $ref: '#/responses/referenceErrorResponse'
+        "404":
+          $ref: '#/responses/referenceErrorResponse'
         "500":
           $ref: '#/responses/referenceErrorResponse'
       tags:
@@ -876,6 +893,8 @@ paths:
         "400":
           $ref: '#/responses/referenceErrorResponse'
         "403":
+          $ref: '#/responses/referenceErrorResponse'
+        "404":
           $ref: '#/responses/referenceErrorResponse'
         "422":
           $ref: '#/responses/referenceErrorResponse'
@@ -952,6 +971,8 @@ paths:
         "204":
           $ref: '#/responses/noContentResponse'
         "403":
+          $ref: '#/responses/roommateErrorResponse'
+        "404":
           $ref: '#/responses/roommateErrorResponse'
         "500":
           $ref: '#/responses/roommateErrorResponse'

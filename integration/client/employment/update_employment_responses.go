@@ -41,6 +41,12 @@ func (o *UpdateEmploymentReader) ReadResponse(response runtime.ClientResponse, c
 			return nil, err
 		}
 		return nil, result
+	case 404:
+		result := NewUpdateEmploymentNotFound()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 422:
 		result := NewUpdateEmploymentUnprocessableEntity()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -130,6 +136,36 @@ func (o *UpdateEmploymentForbidden) GetPayload() models.GenericError {
 }
 
 func (o *UpdateEmploymentForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewUpdateEmploymentNotFound creates a UpdateEmploymentNotFound with default headers values
+func NewUpdateEmploymentNotFound() *UpdateEmploymentNotFound {
+	return &UpdateEmploymentNotFound{}
+}
+
+/* UpdateEmploymentNotFound describes a response with status code 404, with default header values.
+
+Generic error message returned as a string
+*/
+type UpdateEmploymentNotFound struct {
+	Payload models.GenericError
+}
+
+func (o *UpdateEmploymentNotFound) Error() string {
+	return fmt.Sprintf("[PUT /v1/employment/{id}][%d] updateEmploymentNotFound  %+v", 404, o.Payload)
+}
+func (o *UpdateEmploymentNotFound) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *UpdateEmploymentNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

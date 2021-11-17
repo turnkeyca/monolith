@@ -35,6 +35,12 @@ func (o *DeleteRoommateReader) ReadResponse(response runtime.ClientResponse, con
 			return nil, err
 		}
 		return nil, result
+	case 404:
+		result := NewDeleteRoommateNotFound()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 500:
 		result := NewDeleteRoommateInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -88,6 +94,36 @@ func (o *DeleteRoommateForbidden) GetPayload() models.GenericError {
 }
 
 func (o *DeleteRoommateForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewDeleteRoommateNotFound creates a DeleteRoommateNotFound with default headers values
+func NewDeleteRoommateNotFound() *DeleteRoommateNotFound {
+	return &DeleteRoommateNotFound{}
+}
+
+/* DeleteRoommateNotFound describes a response with status code 404, with default header values.
+
+Generic error message returned as a string
+*/
+type DeleteRoommateNotFound struct {
+	Payload models.GenericError
+}
+
+func (o *DeleteRoommateNotFound) Error() string {
+	return fmt.Sprintf("[DELETE /v1/roommate/{id}][%d] deleteRoommateNotFound  %+v", 404, o.Payload)
+}
+func (o *DeleteRoommateNotFound) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *DeleteRoommateNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

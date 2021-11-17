@@ -15,6 +15,7 @@ import (
 //	204: noContentResponse
 //  400: employmentErrorResponse
 //  403: employmentErrorResponse
+//  404: employmentErrorResponse
 //  422: employmentErrorResponse
 //  500: employmentErrorResponse
 
@@ -35,18 +36,15 @@ func (h *Handler) HandlePutEmployment(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) UpdateEmployment(dto *EmploymentDto) error {
 	err := h.db.Run(
 		`update employment set 
-			id=$1, 
-			user_id=$2, 
-			employer=$3, 
-			occupation=$4, 
-			duration=$5, 
-			additional_details=$6, 
-			annual_salary=$7,
-			rent_affordability=$8,
-			last_updated=$9
+			employer=$2, 
+			occupation=$3, 
+			duration=$4, 
+			additional_details=$5, 
+			annual_salary=$6,
+			rent_affordability=$7,
+			last_updated=$8
 		where id=$1;`,
 		dto.Id,
-		dto.UserId,
 		dto.Employer,
 		dto.Occupation,
 		dto.Duration,

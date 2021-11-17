@@ -22,7 +22,7 @@ func deletePetNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token string) erro
 	dto.ID = uuid.New().String()
 	dto.Token = token
 	_, err := cl.Pet.DeletePet(dto)
-	if err != nil && !(strings.Contains(err.Error(), "deletePetForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
+	if err != nil && !(strings.Contains(err.Error(), "deletePetNotFound") && strings.Contains(err.Error(), "not found")) {
 		return err
 	}
 	return nil

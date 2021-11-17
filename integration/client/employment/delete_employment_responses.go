@@ -35,6 +35,12 @@ func (o *DeleteEmploymentReader) ReadResponse(response runtime.ClientResponse, c
 			return nil, err
 		}
 		return nil, result
+	case 404:
+		result := NewDeleteEmploymentNotFound()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 500:
 		result := NewDeleteEmploymentInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -88,6 +94,36 @@ func (o *DeleteEmploymentForbidden) GetPayload() models.GenericError {
 }
 
 func (o *DeleteEmploymentForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewDeleteEmploymentNotFound creates a DeleteEmploymentNotFound with default headers values
+func NewDeleteEmploymentNotFound() *DeleteEmploymentNotFound {
+	return &DeleteEmploymentNotFound{}
+}
+
+/* DeleteEmploymentNotFound describes a response with status code 404, with default header values.
+
+Generic error message returned as a string
+*/
+type DeleteEmploymentNotFound struct {
+	Payload models.GenericError
+}
+
+func (o *DeleteEmploymentNotFound) Error() string {
+	return fmt.Sprintf("[DELETE /v1/employment/{id}][%d] deleteEmploymentNotFound  %+v", 404, o.Payload)
+}
+func (o *DeleteEmploymentNotFound) GetPayload() models.GenericError {
+	return o.Payload
+}
+
+func (o *DeleteEmploymentNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

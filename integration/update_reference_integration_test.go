@@ -37,15 +37,16 @@ func updateReferenceNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token string
 		Relationship:      "integration update Relationship",
 	}
 	_, err := cl.Reference.UpdateReference(dto)
-	if err != nil && !(strings.Contains(err.Error(), "createReferenceForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
+	if err != nil && !(strings.Contains(err.Error(), "updateReferenceNotFound") && strings.Contains(err.Error(), "not found")) {
 		return err
 	}
 	return nil
 }
 
-func updateReferenceValidationError(t *testing.T, cl *client.OfTurnkeyAPI, token string) error {
+func updateReferenceValidationError(t *testing.T, cl *client.OfTurnkeyAPI, referenceId string, token string) error {
 	dto := reference.NewUpdateReferenceParams()
 	dto.Token = token
+	dto.ID = referenceId
 	dto.Body = &models.ReferenceDto{
 		UserID:            "farts",
 		AdditionalDetails: "integration test AdditionalDetails update",
@@ -55,7 +56,7 @@ func updateReferenceValidationError(t *testing.T, cl *client.OfTurnkeyAPI, token
 		Relationship:      "integration update Relationship",
 	}
 	_, err := cl.Reference.UpdateReference(dto)
-	if err != nil && !(strings.Contains(err.Error(), "createReferenceForbidden") && strings.Contains(err.Error(), "Error reading reference")) {
+	if err != nil && !(strings.Contains(err.Error(), "updateReferenceUnprocessableEntity") && strings.Contains(err.Error(), "Error validating reference")) {
 		return err
 	}
 	return nil

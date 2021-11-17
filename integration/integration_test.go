@@ -119,7 +119,7 @@ func Test(t *testing.T) {
 		t.Fail()
 	}
 	//UPDATE EMPLOYMENT
-	err = updateEmployment(t, cl, userId, token)
+	err = updateEmployment(t, cl, employmentId, token)
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()
@@ -129,7 +129,7 @@ func Test(t *testing.T) {
 		t.Logf(`error: %s`, err)
 		t.Fail()
 	}
-	err = updateEmploymentValidationError(t, cl, token)
+	err = updateEmploymentValidationError(t, cl, employmentId, token)
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()
@@ -254,7 +254,7 @@ func Test(t *testing.T) {
 		t.Fail()
 	}
 	//UPDATE PET
-	err = updatePet(t, cl, userId, token)
+	err = updatePet(t, cl, petId, token)
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()
@@ -264,7 +264,7 @@ func Test(t *testing.T) {
 		t.Logf(`error: %s`, err)
 		t.Fail()
 	}
-	err = updatePetValidationError(t, cl, token)
+	err = updatePetValidationError(t, cl, petId, token)
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()
@@ -329,7 +329,7 @@ func Test(t *testing.T) {
 		t.Logf(`error: %s`, err)
 		t.Fail()
 	}
-	err = updateReferenceValidationError(t, cl, token)
+	err = updateReferenceValidationError(t, cl, referenceId, token)
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()

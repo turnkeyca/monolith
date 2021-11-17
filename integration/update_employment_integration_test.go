@@ -17,9 +17,9 @@ func updateEmployment(t *testing.T, cl *client.OfTurnkeyAPI, employmentId string
 	dto.Body = &models.EmploymentDto{
 		AdditionalDetails: "integration test AdditionalDetails update",
 		Duration:          "Duration update",
-		Employer:          "integration test Employer update",
-		Occupation:        "integration test Occupation update",
-		RentAffordability: "integration test RentAffordability update",
+		Employer:          "integration update Employer",
+		Occupation:        "integration update Occupation",
+		RentAffordability: "integration update RentAffordability",
 		AnnualSalary:      100001,
 	}
 	_, err := cl.Employment.UpdateEmployment(dto)
@@ -33,32 +33,33 @@ func updateEmploymentNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token strin
 	dto.Body = &models.EmploymentDto{
 		AdditionalDetails: "integration test AdditionalDetails update",
 		Duration:          "Duration update",
-		Employer:          "integration test Employer update",
-		Occupation:        "integration test Occupation update",
-		RentAffordability: "integration test RentAffordability update",
+		Employer:          "integration update Employer",
+		Occupation:        "integration update Occupation",
+		RentAffordability: "integration update RentAffordability",
 		AnnualSalary:      100001,
 	}
 	_, err := cl.Employment.UpdateEmployment(dto)
-	if err != nil && !(strings.Contains(err.Error(), "createEmploymentForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
+	if err != nil && !(strings.Contains(err.Error(), "updateEmploymentNotFound") && strings.Contains(err.Error(), "not found")) {
 		return err
 	}
 	return nil
 }
 
-func updateEmploymentValidationError(t *testing.T, cl *client.OfTurnkeyAPI, token string) error {
+func updateEmploymentValidationError(t *testing.T, cl *client.OfTurnkeyAPI, employmentId string, token string) error {
 	dto := employment.NewUpdateEmploymentParams()
 	dto.Token = token
+	dto.ID = employmentId
 	dto.Body = &models.EmploymentDto{
 		UserID:            "farts",
 		AdditionalDetails: "integration test AdditionalDetails update",
 		Duration:          "Duration update",
-		Employer:          "integration test Employer update",
-		Occupation:        "integration test Occupation update",
-		RentAffordability: "integration test RentAffordability update",
+		Employer:          "integration update Employer",
+		Occupation:        "integration update Occupation",
+		RentAffordability: "integration update RentAffordability",
 		AnnualSalary:      100001,
 	}
 	_, err := cl.Employment.UpdateEmployment(dto)
-	if err != nil && !(strings.Contains(err.Error(), "createEmploymentForbidden") && strings.Contains(err.Error(), "Error reading employment")) {
+	if err != nil && !(strings.Contains(err.Error(), "updateEmploymentUnprocessableEntity") && strings.Contains(err.Error(), "Error validating employment")) {
 		return err
 	}
 	return nil

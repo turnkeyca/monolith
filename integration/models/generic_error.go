@@ -11,7 +11,7 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// GenericError GenericError GenericError generic error
+// GenericError GenericError GenericError GenericError GenericError generic error
 //
 // swagger:model GenericError
 type GenericError string

@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// ReferenceDto ReferenceDto ReferenceDto reference dto
+// ReferenceDto ReferenceDto ReferenceDto ReferenceDto ReferenceDto reference dto
 //
 // swagger:model ReferenceDto
 type ReferenceDto struct {

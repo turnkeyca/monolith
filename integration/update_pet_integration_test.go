@@ -15,9 +15,9 @@ func updatePet(t *testing.T, cl *client.OfTurnkeyAPI, petId string, token string
 	dto.ID = petId
 	dto.Token = token
 	dto.Body = &models.PetDto{
-		Breed:    "integration test Breed update",
-		PetType:  "integratioon test PetType update",
-		SizeType: "integration test SizeType update",
+		Breed:    "updateB",
+		PetType:  "updateP",
+		SizeType: "updateS",
 	}
 	_, err := cl.Pet.UpdatePet(dto)
 	return err
@@ -28,28 +28,29 @@ func updatePetNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token string) erro
 	dto.ID = uuid.New().String()
 	dto.Token = token
 	dto.Body = &models.PetDto{
-		Breed:    "integration test Breed update",
-		PetType:  "integratioon test PetType update",
-		SizeType: "integration test SizeType update",
+		Breed:    "updateB",
+		PetType:  "updateP",
+		SizeType: "updateS",
 	}
 	_, err := cl.Pet.UpdatePet(dto)
-	if err != nil && !(strings.Contains(err.Error(), "createPetForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
+	if err != nil && !(strings.Contains(err.Error(), "updatePetNotFound") && strings.Contains(err.Error(), "not found")) {
 		return err
 	}
 	return nil
 }
 
-func updatePetValidationError(t *testing.T, cl *client.OfTurnkeyAPI, token string) error {
+func updatePetValidationError(t *testing.T, cl *client.OfTurnkeyAPI, petId string, token string) error {
 	dto := pet.NewUpdatePetParams()
 	dto.Token = token
+	dto.ID = petId
 	dto.Body = &models.PetDto{
 		UserID:   "farts",
-		Breed:    "integration test Breed update",
-		PetType:  "integratioon test PetType update",
-		SizeType: "integration test SizeType update",
+		Breed:    "updateB",
+		PetType:  "updateP",
+		SizeType: "updateS",
 	}
 	_, err := cl.Pet.UpdatePet(dto)
-	if err != nil && !(strings.Contains(err.Error(), "createPetForbidden") && strings.Contains(err.Error(), "Error reading pet")) {
+	if err != nil && !(strings.Contains(err.Error(), "updatePetUnprocessableEntity") && strings.Contains(err.Error(), "Error validating pet")) {
 		return err
 	}
 	return nil
