@@ -3,8 +3,8 @@ consumes:
 - application/json
 definitions:
   EmploymentDto:
-    description: EmploymentDto EmploymentDto EmploymentDto EmploymentDto employment
-      dto
+    description: EmploymentDto EmploymentDto EmploymentDto EmploymentDto EmploymentDto
+      employment dto
     properties:
       additionalDetails:
         description: additional details
@@ -50,12 +50,13 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   GenericError:
-    description: GenericError GenericError GenericError GenericError generic error
+    description: GenericError GenericError GenericError GenericError GenericError
+      generic error
     type: string
     x-go-package: github.com/turnkeyca/monolith/integration/models
   PermissionDto:
-    description: PermissionDto PermissionDto PermissionDto PermissionDto permission
-      dto
+    description: PermissionDto PermissionDto PermissionDto PermissionDto PermissionDto
+      permission dto
     properties:
       createdOn:
         description: created on
@@ -82,12 +83,12 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   PermissionType:
-    description: PermissionType PermissionType PermissionType PermissionType permission
-      type
+    description: PermissionType PermissionType PermissionType PermissionType PermissionType
+      permission type
     type: string
     x-go-package: github.com/turnkeyca/monolith/integration/models
   PetDto:
-    description: PetDto PetDto PetDto PetDto pet dto
+    description: PetDto PetDto PetDto PetDto PetDto pet dto
     properties:
       breed:
         description: breed
@@ -120,7 +121,8 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   ReferenceDto:
-    description: ReferenceDto ReferenceDto ReferenceDto ReferenceDto reference dto
+    description: ReferenceDto ReferenceDto ReferenceDto ReferenceDto ReferenceDto
+      reference dto
     properties:
       additionalDetails:
         description: additional details
@@ -162,7 +164,7 @@ definitions:
     x-go-package: github.com/turnkeyca/monolith/integration/models
   RegisterTokenDto:
     description: RegisterTokenDto RegisterTokenDto RegisterTokenDto RegisterTokenDto
-      register token dto
+      RegisterTokenDto register token dto
     properties:
       id:
         description: login Id
@@ -179,7 +181,8 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   RoommateDto:
-    description: RoommateDto RoommateDto RoommateDto RoommateDto roommate dto
+    description: RoommateDto RoommateDto RoommateDto RoommateDto RoommateDto roommate
+      dto
     properties:
       createdOn:
         description: created on
@@ -207,24 +210,18 @@ definitions:
         x-go-name: UserID
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
-  ShortURLDto:
-    description: ShortURLDto ShortURLDto short Url dto
+  ShortUrlDto:
+    description: ShortURLDto short Url dto
     properties:
       url:
         description: Url
         type: string
         x-go-name: URL
     type: object
+    x-go-name: ShortURLDto
     x-go-package: github.com/turnkeyca/monolith/integration/models
-  ShortUrlDto:
-    properties:
-      url:
-        type: string
-        x-go-name: Url
-    type: object
-    x-go-package: github.com/turnkeyca/monolith/shorturl
   TokenDto:
-    description: TokenDto TokenDto TokenDto TokenDto token dto
+    description: TokenDto TokenDto TokenDto TokenDto TokenDto token dto
     properties:
       id:
         description: Id
@@ -237,7 +234,7 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   UserDto:
-    description: UserDto UserDto UserDto UserDto user dto
+    description: UserDto UserDto UserDto UserDto UserDto user dto
     properties:
       acceptedTerms:
         description: accepted terms
@@ -342,12 +339,12 @@ definitions:
     type: object
     x-go-package: github.com/turnkeyca/monolith/integration/models
   UserStatusType:
-    description: UserStatusType UserStatusType UserStatusType UserStatusType user
-      status type
+    description: UserStatusType UserStatusType UserStatusType UserStatusType UserStatusType
+      user status type
     type: string
     x-go-package: github.com/turnkeyca/monolith/integration/models
   UserType:
-    description: UserType UserType UserType UserType user type
+    description: UserType UserType UserType UserType UserType user type
     type: string
     x-go-package: github.com/turnkeyca/monolith/integration/models
 info:
