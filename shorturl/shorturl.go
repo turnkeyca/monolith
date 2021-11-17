@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/turnkeyca/monolith/auth"
+	"github.com/turnkeyca/monolith/authenticator"
 	"github.com/turnkeyca/monolith/bitly"
 )
 
@@ -21,11 +21,7 @@ func NewHandler(logger *log.Logger, bitlyClient *bitly.Client) *Handler {
 	}
 }
 
-type GenericError struct {
-	Message string `json:"message"`
-}
-
-func ConfigureShortUrlRoutes(router *mux.Router, logger *log.Logger, bitly *bitly.Client, authenticator *auth.Authenticator) {
+func ConfigureShortUrlRoutes(router *mux.Router, logger *log.Logger, bitly *bitly.Client, authenticator *authenticator.Authenticator) {
 	shorturlHandler := NewHandler(logger, bitly)
 	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc("/v1/shorturl", shorturlHandler.HandleGetShortUrl)

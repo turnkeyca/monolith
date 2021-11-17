@@ -1,5 +1,7 @@
 package shorturl
 
+import "github.com/turnkeyca/monolith/util"
+
 //
 // NOTE: Types defined here are purely for documentation purposes
 // these types are not used by any of the handlers
@@ -10,7 +12,7 @@ package shorturl
 type shortUrlErrorResponseWrapper struct {
 	// Description of the error
 	// in: body
-	Body GenericError
+	Body util.GenericError
 }
 
 // A short url

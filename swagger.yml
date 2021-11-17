@@ -3,244 +3,350 @@ consumes:
 - application/json
 definitions:
   EmploymentDto:
+    description: EmploymentDto EmploymentDto EmploymentDto EmploymentDto EmploymentDto
+      employment dto
     properties:
       additionalDetails:
+        description: additional details
         type: string
         x-go-name: AdditionalDetails
       annualSalary:
+        description: annual salary
         format: double
         type: number
         x-go-name: AnnualSalary
       createdOn:
+        description: created on
         type: string
         x-go-name: CreatedOn
       duration:
+        description: duration
         type: string
         x-go-name: Duration
       employer:
+        description: employer
         type: string
         x-go-name: Employer
       id:
+        description: Id
         type: string
-        x-go-name: Id
+        x-go-name: ID
       lastUpdated:
+        description: last updated
         type: string
         x-go-name: LastUpdated
       occupation:
+        description: occupation
         type: string
         x-go-name: Occupation
       rentAffordability:
+        description: rent affordability
         type: string
         x-go-name: RentAffordability
       userId:
+        description: user Id
         type: string
-        x-go-name: UserId
+        x-go-name: UserID
     type: object
-    x-go-package: github.com/turnkeyca/monolith/employment
+    x-go-package: github.com/turnkeyca/monolith/integration/models
   GenericError:
+    description: GenericError GenericError GenericError GenericError GenericError
+      generic error
+    type: string
+    x-go-package: github.com/turnkeyca/monolith/integration/models
+  PermissionDto:
+    description: PermissionDto PermissionDto PermissionDto PermissionDto PermissionDto
+      permission dto
     properties:
-      message:
+      createdOn:
+        description: created on
         type: string
-        x-go-name: Message
+        x-go-name: CreatedOn
+      id:
+        description: Id
+        type: string
+        x-go-name: ID
+      lastUpdated:
+        description: last updated
+        type: string
+        x-go-name: LastUpdated
+      onUserId:
+        description: on user Id
+        type: string
+        x-go-name: OnUserID
+      permission:
+        $ref: '#/definitions/PermissionType'
+      userId:
+        description: user Id
+        type: string
+        x-go-name: UserID
     type: object
-    x-go-package: github.com/turnkeyca/monolith/user
+    x-go-package: github.com/turnkeyca/monolith/integration/models
+  PermissionType:
+    description: PermissionType PermissionType PermissionType PermissionType PermissionType
+      permission type
+    type: string
+    x-go-package: github.com/turnkeyca/monolith/integration/models
   PetDto:
+    description: PetDto PetDto PetDto PetDto PetDto pet dto
     properties:
       breed:
+        description: breed
         type: string
         x-go-name: Breed
       createdOn:
+        description: created on
         type: string
         x-go-name: CreatedOn
       id:
+        description: Id
         type: string
-        x-go-name: Id
+        x-go-name: ID
       lastUpdated:
+        description: last updated
         type: string
         x-go-name: LastUpdated
       petType:
+        description: pet type
         type: string
         x-go-name: PetType
       sizeType:
+        description: size type
         type: string
         x-go-name: SizeType
       userId:
+        description: user Id
         type: string
-        x-go-name: UserId
+        x-go-name: UserID
     type: object
-    x-go-package: github.com/turnkeyca/monolith/pet
+    x-go-package: github.com/turnkeyca/monolith/integration/models
   ReferenceDto:
+    description: ReferenceDto ReferenceDto ReferenceDto ReferenceDto ReferenceDto
+      reference dto
     properties:
       additionalDetails:
+        description: additional details
         type: string
         x-go-name: AdditionalDetails
       createdOn:
+        description: created on
         type: string
         x-go-name: CreatedOn
       email:
+        description: email
         type: string
         x-go-name: Email
       fullName:
+        description: full name
         type: string
         x-go-name: FullName
       id:
+        description: Id
         type: string
-        x-go-name: Id
+        x-go-name: ID
       lastUpdated:
+        description: last updated
         type: string
         x-go-name: LastUpdated
       phoneNumber:
+        description: phone number
         type: string
         x-go-name: PhoneNumber
       relationship:
+        description: relationship
         type: string
         x-go-name: Relationship
       userId:
+        description: user Id
         type: string
-        x-go-name: UserId
+        x-go-name: UserID
     type: object
-    x-go-package: github.com/turnkeyca/monolith/reference
+    x-go-package: github.com/turnkeyca/monolith/integration/models
   RegisterTokenDto:
+    description: RegisterTokenDto RegisterTokenDto RegisterTokenDto RegisterTokenDto
+      RegisterTokenDto register token dto
     properties:
       id:
+        description: login Id
         type: string
-        x-go-name: LoginId
+        x-go-name: LoginID
       newUser:
+        description: is new user
         type: boolean
         x-go-name: IsNewUser
       secret:
+        description: secret
         type: string
         x-go-name: Secret
     type: object
-    x-go-package: github.com/turnkeyca/monolith/auth
+    x-go-package: github.com/turnkeyca/monolith/integration/models
   RoommateDto:
+    description: RoommateDto RoommateDto RoommateDto RoommateDto RoommateDto roommate
+      dto
     properties:
       createdOn:
+        description: created on
         type: string
         x-go-name: CreatedOn
       email:
+        description: email
         type: string
         x-go-name: Email
       fullName:
+        description: full name
         type: string
         x-go-name: FullName
       id:
+        description: Id
         type: string
-        x-go-name: Id
+        x-go-name: ID
       lastUpdated:
+        description: last updated
         type: string
         x-go-name: LastUpdated
       userId:
+        description: user Id
         type: string
-        x-go-name: UserId
+        x-go-name: UserID
     type: object
-    x-go-package: github.com/turnkeyca/monolith/roommate
+    x-go-package: github.com/turnkeyca/monolith/integration/models
   ShortUrlDto:
+    description: ShortURLDto short Url dto
     properties:
       url:
+        description: Url
         type: string
-        x-go-name: Url
+        x-go-name: URL
     type: object
-    x-go-package: github.com/turnkeyca/monolith/shorturl
-  Token:
+    x-go-name: ShortURLDto
+    x-go-package: github.com/turnkeyca/monolith/integration/models
+  TokenDto:
+    description: TokenDto TokenDto TokenDto TokenDto TokenDto token dto
     properties:
       id:
+        description: Id
         type: string
-        x-go-name: Id
+        x-go-name: ID
       token:
+        description: token
         type: string
         x-go-name: Token
     type: object
-    x-go-package: github.com/turnkeyca/monolith/auth
+    x-go-package: github.com/turnkeyca/monolith/integration/models
   UserDto:
+    description: UserDto UserDto UserDto UserDto UserDto user dto
     properties:
+      acceptedTerms:
+        description: accepted terms
+        type: boolean
+        x-go-name: AcceptedTerms
       additionalDetailsGeneral:
+        description: additional details general
         type: string
         x-go-name: AdditionalDetailsGeneral
       additionalDetailsLease:
+        description: additional details lease
         type: string
         x-go-name: AdditionalDetailsLease
       bio:
+        description: bio
         type: string
         x-go-name: Bio
       createdOn:
+        description: created on
         type: string
         x-go-name: CreatedOn
       creditCheck:
+        description: can credit check
         type: boolean
         x-go-name: CanCreditCheck
       email:
+        description: email
         type: string
         x-go-name: Email
       evicted:
+        description: has previous eviction
         type: boolean
         x-go-name: HasPreviousEviction
       fullName:
+        description: full name
         type: string
         x-go-name: FullName
       id:
+        description: Id
         type: string
-        x-go-name: Id
+        x-go-name: ID
       lastUpdated:
+        description: last updated
         type: string
         x-go-name: LastUpdated
       lawsuit:
+        description: has previous lawsuit
         type: boolean
         x-go-name: HasPreviousLawsuit
       loginId:
+        description: login Id
         type: string
-        x-go-name: LoginId
+        x-go-name: LoginID
       moveInDate:
+        description: move in date
         type: string
         x-go-name: MoveInDate
       moveOutDate:
+        description: move out date
         type: string
         x-go-name: MoveOutDate
       movingReason:
+        description: moving reason
         type: string
         x-go-name: MovingReason
       nickname:
+        description: nickname
         type: string
         x-go-name: Nickname
       pets:
+        description: has pets
         type: boolean
         x-go-name: HasPets
       phoneNumber:
+        description: phone number
         type: string
         x-go-name: PhoneNumber
       roommates:
+        description: has roommates
         type: boolean
         x-go-name: HasRoommates
       securityDeposit:
+        description: has security deposit
         type: boolean
         x-go-name: HasSecurityDeposit
       sendNotifications:
+        description: send notifications
         type: boolean
         x-go-name: SendNotifications
       smoker:
+        description: is smoker
         type: boolean
         x-go-name: IsSmoker
       userStatusType:
         $ref: '#/definitions/UserStatusType'
       userType:
         $ref: '#/definitions/UserType'
+      walkthroughComplete:
+        description: walkthrough complete
+        type: boolean
+        x-go-name: WalkthroughComplete
     type: object
-    x-go-package: github.com/turnkeyca/monolith/user
+    x-go-package: github.com/turnkeyca/monolith/integration/models
   UserStatusType:
+    description: UserStatusType UserStatusType UserStatusType UserStatusType UserStatusType
+      user status type
     type: string
-    x-go-package: github.com/turnkeyca/monolith/user
+    x-go-package: github.com/turnkeyca/monolith/integration/models
   UserType:
+    description: UserType UserType UserType UserType UserType user type
     type: string
-    x-go-package: github.com/turnkeyca/monolith/user
-  ValidationError:
-    properties:
-      messages:
-        items:
-          type: string
-        type: array
-        x-go-name: Messages
-    type: object
-    x-go-package: github.com/turnkeyca/monolith/user
+    x-go-package: github.com/turnkeyca/monolith/integration/models
 info:
   description: Documentation for Turnkey API
   title: of Turnkey API
@@ -260,9 +366,9 @@ paths:
         "200":
           $ref: '#/responses/tokenResponse'
         "500":
-          $ref: '#/responses/authErrorResponse'
+          $ref: '#/responses/authenticationErrorResponse'
       tags:
-      - auth
+      - authentication
   /v1/employment:
     get:
       description: return employments for a user
@@ -281,7 +387,9 @@ paths:
       responses:
         "200":
           $ref: '#/responses/employmentsResponse'
-        "404":
+        "403":
+          $ref: '#/responses/employmentErrorResponse'
+        "500":
           $ref: '#/responses/employmentErrorResponse'
       tags:
       - employment
@@ -301,8 +409,12 @@ paths:
       responses:
         "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/employmentErrorResponse'
+        "403":
+          $ref: '#/responses/employmentErrorResponse'
         "422":
-          $ref: '#/responses/employmentErrorValidation'
+          $ref: '#/responses/employmentErrorResponse'
         "500":
           $ref: '#/responses/employmentErrorResponse'
       tags:
@@ -323,8 +435,10 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
+        "403":
+          $ref: '#/responses/employmentErrorResponse'
         "404":
           $ref: '#/responses/employmentErrorResponse'
         "500":
@@ -348,7 +462,11 @@ paths:
       responses:
         "200":
           $ref: '#/responses/employmentResponse'
+        "403":
+          $ref: '#/responses/employmentErrorResponse'
         "404":
+          $ref: '#/responses/employmentErrorResponse'
+        "500":
           $ref: '#/responses/employmentErrorResponse'
       tags:
       - employment
@@ -372,17 +490,148 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/employmentErrorResponse'
+        "403":
+          $ref: '#/responses/employmentErrorResponse'
         "404":
           $ref: '#/responses/employmentErrorResponse'
         "422":
-          $ref: '#/responses/employmentErrorValidation'
+          $ref: '#/responses/employmentErrorResponse'
+        "500":
+          $ref: '#/responses/employmentErrorResponse'
       tags:
       - employment
+  /v1/permission:
+    get:
+      description: return all permissions for a user
+      operationId: getPermissionsByUserId
+      parameters:
+      - description: The user id
+        in: query
+        name: userId
+        required: true
+        type: string
+        x-go-name: UserId
+      - in: header
+        name: Token
+        required: true
+        type: string
+      responses:
+        "200":
+          $ref: '#/responses/permissionsResponse'
+        "403":
+          $ref: '#/responses/permissionErrorResponse'
+        "500":
+          $ref: '#/responses/permissionErrorResponse'
+      tags:
+      - permission
+    post:
+      description: create a new permission
+      operationId: createPermission
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/PermissionDto'
+      - in: header
+        name: Token
+        required: true
+        type: string
+      responses:
+        "204":
+          $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/permissionErrorResponse'
+        "403":
+          $ref: '#/responses/permissionErrorResponse'
+        "422":
+          $ref: '#/responses/permissionErrorResponse'
+        "500":
+          $ref: '#/responses/permissionErrorResponse'
+      tags:
+      - permission
+  /v1/permission/{id}:
+    delete:
+      description: delete a permission
+      operationId: deletePermission
+      parameters:
+      - description: The id of the permission for which the operation relates
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      - in: header
+        name: Token
+        required: true
+        type: string
+      responses:
+        "204":
+          $ref: '#/responses/noContentResponse'
+        "403":
+          $ref: '#/responses/permissionErrorResponse'
+        "409":
+          $ref: '#/responses/permissionErrorResponse'
+        "500":
+          $ref: '#/responses/permissionErrorResponse'
+      tags:
+      - permission
+    get:
+      description: return a permission
+      operationId: getPermission
+      parameters:
+      - description: The id of the permission for which the operation relates
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      - in: header
+        name: Token
+        required: true
+        type: string
+      responses:
+        "200":
+          $ref: '#/responses/permissionResponse'
+        "403":
+          $ref: '#/responses/permissionErrorResponse'
+        "404":
+          $ref: '#/responses/permissionErrorResponse'
+        "500":
+          $ref: '#/responses/permissionErrorResponse'
+      tags:
+      - permission
+  /v1/permission/{id}/accept:
+    post:
+      description: accept a permission
+      operationId: acceptPermission
+      parameters:
+      - description: The id of the permission for which the operation relates
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      - in: header
+        name: Token
+        required: true
+        type: string
+      responses:
+        "204":
+          $ref: '#/responses/noContentResponse'
+        "403":
+          $ref: '#/responses/permissionErrorResponse'
+        "500":
+          $ref: '#/responses/permissionErrorResponse'
+      tags:
+      - permission
   /v1/pet:
     get:
-      description: return all pets ofr a user
+      description: return all pets for a user
       operationId: getPetsByUserId
       parameters:
       - description: The user id
@@ -398,7 +647,9 @@ paths:
       responses:
         "200":
           $ref: '#/responses/petsResponse'
-        "404":
+        "403":
+          $ref: '#/responses/petErrorResponse'
+        "500":
           $ref: '#/responses/petErrorResponse'
       tags:
       - pet
@@ -418,8 +669,12 @@ paths:
       responses:
         "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/petErrorResponse'
+        "403":
+          $ref: '#/responses/petErrorResponse'
         "422":
-          $ref: '#/responses/petErrorValidation'
+          $ref: '#/responses/petErrorResponse'
         "500":
           $ref: '#/responses/petErrorResponse'
       tags:
@@ -440,8 +695,10 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
+        "403":
+          $ref: '#/responses/petErrorResponse'
         "404":
           $ref: '#/responses/petErrorResponse'
         "500":
@@ -465,7 +722,11 @@ paths:
       responses:
         "200":
           $ref: '#/responses/petResponse'
+        "403":
+          $ref: '#/responses/petErrorResponse'
         "404":
+          $ref: '#/responses/petErrorResponse'
+        "500":
           $ref: '#/responses/petErrorResponse'
       tags:
       - pet
@@ -489,17 +750,23 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/petErrorResponse'
+        "403":
+          $ref: '#/responses/petErrorResponse'
         "404":
           $ref: '#/responses/petErrorResponse'
         "422":
-          $ref: '#/responses/petErrorValidation'
+          $ref: '#/responses/petErrorResponse'
+        "500":
+          $ref: '#/responses/petErrorResponse'
       tags:
       - pet
   /v1/reference:
     get:
-      description: return all references ofr a user
+      description: return all references for a user
       operationId: getReferencesByUserId
       parameters:
       - description: The user id
@@ -515,7 +782,9 @@ paths:
       responses:
         "200":
           $ref: '#/responses/referencesResponse'
-        "404":
+        "403":
+          $ref: '#/responses/referenceErrorResponse'
+        "500":
           $ref: '#/responses/referenceErrorResponse'
       tags:
       - reference
@@ -535,8 +804,12 @@ paths:
       responses:
         "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/referenceErrorResponse'
+        "403":
+          $ref: '#/responses/referenceErrorResponse'
         "422":
-          $ref: '#/responses/referenceErrorValidation'
+          $ref: '#/responses/referenceErrorResponse'
         "500":
           $ref: '#/responses/referenceErrorResponse'
       tags:
@@ -557,8 +830,10 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
+        "403":
+          $ref: '#/responses/referenceErrorResponse'
         "404":
           $ref: '#/responses/referenceErrorResponse'
         "500":
@@ -582,7 +857,11 @@ paths:
       responses:
         "200":
           $ref: '#/responses/referenceResponse'
+        "403":
+          $ref: '#/responses/referenceErrorResponse'
         "404":
+          $ref: '#/responses/referenceErrorResponse'
+        "500":
           $ref: '#/responses/referenceErrorResponse'
       tags:
       - reference
@@ -606,12 +885,18 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/referenceErrorResponse'
+        "403":
+          $ref: '#/responses/referenceErrorResponse'
         "404":
           $ref: '#/responses/referenceErrorResponse'
         "422":
-          $ref: '#/responses/referenceErrorValidation'
+          $ref: '#/responses/referenceErrorResponse'
+        "500":
+          $ref: '#/responses/referenceErrorResponse'
       tags:
       - reference
   /v1/roommate:
@@ -632,7 +917,9 @@ paths:
       responses:
         "200":
           $ref: '#/responses/roommatesResponse'
-        "404":
+        "403":
+          $ref: '#/responses/roommateErrorResponse'
+        "500":
           $ref: '#/responses/roommateErrorResponse'
       tags:
       - roommate
@@ -652,8 +939,12 @@ paths:
       responses:
         "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/roommateErrorResponse'
+        "403":
+          $ref: '#/responses/roommateErrorResponse'
         "422":
-          $ref: '#/responses/roommateErrorValidation'
+          $ref: '#/responses/roommateErrorResponse'
         "500":
           $ref: '#/responses/roommateErrorResponse'
       tags:
@@ -674,8 +965,10 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
+        "403":
+          $ref: '#/responses/roommateErrorResponse'
         "404":
           $ref: '#/responses/roommateErrorResponse'
         "500":
@@ -699,7 +992,11 @@ paths:
       responses:
         "200":
           $ref: '#/responses/roommateResponse'
+        "403":
+          $ref: '#/responses/roommateErrorResponse'
         "404":
+          $ref: '#/responses/roommateErrorResponse'
+        "500":
           $ref: '#/responses/roommateErrorResponse'
       tags:
       - roommate
@@ -723,12 +1020,18 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
+        "400":
+          $ref: '#/responses/roommateErrorResponse'
+        "403":
+          $ref: '#/responses/roommateErrorResponse'
         "404":
           $ref: '#/responses/roommateErrorResponse'
         "422":
-          $ref: '#/responses/roommateErrorValidation'
+          $ref: '#/responses/roommateErrorResponse'
+        "500":
+          $ref: '#/responses/roommateErrorResponse'
       tags:
       - roommate
   /v1/shorturl:
@@ -769,10 +1072,10 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
-        "404":
-          $ref: '#/responses/userErrorResponse'
+        "403":
+          $ref: '#/responses/roommateErrorResponse'
         "500":
           $ref: '#/responses/userErrorResponse'
       tags:
@@ -794,7 +1097,9 @@ paths:
       responses:
         "200":
           $ref: '#/responses/userResponse'
-        "404":
+        "403":
+          $ref: '#/responses/userErrorResponse'
+        "500":
           $ref: '#/responses/userErrorResponse'
       tags:
       - user
@@ -818,18 +1123,22 @@ paths:
         required: true
         type: string
       responses:
-        "201":
+        "204":
           $ref: '#/responses/noContentResponse'
-        "404":
+        "400":
+          $ref: '#/responses/userErrorResponse'
+        "403":
           $ref: '#/responses/userErrorResponse'
         "422":
-          $ref: '#/responses/userErrorValidation'
+          $ref: '#/responses/userErrorResponse'
+        "500":
+          $ref: '#/responses/userErrorResponse'
       tags:
       - user
 produces:
 - application/json
 responses:
-  authErrorResponse:
+  authenticationErrorResponse:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
@@ -837,10 +1146,6 @@ responses:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
-  employmentErrorValidation:
-    description: Validation errors defined as an array of strings
-    schema:
-      $ref: '#/definitions/ValidationError'
   employmentResponse:
     description: A employment
     schema:
@@ -853,14 +1158,24 @@ responses:
       type: array
   noContentResponse:
     description: No content is returned by this API endpoint
+  permissionErrorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  permissionResponse:
+    description: A permission
+    schema:
+      $ref: '#/definitions/PermissionDto'
+  permissionsResponse:
+    description: A list of permissions
+    schema:
+      items:
+        $ref: '#/definitions/PermissionDto'
+      type: array
   petErrorResponse:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
-  petErrorValidation:
-    description: Validation errors defined as an array of strings
-    schema:
-      $ref: '#/definitions/ValidationError'
   petResponse:
     description: A pet
     schema:
@@ -875,10 +1190,6 @@ responses:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
-  referenceErrorValidation:
-    description: Validation errors defined as an array of strings
-    schema:
-      $ref: '#/definitions/ValidationError'
   referenceResponse:
     description: A reference
     schema:
@@ -893,10 +1204,6 @@ responses:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
-  roommateErrorValidation:
-    description: Validation errors defined as an array of strings
-    schema:
-      $ref: '#/definitions/ValidationError'
   roommateResponse:
     description: A roommate
     schema:
@@ -918,19 +1225,15 @@ responses:
   tokenResponse:
     description: new user id
     schema:
-      $ref: '#/definitions/Token'
+      $ref: '#/definitions/TokenDto'
   userErrorResponse:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
-  userErrorValidation:
-    description: Validation errors defined as an array of strings
-    schema:
-      $ref: '#/definitions/ValidationError'
   userResponse:
     description: A user
     schema:
       $ref: '#/definitions/UserDto'
 schemes:
-- http,https
+- http
 swagger: "2.0"
