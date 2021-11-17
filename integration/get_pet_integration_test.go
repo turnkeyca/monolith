@@ -54,7 +54,7 @@ func getPetNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token string) error {
 	dto.ID = uuid.New().String()
 	dto.Token = token
 	_, err := cl.Pet.GetPet(dto)
-	if err != nil && !(strings.Contains(err.Error(), "getPetForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
+	if err != nil && !(strings.Contains(err.Error(), "getPetNotFound") && strings.Contains(err.Error(), "not found")) {
 		return err
 	}
 	return nil

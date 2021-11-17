@@ -31,22 +31,23 @@ func updateRoommateNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token string)
 		FullName: "IntegrationRefUpdate Test",
 	}
 	_, err := cl.Roommate.UpdateRoommate(dto)
-	if err != nil && !(strings.Contains(err.Error(), "createRoommateForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
+	if err != nil && !(strings.Contains(err.Error(), "updateRoommateNotFound") && strings.Contains(err.Error(), "not found")) {
 		return err
 	}
 	return nil
 }
 
-func updateRoommateValidationError(t *testing.T, cl *client.OfTurnkeyAPI, token string) error {
+func updateRoommateValidationError(t *testing.T, cl *client.OfTurnkeyAPI, roommateId string, token string) error {
 	dto := roommate.NewUpdateRoommateParams()
 	dto.Token = token
+	dto.ID = roommateId
 	dto.Body = &models.RoommateDto{
 		UserID:   "farts",
 		Email:    "integrationrefupdate@test.ca",
 		FullName: "IntegrationRefUpdate Test",
 	}
 	_, err := cl.Roommate.UpdateRoommate(dto)
-	if err != nil && !(strings.Contains(err.Error(), "createRoommateForbidden") && strings.Contains(err.Error(), "Error reading roommate")) {
+	if err != nil && !(strings.Contains(err.Error(), "updateRoommateUnprocessableEntity") && strings.Contains(err.Error(), "Error validating roommate")) {
 		return err
 	}
 	return nil

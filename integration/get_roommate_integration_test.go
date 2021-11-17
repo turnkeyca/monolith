@@ -48,7 +48,7 @@ func getRoommateNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token string) er
 	dto.ID = uuid.New().String()
 	dto.Token = token
 	_, err := cl.Roommate.GetRoommate(dto)
-	if err != nil && !(strings.Contains(err.Error(), "getRoommateForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
+	if err != nil && !(strings.Contains(err.Error(), "getRoommateNotFound") && strings.Contains(err.Error(), "not found")) {
 		return err
 	}
 	return nil

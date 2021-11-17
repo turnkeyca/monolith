@@ -303,7 +303,7 @@ func Test(t *testing.T) {
 		t.Logf(`error: %s`, err)
 		t.Fail()
 	}
-	err = getReference(t, cl, petId, token)
+	err = getReference(t, cl, referenceId, token)
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()
@@ -319,7 +319,7 @@ func Test(t *testing.T) {
 		t.Fail()
 	}
 	//UPDATE REFERENCE
-	err = updateReference(t, cl, userId, token)
+	err = updateReference(t, cl, referenceId, token)
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()
@@ -368,7 +368,7 @@ func Test(t *testing.T) {
 		t.Logf(`error: %s`, err)
 		t.Fail()
 	}
-	err = getRoommate(t, cl, petId, token)
+	err = getRoommate(t, cl, roommateId, token)
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()
@@ -384,7 +384,7 @@ func Test(t *testing.T) {
 		t.Fail()
 	}
 	//UPDATE ROOMMATE
-	err = updateRoommate(t, cl, userId, token)
+	err = updateRoommate(t, cl, roommateId, token)
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()
@@ -394,7 +394,7 @@ func Test(t *testing.T) {
 		t.Logf(`error: %s`, err)
 		t.Fail()
 	}
-	err = updateRoommateValidationError(t, cl, token)
+	err = updateRoommateValidationError(t, cl, roommateId, token)
 	if err != nil {
 		t.Logf(`error: %s`, err)
 		t.Fail()

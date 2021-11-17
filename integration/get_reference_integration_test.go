@@ -66,7 +66,7 @@ func getReferenceNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token string) e
 	dto.ID = uuid.New().String()
 	dto.Token = token
 	_, err := cl.Reference.GetReference(dto)
-	if err != nil && !(strings.Contains(err.Error(), "getReferenceForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
+	if err != nil && !(strings.Contains(err.Error(), "getReferenceNotFound") && strings.Contains(err.Error(), "not found")) {
 		return err
 	}
 	return nil

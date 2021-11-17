@@ -19,7 +19,7 @@ func updateReference(t *testing.T, cl *client.OfTurnkeyAPI, referenceId string, 
 		Email:             "integrationrefupdate@test.ca",
 		FullName:          "IntegrationRefUpdate Test",
 		PhoneNumber:       "3068888887",
-		Relationship:      "integration test Relationship update",
+		Relationship:      "integration update Relationship",
 	}
 	_, err := cl.Reference.UpdateReference(dto)
 	return err
@@ -34,7 +34,7 @@ func updateReferenceNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token string
 		Email:             "integrationrefupdate@test.ca",
 		FullName:          "IntegrationRefUpdate Test",
 		PhoneNumber:       "3068888887",
-		Relationship:      "integration test Relationship update",
+		Relationship:      "integration update Relationship",
 	}
 	_, err := cl.Reference.UpdateReference(dto)
 	if err != nil && !(strings.Contains(err.Error(), "createReferenceForbidden") && strings.Contains(err.Error(), "User does not have permission")) {
@@ -52,7 +52,7 @@ func updateReferenceValidationError(t *testing.T, cl *client.OfTurnkeyAPI, token
 		Email:             "integrationrefupdate@test.ca",
 		FullName:          "IntegrationRefUpdate Test",
 		PhoneNumber:       "3068888887",
-		Relationship:      "integration test Relationship update",
+		Relationship:      "integration update Relationship",
 	}
 	_, err := cl.Reference.UpdateReference(dto)
 	if err != nil && !(strings.Contains(err.Error(), "createReferenceForbidden") && strings.Contains(err.Error(), "Error reading reference")) {
