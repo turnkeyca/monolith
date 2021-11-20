@@ -40,4 +40,8 @@ func ConfigureUserRoutes(router *mux.Router, logger *log.Logger, database *db.Da
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc(fmt.Sprintf("/v1/user/{id:%s}", util.REGEX_UUID), userHandler.HandleDeleteUser)
 	deleteRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath, userHandler.CheckPermissionsEdit)
+
+	postRouter := router.Methods(http.MethodPost).Subrouter()
+	postRouter.HandleFunc(fmt.Sprintf("/v1/user/{id:%s}/activate", util.REGEX_UUID), userHandler.HandleActivateUser)
+	postRouter.Use(authenticator.AuthenticateHttp, userHandler.GetIdFromPath, userHandler.CheckPermissionsEditNoInactiveCheck)
 }

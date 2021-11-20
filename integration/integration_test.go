@@ -53,6 +53,22 @@ func Test(t *testing.T) {
 		t.Logf(`error: %s`, err)
 		t.Fail()
 	}
+	err = deleteUserShouldBeInaccessible(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	// ACTIVATE USER
+	err = activateUser(t, cl, userId, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
+	err = activateUserNotFound(t, cl, token)
+	if err != nil {
+		t.Logf(`error: %s`, err)
+		t.Fail()
+	}
 	// UPDATE USER
 	err = updateUser(t, cl, userId, token)
 	if err != nil {

@@ -27,3 +27,13 @@ func deleteUserNotFound(t *testing.T, cl *client.OfTurnkeyAPI, token string) err
 	}
 	return nil
 }
+func deleteUserShouldBeInaccessible(t *testing.T, cl *client.OfTurnkeyAPI, userId string, token string) error {
+	dto := user.NewGetUserParams()
+	dto.ID = userId
+	dto.Token = token
+	_, err := cl.User.GetUser(dto)
+	if err != nil && !(strings.Contains(err.Error(), "getUserForbidden") && strings.Contains(err.Error(), "is inactive")) {
+		return err
+	}
+	return nil
+}
