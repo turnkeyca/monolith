@@ -30,7 +30,7 @@ type userResponseWrapper struct {
 type noContentResponseWrapper struct {
 }
 
-// swagger:parameters updateUser getUser deleteUser
+// swagger:parameters updateUser getUser deleteUser activateUser
 //lint:ignore U1000 for docs
 type userIdParamsWrapper struct {
 	// The id of the user for which the operation relates
@@ -47,7 +47,7 @@ type userParamsWrapper struct {
 	Body UserDto
 }
 
-// swagger:parameters updateUser getUser deleteUser
+// swagger:parameters updateUser getUser deleteUser activateUser
 //lint:ignore U1000 for docs
 type authHeaderWrapper struct {
 	// in: header

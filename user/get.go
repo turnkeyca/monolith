@@ -12,6 +12,7 @@ import (
 // responses:
 //	200: userResponse
 //	403: userErrorResponse
+//  404: userErrorResponse
 //  500: userErrorResponse
 
 // HandleGetUser handles GET requests
@@ -43,16 +44,4 @@ func (h *Handler) GetUser(id string) (*UserDto, error) {
 		return nil, fmt.Errorf("duplicate results")
 	}
 	return &users[0], err
-}
-
-func (h *Handler) CheckUserInactive(id string) error {
-	var count []int
-	err := h.db.Select(&count, `select count(*) from users where id = $1 and user_status = 'inactive';`, id)
-	if err != nil {
-		return err
-	}
-	if count[0] > 1 {
-		return fmt.Errorf("user [%s] is inactive", id)
-	}
-	return nil
 }

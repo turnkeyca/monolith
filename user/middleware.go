@@ -67,3 +67,18 @@ func (h *Handler) CheckPermissionsEdit(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+
+func (h *Handler) CheckPermissionsEditNoInactiveCheck(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		err := h.authorizer.CheckUserIdAndTokenNoActiveCheck(
+			r.Context().Value(key.KeyId{}).(string),
+			r.Context().Value(key.KeyLoggedInUserId{}).(string),
+			authorizer.EDIT,
+		)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("User does not have permission: %s", err), http.StatusForbidden)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
