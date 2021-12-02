@@ -69,7 +69,8 @@ func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 	authenticator.ConfigureAuthRoutes(router, logger, database)
 
 	handlers.CORS(
-		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type"}),
+		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Access-Control-Allow-Origin"}),
+		handlers.AllowedOrigins([]string{os.Getenv("LOCAL_ORIGIN"), os.Getenv("REMOTE_ORIGIN")}),
 		handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"}),
 	)(router)
 
