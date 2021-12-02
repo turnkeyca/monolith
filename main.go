@@ -68,7 +68,10 @@ func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 	permission.ConfigurePermissionRoutes(router, logger, database, auth, author)
 	authenticator.ConfigureAuthRoutes(router, logger, database)
 
-	handlers.CORS()(router)
+	handlers.CORS(
+		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type"}),
+		handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"}),
+	)(router)
 
 	return router, nil
 }
