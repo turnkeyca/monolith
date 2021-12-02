@@ -27,6 +27,7 @@ require (
 	github.com/go-openapi/strfmt v0.21.0 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/golang-jwt/jwt v3.2.1+incompatible
+	github.com/gorilla/handlers v1.5.1
 	github.com/mitchellh/mapstructure v1.4.2 // indirect
 	golang.org/x/text v0.3.7 // indirect
 )

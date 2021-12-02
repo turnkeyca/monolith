@@ -24,6 +24,7 @@ import (
 	"time"
 
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/turnkeyca/monolith/authenticator"
@@ -66,6 +67,8 @@ func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 	employment.ConfigureEmploymentRoutes(router, logger, database, auth, author)
 	permission.ConfigurePermissionRoutes(router, logger, database, auth, author)
 	authenticator.ConfigureAuthRoutes(router, logger, database)
+
+	handlers.CORS()(router)
 
 	return router, nil
 }
