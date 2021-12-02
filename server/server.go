@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"os"
 	"time"
-
-	"github.com/gorilla/mux"
 )
 
 type Server struct {
@@ -20,7 +18,7 @@ func New(logger *log.Logger) *Server {
 	}
 }
 
-func (s *Server) NewHttpServer(sm *mux.Router) *http.Server {
+func (s *Server) NewHttpServer(sm http.Handler) *http.Server {
 	return &http.Server{
 		Addr:         fmt.Sprintf(":%s", os.Getenv("PORT")),
 		ReadTimeout:  3 * time.Second,

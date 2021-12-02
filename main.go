@@ -68,12 +68,6 @@ func configureRoutes(logger *log.Logger) (*mux.Router, error) {
 	permission.ConfigurePermissionRoutes(router, logger, database, auth, author)
 	authenticator.ConfigureAuthRoutes(router, logger, database)
 
-	handlers.CORS(
-		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Access-Control-Allow-Origin"}),
-		handlers.AllowedOrigins([]string{os.Getenv("LOCAL_ORIGIN"), os.Getenv("REMOTE_ORIGIN")}),
-		handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"}),
-	)(router)
-
 	return router, nil
 }
 
@@ -99,13 +93,19 @@ func main() {
 	if err != nil {
 		logger.Printf("failed to load environment from .env: %#v\n", err)
 	}
-	sm, err := configureRoutes(logger)
+	router, err := configureRoutes(logger)
 	if err != nil {
 		logger.Fatalf("failed to configure routes: %#v\n", err)
 	}
 	logger.Println("starting server")
 	srv := server.New(logger)
-	httpServer := srv.NewHttpServer(sm)
+	h := handlers.CORS(
+		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Access-Control-Allow-Origin", "Token"}),
+		handlers.AllowedOrigins([]string{os.Getenv("LOCAL_ORIGIN"), os.Getenv("REMOTE_ORIGIN")}),
+		handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"}),
+		handlers.AllowCredentials(),
+	)(router)
+	httpServer := srv.NewHttpServer(h)
 	go serve(logger, httpServer)
 	sc := make(chan os.Signal, 1)
 	shutdown(logger, httpServer, sc)
