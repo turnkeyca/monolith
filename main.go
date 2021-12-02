@@ -101,7 +101,8 @@ func main() {
 	srv := server.New(logger)
 	h := handlers.CORS(
 		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Access-Control-Allow-Origin", "Token"}),
-		handlers.AllowedOrigins([]string{os.Getenv("LOCAL_ORIGIN"), os.Getenv("REMOTE_ORIGIN")}),
+		// handlers.AllowedOrigins([]string{os.Getenv("LOCAL_ORIGIN"), os.Getenv("REMOTE_ORIGIN")}),
+		handlers.AllowedOrigins([]string{"*"}), //FIXME YOU CAN'T GO TO PROD WITH THIS
 		handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"}),
 		handlers.AllowCredentials(),
 	)(router)
